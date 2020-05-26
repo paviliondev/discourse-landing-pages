@@ -2,21 +2,21 @@
   var themeSettings = {};
 
   Discourse.__container__ = {
-    lookup(name) {
+    lookup: function(name) {
       if (name === "service:theme-settings") {
         return {
-          registerSettings(themeId, settingsObject) {
+          registerSettings: function(themeId, settingsObject) {
             themeSettings[themeId] = settingsObject;
           },
 
-          getSetting(themeId, settingsKey) {
+          getSetting: function(themeId, settingsKey) {
             if (themeSettings[themeId]) {
               return themeSettings[themeId][settingsKey];
             }
             return null;
           },
 
-          getObjectForTheme(themeId) {
+          getObjectForTheme: function(themeId) {
             return themeSettings[themeId];
           }
         };
