@@ -1,0 +1,25 @@
+en:
+  admin_js:
+    admin:
+      landing_pages:
+        title: "Landing Pages"
+        page:
+          label: "Pages"
+          create: "Create Page"
+          select: "Select page"
+          save: "Save"
+          destroy: "Remove"
+          name:
+            label: "Name"
+            instructions: "Used in page title"
+          theme:
+            label: "Theme"
+            instructions: "Theme with page assets"
+            select: "Select theme"
+          path:
+            label: "Path"
+            placeholder: "path"
+            instructions: "Cannot conflict with existing paths"
+          body:
+            label: "Body"
+            instructions: "Page body html.erb"

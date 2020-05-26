@@ -1,0 +1,5 @@
+en:
+  landing_pages:
+    error:
+      attr_required: "%{attr} required"
+      path_exists: "Path already exists"

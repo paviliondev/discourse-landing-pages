@@ -1,0 +1,108 @@
+<div class="page-controls">
+  {{combo-box
+    value=page.id
+    content=pages
+    onChange=(action 'changePage')
+    class="page-select"
+    options=(hash
+      none='admin.landing_pages.page.select'
+    )}}
+  {{d-button
+    action="createPage"
+    label="admin.landing_pages.page.create"
+    icon="plus"}}
+</div>
+
+{{#if loading}}
+  {{loading-spinner}}
+{{else}}
+  {{#if page}}
+    <div class="page-header">
+      <div class="page-name">
+        {{#if page.name}}
+          {{page.name}}
+        {{else}}
+          {{i18n 'admin.landing_pages.page.name.label'}}
+        {{/if}}
+      </div>
+      
+      <div class="buttons">
+        {{d-button
+          action=(action "destroyPage")
+          label="admin.landing_pages.page.destroy"
+          icon="times"}}
+        {{d-button
+          action=(action "savePage")
+          label="admin.landing_pages.page.save"
+          class="btn-primary"
+          icon="save"}}
+      </div>
+      
+      {{#if error}}
+        <div class="page-error">
+          {{{error}}}
+        </div>
+      {{/if}}
+      
+      <div class="page-url">
+        <a href="{{pageUrl}}" target="_blank">
+          {{pageUrl}}{{#unless page.path}}<span class="placeholder">/<i>{{i18n 'admin.landing_pages.page.path.placeholder'}}</i></span>{{/unless}}{{d-icon "external-link-alt"}}
+        </a>
+      </div>
+    </div>
+      
+    <div class="page-details">
+      <div class="control-group">
+        <label class="control-label">
+          {{i18n "admin.landing_pages.page.name.label"}}
+        </label>
+        {{input value=page.name}}
+        <div class="control-instructions">
+          {{i18n "admin.landing_pages.page.name.instructions"}}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">
+          {{i18n "admin.landing_pages.page.path.label"}}
+        </label>
+        {{input
+          value=page.path
+          class="page-path"}}
+        <div class="control-instructions">
+          {{i18n "admin.landing_pages.page.path.instructions"}}
+        </div>
+      </div>
+    </div>
+    
+    <div class="page-assets">
+      <div class="control-group">
+        <label class="control-label">
+          {{i18n "admin.landing_pages.page.theme.label"}}
+        </label>
+        {{combo-box
+          content=themes
+          value=page.theme_id
+          onChange=(action (mut page.theme_id))
+          class="theme-select"
+          options=(hash
+            none='admin.landing_pages.page.theme.select'
+          )}}
+        <div class="control-instructions">
+          {{i18n "admin.landing_pages.page.theme.instructions"}}
+        </div>
+      </div>
+      
+      <div class="page-editor">
+        <label class="control-label">
+          {{i18n "admin.landing_pages.page.body.label"}}
+        </label>
+        <div class="control-instructions">
+          {{i18n "admin.landing_pages.page.body.instructions"}}
+        </div>
+        {{ace-editor
+          content=page.body
+          mode="html"}}
+      </div>
+    </div>
+  {{/if}}
+{{/if}}

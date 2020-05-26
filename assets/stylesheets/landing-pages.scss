@@ -1,0 +1,101 @@
+.admin-plugins.landing-pages {
+  .control-group {
+    margin-bottom: 20px;
+    margin-right: 20px;
+      
+    input,
+    .select-kit {
+      margin-bottom: 5px;
+    }
+  }
+  
+  .page-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    
+    .page-select {
+      min-width: 300px;
+    }
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-flow: wrap;
+    margin-bottom: 20px;
+    
+    .page-name {
+      font-size: 1.7em;
+    }
+    
+    .buttons {
+      display: flex;
+      
+      .btn {
+        margin-left: 15px;
+        white-space: nowrap;
+      }
+    }
+    
+    .page-error {
+      width: 100%;
+      padding: 10px;
+      background-color: $danger;
+      color: $secondary;
+    }
+    
+    .page-url {
+      width: 100%;
+      background-color: $primary-very-low;
+      display: flex;
+      padding: 10px 15px;
+      margin-top: 10px;
+      font-size: 1em;
+      
+      .d-icon {
+        margin-left: 7px;
+        font-size: 0.9em;
+      }
+    }
+  }
+  
+  .page-details {
+    display: flex;
+    flex-flow: wrap;
+  
+    .control-group {
+      margin-right: 20px;
+      
+      input,
+      .select-kit {
+        margin-bottom: 5px;
+      }
+      
+      .page-path {
+        width: 350px;
+      }
+    }
+  }
+  
+  .page-assets {
+    .theme-select {
+      min-width: 300px;
+    }
+  }
+  
+  .page-editor .ace-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    
+    .ace_editor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
