@@ -1,5 +1,5 @@
 (function() {
-  const themeSettings = {};
+  var themeSettings = {};
 
   Discourse.__container__ = {
     lookup(name) {
