@@ -15,6 +15,7 @@ config.assets.paths << "#{plugin_asset_path}/javascripts"
 if Rails.env.production?
   config.assets.precompile += %w{
     landing-page-assets.js
+    landing-page-services.js
     landing-page-loader.js
   }
 end
