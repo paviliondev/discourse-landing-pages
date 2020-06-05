@@ -18,6 +18,13 @@ if Rails.env.production?
     landing-page-assets.js
     landing-page-services.js
     landing-page-loader.js
+    page/common.js
+    page/desktop.js
+    page/mobile.js
+    stylesheets/page/common.scss
+    stylesheets/page/desktop.scss
+    stylesheets/page/mobile.scss
+    stylesheets/page/contact-form.scss
   }
 end
 
