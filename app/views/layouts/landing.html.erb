@@ -17,13 +17,16 @@
   
   <%= preload_script "landing-page-assets" %>
   <%= preload_script "landing-page-services" %>
+  <%= stylesheet_link_tag "page/common" %>
+  <%= stylesheet_link_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
+  <%= stylesheet_link_tag "page/contact-form" %>
 
   <%- if theme_ids.present? %>
     <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme) %>
     <%= theme_js_lookup %>
     <%= theme_lookup("head_tag") %>
   <%- end %>
-  
+    
   <%= preload_script "landing-page-loader" %>
 </head>
 <body class="landing-page <%= @classes %>">
@@ -31,5 +34,7 @@
   <%- if theme_ids.present? %>
     <%= theme_lookup("body_tag") %>
   <%- end %>
+  <%= javascript_include_tag "page/common" %>
+  <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
 </body>
 </html>

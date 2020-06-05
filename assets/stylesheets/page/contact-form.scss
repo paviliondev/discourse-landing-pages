@@ -1,0 +1,26 @@
+$primary: #333;
+$tertiary: #08c;
+
+#contact-form {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  font-size: 1.1rem;
+  
+  input,
+  textarea {
+    margin-bottom: 10px;
+    border: 1px solid rgba($primary, 0.3);
+    padding: 10px;
+  }
+  
+  textarea {
+    min-height: 150px;
+  }
+  
+  .btn {
+    padding: 6px 12px;
+    background-color: $tertiary;
+    color: white;
+  }
+}

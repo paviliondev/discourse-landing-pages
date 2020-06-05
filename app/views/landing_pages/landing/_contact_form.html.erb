@@ -1,0 +1,5 @@
+<%= form_tag(landing_pages.contact_path, method: 'post', remote: true, 'data-type' => :json, id: 'contact-form') do %>
+  <%= text_field_tag(:email, nil, placeholder: t('landing_pages.contact.email')) %>
+  <%= text_area_tag(:message, nil, placeholder: t('landing_pages.contact.message')) %>
+  <%= submit_tag t('landing_pages.contact.submit'), class: 'btn btn-primary' %>
+<%end%>

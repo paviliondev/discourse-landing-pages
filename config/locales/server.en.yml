@@ -1,5 +1,20 @@
 en:
   landing_pages:
+    contact:
+      submit: "Send"
+      email: "Your email"
+      message: "What would you like to do?"
+      sent: "Message sent."
+      
     error:
       attr_required: "%{attr} required"
       path_exists: "Path already exists"
+    
+  contact_mailer:
+    title: "New Contact"
+    subject_template: "New Contact"
+    text_body_template: |
+      %{message}
+  
+  site_settings:
+    landing_contact_email: "Email to send landing page contacts to."

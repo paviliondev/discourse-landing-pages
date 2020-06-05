@@ -27,18 +27,18 @@ export default Controller.extend({
         error: null
       });
       
-      const page = this.page;
+      const page = this.get('page');
       let opts = {};
       let self = this;
       
       if (this.creating) {
         opts.create = true;
       }
-      
+            
       page.savePage(opts).then(result => {
         if (result.success) {
           this.setProperties({
-            page: result.page,
+            page:  LandingPage.create(result.page),
             currentPage: JSON.parse(JSON.stringify(result.page)),
             pages: result.pages
           });

@@ -1,0 +1,3 @@
+plugins:
+  landing_contact_email:
+    default: 'contact@thepavilion.io'
