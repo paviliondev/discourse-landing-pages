@@ -1,6 +1,6 @@
 LandingPages::Engine.routes.draw do
   resources :page, constraints: AdminConstraint.new
-  post "contact" => "contact#send_contact_email"
+  post "contact" => "landing#contact"
 end
 
 Discourse::Application.routes.prepend do

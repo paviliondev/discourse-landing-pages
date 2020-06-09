@@ -1,10 +1,10 @@
 en:
   landing_pages:
     contact:
-      submit: "Send"
       email: "Your email"
-      message: "What would you like to do?"
-      sent: "Message sent."
+      message: "How can we help?"
+      submit: "Send"
+      submitted: "Sent. We'll be in touch soon."
       
     error:
       attr_required: "%{attr} required"

@@ -1,0 +1,9 @@
+@import 'variables';
+@import 'header';
+@import 'contact-form';
+
+body {
+  margin: 0;
+  padding: 0;
+  color: $primary;
+}

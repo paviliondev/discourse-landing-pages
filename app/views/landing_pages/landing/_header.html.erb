@@ -10,58 +10,26 @@
           <%- end %>
         </a>
       </div>
-      <ul class="menu">
-        <% @menu_items.each do |item| %>
-          <li class="primary-item">
-            <a href="<%= item[:href] %>" class="primary-item-link">
-              <label><%= item[:label] %></label>
-              <%- unless mobile_view? %>
-                <%- if item[:items] %>
-                  <span class="down"><%= SvgSprite.raw_svg('angle-down') %></span>
-                  <span class="up"><%= SvgSprite.raw_svg('angle-up') %></span>
-                <%- end %>
-              <%- end %>
-            </a>
-            <%- if item[:items] %>
-              <ul class="menu-dropdown">
-                <% item[:items].each do |item| %>
-                  <li class="item">
-                    <a href="<%= item[:href] %>" class="<%= item[:label].parameterize %>">
-                      <div class="image"></div>
-                      <div class="label"><%= item[:label] %></div>
-                      <%- if item[:description] %>
-                        <div class="description"><%= item[:description] %></div>
-                      <%- end %>
-                      <%- if item[:items] %>
-                        <ul class="item-list">
-                          <% item[:items].each do |item| %>
-                            <a href="<%= item[:href] %>" class="<%= item[:label].dasherize.downcase %>">
-                              <div class="label"><%= item[:label] %></div>
-                            </a>
-                          <% end %>
-                        </ul>
-                      <%- end %>
-                    </a>
-                  </li>
-                <% end %>
-              </ul>
-            <%- end %>
-          </li>
-        <% end %>
-      </ul>
+      <% unless mobile_view? %>
+        <%= render partial: "menu" %>
+      <% end %>
     </div>
     <div class="panel">
       <span class='header-buttons'>
-        <%- if mobile_view? %>
+        <% if mobile_view? %>
           <a class="mobile-toggle">
             <%= SvgSprite.raw_svg('bars') %>
           </a>
-        <%- else %>
+        <% else %>
           <a href="<%= path "/login"%>">
             <%= I18n.t('log_in') %>
           </a>
-        <%- end %>
+        <% end %>
       </span>
     </div>
   </div>
 </header>
+
+<% if mobile_view? %>
+  <%= render partial: "menu" %>
+<% end %>

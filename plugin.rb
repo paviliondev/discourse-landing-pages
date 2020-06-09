@@ -7,6 +7,7 @@
 register_asset "stylesheets/landing-pages-admin.scss"
 register_svg_icon "save" if respond_to?(:register_svg_icon)
 add_admin_route "admin.landing_pages.title", "landing-pages"
+gem "jquery-rails", "4.4.0"
 
 config = Rails.application.config
 plugin_asset_path = "#{Rails.root}/plugins/discourse-landing-pages/assets"
@@ -21,6 +22,7 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
+    vendor/jquery.form.min.js
     stylesheets/page/common.scss
     stylesheets/page/desktop.scss
     stylesheets/page/mobile.scss
@@ -38,7 +40,6 @@ after_initialize do
     ../app/serializers/landing_pages/page.rb
     ../app/controllers/landing_pages/landing.rb
     ../app/controllers/landing_pages/pages.rb
-    ../app/controllers/landing_pages/contact.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
   ].each do |path|

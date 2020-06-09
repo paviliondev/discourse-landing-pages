@@ -1,4 +1,10 @@
 $('.primary-item').hover(
-  function(){ $(this).addClass('hover') },
-  function(){ $(this).removeClass('hover') }
+  function(){
+    $(this).addClass('hover');
+    $('body').addClass('menu-visible');
+  },
+  function(){
+    $(this).removeClass('hover');
+    $('body').removeClass('menu-visible');
+  }
 )

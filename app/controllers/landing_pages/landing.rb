@@ -17,6 +17,17 @@ class LandingPages::LandingController < ::ActionController::Base
     end
   end
   
+  def contact    
+    Jobs.enqueue(:send_contact_email,
+      from: contact_params[:email],
+      message: contact_params[:message]
+    )        
+    respond_to do |format|
+      format.html
+      format.js { head :ok }
+    end
+  end
+  
   private
   
   def find_page
@@ -27,5 +38,9 @@ class LandingPages::LandingController < ::ActionController::Base
     if @page.present? && @page.theme_id.present?
       @theme_ids = request.env[:resolved_theme_ids] = [@page.theme_id]
     end
+  end
+  
+  def contact_params
+    params.permit(:name, :email, :message)
   end
 end

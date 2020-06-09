@@ -14,12 +14,12 @@
   <%- if site_apple_touch_icon_url.present? %>
     <link rel="apple-touch-icon" type="image/png" href="<%= ::UrlHelper.absolute(site_apple_touch_icon_url) %>">
   <%- end %>
+
+  <%= csrf_meta_tag %>
   
   <%= preload_script "landing-page-assets" %>
   <%= preload_script "landing-page-services" %>
-  <%= stylesheet_link_tag "page/common" %>
-  <%= stylesheet_link_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
-  <%= stylesheet_link_tag "page/contact-form" %>
+  <%= stylesheet_link_tag "page/page" %>
 
   <%- if theme_ids.present? %>
     <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme) %>
