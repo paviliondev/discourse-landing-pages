@@ -22,8 +22,8 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
-    stylesheets/page/header.scss
     stylesheets/page/variables.scss
+    stylesheets/page/header.scss
     stylesheets/page/contact-form.scss
     stylesheets/page/page.scss
   }
