@@ -1,7 +1,7 @@
-const $form = $("#contact-form");
+var $form = $("#contact-form");
 
 if ($form.length) {
-  const $submit = $form.find('.btn-primary');
+  var $submit = $form.find('.btn-primary');
 
   $form.on("ajax:send", function() {
     $submit.addClass('submitting');
