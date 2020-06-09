@@ -22,11 +22,10 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
-    vendor/jquery.form.min.js
-    stylesheets/page/common.scss
-    stylesheets/page/desktop.scss
-    stylesheets/page/mobile.scss
+    stylesheets/page/header.scss
+    stylesheets/page/variables.scss
     stylesheets/page/contact-form.scss
+    stylesheets/page/page.scss
   }
 end
 
