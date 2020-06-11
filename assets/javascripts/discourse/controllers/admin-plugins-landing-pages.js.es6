@@ -6,9 +6,7 @@ import discourseComputed from "discourse-common/utils/decorators";
 import { equal } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
 
-export default Controller.extend({
-  creating: equal('page.id', 'create'),
-  
+export default Controller.extend({  
   @discourseComputed('page.path')
   pageUrl(pagePath) {
     const loation = window.location;
@@ -75,7 +73,7 @@ export default Controller.extend({
     },
     
     createPage() {
-      this.set('page', LandingPage.create({ id: 'create' }));
+      this.set('page', LandingPage.create({ creating: true }));
     }
   }
 });
