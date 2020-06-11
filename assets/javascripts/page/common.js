@@ -19,3 +19,7 @@ if ($form.length) {
 $(window).on("scroll", function() {
   $("body").toggleClass('scrolled', $(window).scrollTop() > 0);
 });
+
+$("a.primary-item-link").on("touchstart", function(event) {
+  console.log($(event.target));
+});
