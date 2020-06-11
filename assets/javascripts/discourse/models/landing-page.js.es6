@@ -4,10 +4,11 @@ import { ajax } from 'discourse/lib/ajax';
 const basePath = '/landing/page'
 
 const LandingPage = EmberObject.extend({
-  savePage(opts={}) {
+  savePage() {
+    const creating = this.creating;
     let path = basePath;
         
-    if (!opts.create) {
+    if (!creating) {
       path += `/${this.id}`;
     }
     
@@ -19,7 +20,7 @@ const LandingPage = EmberObject.extend({
     }
     
     return ajax(path, {
-      type: opts.create ? "POST" : "PUT",
+      type: creating ? "POST" : "PUT",
       data: {
         page
       }

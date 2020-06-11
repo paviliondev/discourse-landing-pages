@@ -26,14 +26,9 @@ export default Controller.extend({
       });
       
       const page = this.get('page');
-      let opts = {};
       let self = this;
-      
-      if (this.creating) {
-        opts.create = true;
-      }
             
-      page.savePage(opts).then(result => {
+      page.savePage().then(result => {
         if (result.success) {
           this.setProperties({
             page:  LandingPage.create(result.page),
