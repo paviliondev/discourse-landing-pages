@@ -17,7 +17,7 @@ class LandingPages::Menu
           {
             label: "Education",
             href: "/education",
-            description: "We teach you to run your community"
+            description: "We help you learn about your community"
           },
           {
             label: "Pro Bono",

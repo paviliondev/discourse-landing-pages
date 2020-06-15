@@ -23,6 +23,7 @@ if Rails.env.production?
     page/desktop.js
     page/mobile.js
     stylesheets/page/variables.scss
+    stylesheets/page/buttons.scss
     stylesheets/page/header.scss
     stylesheets/page/contact-form.scss
     stylesheets/page/page.scss

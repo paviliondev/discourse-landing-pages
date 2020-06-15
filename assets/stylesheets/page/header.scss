@@ -157,6 +157,7 @@ header.landing-header:hover {
     transform: translateY(-5%);
     transition: all .1s ease-in .05s;
     width: 20%;
+    max-width: 20%;
     
     &:first-of-type {
       padding-left: 0.8em;
@@ -195,6 +196,7 @@ header.landing-header:hover {
 
 .item .label {
   margin: 10px 0;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 480px) {
