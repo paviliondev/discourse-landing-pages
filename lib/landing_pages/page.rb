@@ -20,7 +20,7 @@ class LandingPages::Page
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
       value = value.dasherize if attr === 'path'
-      value = value.to_i if attr === 'theme_id'
+      value = value.to_i if (attr === 'theme_id' && value.present?)
       
       if value.present?
         send("#{attr}=", value)
@@ -102,6 +102,10 @@ class LandingPages::Page
     page = LandingPages::Page.new(SecureRandom.hex(6), data)
     page.save
     page
+  end
+  
+  def self.destroy(page_id)
+    PluginStore.remove(LandingPages::PLUGIN_NAME, LandingPages::Page.build_key(page_id))
   end
   
   def self.all

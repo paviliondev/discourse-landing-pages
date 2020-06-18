@@ -1,6 +1,6 @@
 class LandingPages::PageController < ::Admin::AdminController
-  before_action :check_page_exists, only: [:show, :update]
-  before_action :find_page, only: [:show, :update]
+  before_action :check_page_exists, only: [:show, :update, :destroy]
+  before_action :find_page, only: [:show, :update, :destroy]
   
   def index
     render_serialized(LandingPages::Page.all, LandingPages::PageSerializer, root: 'pages')
@@ -18,6 +18,14 @@ class LandingPages::PageController < ::Admin::AdminController
 
   def create
     handle_render(LandingPages::Page.create(page_params))
+  end
+  
+  def destroy
+    if LandingPages::Page.destroy(params[:id])
+      render json: success_json.merge(pages: serialzed_pages)
+    else
+      render json: failed_json
+    end
   end
   
   private
@@ -44,14 +52,18 @@ class LandingPages::PageController < ::Admin::AdminController
     if page.valid?
       render json: success_json.merge(
         page: LandingPages::PageSerializer.new(page, root: false),
-        pages: ActiveModel::ArraySerializer.new(
-          LandingPages::Page.all,
-          each_serializer: LandingPages::PageSerializer,
-          root: false
-        )
+        pages: serialzed_pages
       )
     else
       render_json_error(page)
     end
+  end
+  
+  def serialzed_pages
+    ActiveModel::ArraySerializer.new(
+      LandingPages::Page.all,
+      each_serializer: LandingPages::PageSerializer,
+      root: false
+    )
   end
 end

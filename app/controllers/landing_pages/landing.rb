@@ -8,7 +8,7 @@ class LandingPages::LandingController < ::ActionController::Base
   def show    
     if @page.present?
       @title = SiteSetting.title + " | #{@page.name}"
-      @classes = @page.name
+      @classes = @page.name.parameterize
       @menu_items = LandingPages::Menu.items
       
       render :inline => @page.body, :layout => "landing"

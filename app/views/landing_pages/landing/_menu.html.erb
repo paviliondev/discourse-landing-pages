@@ -11,26 +11,36 @@
         <%- end %>
       </a>
       <%- if item[:items] %>
-        <ul class="menu-dropdown">
+        <ul class="menu-dropdown <%= 'has-description' if item[:description] %>">
+          <%- if item[:description] %>
+            <li class="primary-description">
+              <span><%= item[:description] %></span>
+            </li>
+          <%- end %>
           <% item[:items].each do |item| %>
-            <li class="item">
-              <a href="<%= item[:href] %>" class="<%= item[:label].parameterize %>">
-                <div class="image"></div>
-                <div class="right">
-                  <div class="label"><%= item[:label] %></div>
-                  <%- if item[:description] %>
-                    <div class="description"><%= item[:description] %></div>
+            <li class="item <%= 'coming-soon' if item[:coming_soon] %>">
+              <a href="<%= item[:href] unless item[:coming_soon] %>" class="<%= item[:label].parameterize %>">
+                <div class="content">
+                  <div class="image <%= item[:label].parameterize %>"></div>
+                  <div class="right">
+                    <div class="label"><%= item[:label] %></div>
+                    <%- if item[:coming_soon] %>
+                      <div class="coming-soon">In the works</div>
+                    <%- end %>
+                    <%- if item[:description] %>
+                      <div class="description"><%= item[:description] %></div>
+                    <%- end %>
+                  </div>
+                  <%- if item[:items] %>
+                    <ul class="item-list">
+                      <% item[:items].each do |item| %>
+                        <a href="<%= item[:href] %>" class="<%= item[:label].dasherize.downcase %>">
+                          <div class="label"><%= item[:label] %></div>
+                        </a>
+                      <% end %>
+                    </ul>
                   <%- end %>
                 </div>
-                <%- if item[:items] %>
-                  <ul class="item-list">
-                    <% item[:items].each do |item| %>
-                      <a href="<%= item[:href] %>" class="<%= item[:label].dasherize.downcase %>">
-                        <div class="label"><%= item[:label] %></div>
-                      </a>
-                    <% end %>
-                  </ul>
-                <%- end %>
               </a>
             </li>
           <% end %>

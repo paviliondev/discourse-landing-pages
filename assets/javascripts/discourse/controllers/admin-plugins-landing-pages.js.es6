@@ -50,8 +50,18 @@ export default Controller.extend({
     },
     
     destroyPage() {
-      this.page.destroyPage().then(() => {
-        this.send('afterDestroy');
+      this.page.destroyPage().then(result => {
+        if (result.success) {
+          this.setProperties({
+            page: null,
+            pages: result.pages
+          })
+        }
+      }).catch(error => {
+        this.set('error', extractError(error));
+        later(() => this.set('error', null), 10000);
+      }).finally(() => {
+        this.set('loading', false);
       });
     },
     
