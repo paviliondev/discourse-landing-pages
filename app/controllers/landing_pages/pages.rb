@@ -1,6 +1,6 @@
 class LandingPages::PageController < ::Admin::AdminController
-  before_action :check_page_exists, only: [:show, :update, :destroy]
-  before_action :find_page, only: [:show, :update, :destroy]
+  before_action :check_page_exists, only: [:show, :update, :destroy, :export]
+  before_action :find_page, only: [:show, :update, :export]
   
   def index
     render_serialized(LandingPages::Page.all, LandingPages::PageSerializer, root: 'pages')
@@ -26,6 +26,32 @@ class LandingPages::PageController < ::Admin::AdminController
     else
       render json: failed_json
     end
+  end
+  
+  def export
+    exporter = LandingPages::PageExporter.new(@page)
+    file_path = exporter.package_filename
+
+    headers['Content-Length'] = File.size(file_path).to_s
+    send_data File.read(file_path),
+      filename: File.basename(file_path),
+      content_type: "application/zip"
+  ensure
+    exporter.cleanup!
+  end
+  
+  def import
+    bundle = params[:bundle]
+    importer = ThemeStore::PageImporter.new(bundle.filename, bundle.original_filename)
+    importer.import!
+    
+    begin
+      meta = JSON.parse(importer["about.json"])
+    rescue TypeError, JSON::ParserError
+      raise ImportError.new
+    end
+    
+    
   end
   
   private

@@ -6,8 +6,16 @@ class LandingPages::Page
   
   attr_reader :id
   
+  def meta_attrs
+    %w(name path theme_id).freeze
+  end
+  
+  def file_attrs
+    %w(body menu).freeze
+  end
+  
   def writable_attrs
-    %w(name path theme_id body).freeze
+    (meta_attrs + file_attrs).freeze
   end
   
   def initialize(page_id, data={})
@@ -106,6 +114,10 @@ class LandingPages::Page
   
   def self.destroy(page_id)
     PluginStore.remove(LandingPages::PLUGIN_NAME, LandingPages::Page.build_key(page_id))
+  end
+  
+  def self.export(page_id)
+  
   end
   
   def self.all
