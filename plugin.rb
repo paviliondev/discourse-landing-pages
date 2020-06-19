@@ -26,6 +26,7 @@ if Rails.env.production?
     stylesheets/page/buttons.scss
     stylesheets/page/header.scss
     stylesheets/page/contact-form.scss
+    stylesheets/page/list.scss
     stylesheets/page/page.scss
   }
 end

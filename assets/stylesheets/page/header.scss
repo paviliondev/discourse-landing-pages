@@ -12,7 +12,7 @@ header.landing-header {
     box-sizing: border-box;
     justify-content: space-between;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     
     .primary {
       display: flex;
@@ -26,6 +26,7 @@ header.landing-header {
     
     a {
       white-space: nowrap;
+      line-height: 30px;
       
       &:hover {
         color: $tertiary;
