@@ -24,10 +24,10 @@ var $waypointList = $('ul.waypoint-list');
 
 if ($waypointList.length) {
   $waypointList.children().each(function() {
-    let $item = $(this);
-    let $anchor = $item.find('a');
-    let id = $anchor.attr('href');
-    let $id = $(id);
+    var $item = $(this);
+    var $anchor = $item.find('a');
+    var id = $anchor.attr('href');
+    var $id = $(id);
 
     if ($id.length) {
       new Waypoint({
@@ -60,11 +60,11 @@ if ($waypointList.length) {
 $("a.scroll-and-center").on('click', function(e) {
   e.preventDefault();
   
-  let el = $(e.target.getAttribute('href'));
-  let elOffset = el.offset().top;
-  let elHeight = el.height();
-  let windowHeight = $(window).height();
-  let offset;
+  var el = $(e.target.getAttribute('href'));
+  var elOffset = el.offset().top;
+  var elHeight = el.height();
+  var windowHeight = $(window).height();
+  var offset;
 
   if (elHeight < windowHeight) {
     offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
