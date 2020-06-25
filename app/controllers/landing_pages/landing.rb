@@ -1,8 +1,10 @@
 class LandingPages::LandingController < ::ActionController::Base
   prepend_view_path(Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views'))
   helper ::ApplicationHelper
+  include CurrentUser
   
   before_action :find_page
+  before_action :check_access
   before_action :load_theme
 
   def show    
@@ -32,6 +34,12 @@ class LandingPages::LandingController < ::ActionController::Base
   
   def find_page
     @page = LandingPages::Page.find_by_path(params[:path])
+  end
+  
+  def check_access
+    raise Discourse::InvalidAccess.new unless @page.group_ids.blank? ||
+      @page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) ||
+      (current_user && (current_user.groups.map(&:id) && @page.group_ids).length)
   end
   
   def load_theme

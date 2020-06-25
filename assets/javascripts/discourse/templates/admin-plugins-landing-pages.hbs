@@ -92,17 +92,31 @@
         </div>
       </div>
       
-      <div class="page-editor">
+      <div class="control-group">
         <label class="control-label">
-          {{i18n "admin.landing_pages.page.body.label"}}
+          {{i18n "admin.landing_pages.page.groups.label"}}
         </label>
+        {{group-chooser
+          content=groups
+          value=page.group_ids
+          labelProperty="name"
+          onChange=(action (mut page.group_ids))}}
         <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.body.instructions"}}
+          {{i18n "admin.landing_pages.page.groups.instructions"}}
         </div>
-        {{ace-editor
-          content=page.body
-          mode="html_ruby"}}
       </div>
+    </div>
+    
+    <div class="page-editor">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.body.label"}}
+      </label>
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.body.instructions"}}
+      </div>
+      {{ace-editor
+        content=page.body
+        mode="html_ruby"}}
     </div>
   {{/if}}
 {{/if}}

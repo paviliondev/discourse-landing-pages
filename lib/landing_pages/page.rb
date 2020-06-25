@@ -7,7 +7,7 @@ class LandingPages::Page
   attr_reader :id
   
   def writable_attrs
-    %w(name path theme_id body).freeze
+    %w(name path theme_id group_ids body).freeze
   end
   
   def initialize(page_id, data={})
@@ -21,6 +21,7 @@ class LandingPages::Page
       value = data[attr]
       value = value.dasherize if attr === 'path'
       value = value.to_i if (attr === 'theme_id' && value.present?)
+      value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
       
       if value.present?
         send("#{attr}=", value)

@@ -44,7 +44,8 @@ class LandingPages::PageController < ::Admin::AdminController
         :name,
         :path,
         :theme_id,
-        :body
+        :body,
+        group_ids: []
       ).to_h
   end
   
