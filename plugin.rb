@@ -71,7 +71,7 @@ after_initialize do
         category: category,
         no_definitions: true
       }
-      TopicQuery.new(nil, topic_options).list_latest.topics
+      TopicQuery.new(current_user, topic_options).list_latest.topics
     end
   end
 end
