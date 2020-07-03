@@ -3,11 +3,16 @@ en:
     admin:
       landing_pages:
         title: "Landing Pages"
+        import:
+          title: "Import Page"
+          file_tip: ".zip file containing page"
+          button: "Import"
         page:
           label: "Pages"
-          create: "Create Page"
+          create: "Create"
           select: "Select page"
           save: "Save"
+          export: "Export"
           destroy: "Remove"
           name:
             label: "Name"

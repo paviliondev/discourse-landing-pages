@@ -1,4 +1,5 @@
 class LandingPages::PageController < ::Admin::AdminController
+  skip_before_action :check_xhr, only: [:export]
   before_action :check_page_exists, only: [:show, :update, :destroy, :export]
   before_action :find_page, only: [:show, :update, :export]
   
@@ -21,7 +22,7 @@ class LandingPages::PageController < ::Admin::AdminController
   end
   
   def destroy
-    if LandingPages::Page.destroy(params[:id])
+    if LandingPages::Page.destroy(params[:page_id])
       render json: success_json.merge(pages: serialzed_pages)
     else
       render json: failed_json
@@ -31,7 +32,7 @@ class LandingPages::PageController < ::Admin::AdminController
   def export
     exporter = LandingPages::PageExporter.new(@page)
     file_path = exporter.package_filename
-
+    
     headers['Content-Length'] = File.size(file_path).to_s
     send_data File.read(file_path),
       filename: File.basename(file_path),
@@ -41,23 +42,44 @@ class LandingPages::PageController < ::Admin::AdminController
   end
   
   def import
-    bundle = params[:bundle]
-    importer = ThemeStore::PageImporter.new(bundle.filename, bundle.original_filename)
-    importer.import!
+    page = params[:page]
+    importer = LandingPages::PageImporter.new(
+      page.tempfile.path,
+      page.original_filename
+    )
+    
+    importer.unzip!
     
     begin
-      meta = JSON.parse(importer["about.json"])
+      meta = JSON.parse(importer["meta.json"])
     rescue TypeError, JSON::ParserError
-      raise ImportError.new
+      raise LandingPages::ImportError.new
     end
     
+    page = LandingPages::Page.find(meta['id'])
     
+    if page.blank?
+      if LandingPages::Page.find_by_path(meta['path'])
+        raise LandingPages::ImportError.new, I18n.t("themes.import_error.path_exists", path: meta['path'])
+      end
+      
+      page = LandingPages::Page.create(meta)
+    end
+
+    page.body = importer["body.html.erb"]
+    page.save
+    
+    handle_render(page)
+  ensure
+    importer.cleanup!
   end
   
   private
   
   def check_page_exists
-    LandingPages::Page.exists?(params[:id])
+    unless LandingPages::Page.exists?(params[:id])
+      raise Discourse::InvalidParameters.new(:id)
+    end
   end
 
   def find_page

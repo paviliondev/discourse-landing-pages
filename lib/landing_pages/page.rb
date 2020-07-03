@@ -64,7 +64,7 @@ class LandingPages::Page
     end
           
     if LandingPages::Page.exists?(path, 'path', exclude_id: id) ||
-       LandingPages::Page.application_paths.include?(path)
+        LandingPages::Page.application_paths.include?(path)
       add_error(I18n.t("landing_pages.error.path_exists"))
     end
   end
@@ -107,17 +107,17 @@ class LandingPages::Page
   end
   
   def self.create(data)
-    page = LandingPages::Page.new(SecureRandom.hex(6), data)
-    page.save
-    page
+    page = LandingPages::Page.new(SecureRandom.hex(10) || data['id'], data)
+    
+    if page.save
+      page
+    else
+      false
+    end
   end
   
   def self.destroy(page_id)
     PluginStore.remove(LandingPages::PLUGIN_NAME, LandingPages::Page.build_key(page_id))
-  end
-  
-  def self.export(page_id)
-  
   end
   
   def self.all

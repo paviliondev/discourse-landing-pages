@@ -10,6 +10,9 @@ en:
       attr_required: "%{attr} required"
       path_exists: "Path already exists"
     
+    import_error:
+      path_exists: "A page with path '%{path}' already exists."
+    
   contact_mailer:
     title: "New Contact"
     subject_template: "New Contact"

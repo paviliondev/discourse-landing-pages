@@ -7,10 +7,17 @@
     options=(hash
       none='admin.landing_pages.page.select'
     )}}
-  {{d-button
-    action="createPage"
-    label="admin.landing_pages.page.create"
-    icon="plus"}}
+    
+  <div class="buttons">
+    {{d-button
+      action=(action "importPages")
+      label="admin.landing_pages.import.button"
+      icon="upload"}}
+    {{d-button
+      action=(action "createPage")
+      label="admin.landing_pages.page.create"
+      icon="plus"}}
+  </div>
 </div>
 
 {{#if loading}}
@@ -27,6 +34,11 @@
       </div>
       
       <div class="buttons">
+        {{d-button
+          class="btn-default download-link"
+          href=page.exportUrl
+          icon="download"
+          label="admin.landing_pages.page.export"}}
         {{d-button
           action=(action "destroyPage")
           label="admin.landing_pages.page.destroy"

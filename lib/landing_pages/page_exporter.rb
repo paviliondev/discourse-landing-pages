@@ -11,10 +11,6 @@ class LandingPages::PageExporter
     @export_name = "discourse-#{@export_name}" unless @export_name.starts_with?("discourse")
   end
 
-  def export_name
-    @export_name
-  end
-
   def package_filename
     export_package
   end
@@ -28,18 +24,18 @@ class LandingPages::PageExporter
     FileUtils.mkdir_p(destination_folder)
     
     File.write(
-      File.join(destination_folder, "about.json"),
+      File.join(destination_folder, "meta.json"),
       JSON.pretty_generate(
+        id: @page.id,
         name: @page.name,
         path: @page.path,
         theme_id: @page.theme_id
       )
     )
     
-    @page.meta_attrs.each do |attr|
+    @page.file_attrs.each do |attr|
       if (value = @page.try(attr)).present?
-        pathname = Pathname.new(File.join(destination_folder, path))
-        folder_path = pathname.parent.cleanpath
+        pathname = Pathname.new(File.join(destination_folder, filename(attr)))
         pathname.parent.mkpath
         path = pathname.realdirpath
         File.write(path, value)
@@ -55,5 +51,16 @@ class LandingPages::PageExporter
     export_to_folder
 
     Compression::Zip.new.compress(@temp_folder, @export_name)
+  end
+  
+  def filename(attr)
+    name = attr
+    
+    ext = {
+      body: '.html.erb'
+    }[attr.to_sym]
+    
+    name += ext if ext
+    name
   end
 end

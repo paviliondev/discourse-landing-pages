@@ -2,6 +2,8 @@
 
 require_dependency 'compression/engine'
 
+class LandingPages::ImportError < StandardError; end
+
 class LandingPages::PageImporter
 
   attr_reader :url
@@ -12,33 +14,32 @@ class LandingPages::PageImporter
     @original_filename = original_filename
   end
 
-  def import!
+  def unzip!
     FileUtils.mkdir(@temp_folder)
-
-    available_size = SiteSetting.decompressed_theme_max_file_size_mb
-    Compression::Engine.engine_for(@original_filename).tap do |engine|
-      engine.decompress(@temp_folder, @filename, available_size)
-      engine.strip_directory(@temp_folder, @temp_folder, relative: true)
+    
+    begin
+      available_size = 1000
+      Compression::Engine.engine_for(@original_filename).tap do |engine|
+        engine.decompress(@temp_folder, @filename, available_size)
+        engine.strip_directory(@temp_folder, @temp_folder, relative: true)
+      end
+    rescue RuntimeError
+      raise LandingPages::ImportError, I18n.t("themes.import_error.unpack_failed")
+    rescue Compression::Zip::ExtractFailed
+      raise LandingPages::ImportError, I18n.t("themes.import_error.file_too_big")
     end
-  rescue RuntimeError
-    raise RemoteTheme::ImportError, I18n.t("themes.import_error.unpack_failed")
-  rescue Compression::Zip::ExtractFailed
-    raise RemoteTheme::ImportError, I18n.t("themes.import_error.file_too_big")
   end
-
-  def cleanup!
-    FileUtils.rm_rf(@temp_folder)
+  
+  def [](value)
+    fullpath = real_path(value)
+    return nil unless fullpath
+    File.read(fullpath)
   end
-
-  def version
-    ""
-  end
-
+  
   def real_path(relative)
     fullpath = "#{@temp_folder}/#{relative}"
     return nil unless File.exist?(fullpath)
 
-    # careful to handle symlinks here, don't want to expose random data
     fullpath = Pathname.new(fullpath).realpath.to_s
 
     if fullpath && fullpath.start_with?(@temp_folder)
@@ -48,14 +49,7 @@ class LandingPages::PageImporter
     end
   end
 
-  def all_files
-    Dir.glob("**/**", base: @temp_folder).reject { |f| File.directory?(File.join(@temp_folder, f)) }
+  def cleanup!
+    FileUtils.rm_rf(@temp_folder)
   end
-
-  def [](value)
-    fullpath = real_path(value)
-    return nil unless fullpath
-    File.read(fullpath)
-  end
-
 end
