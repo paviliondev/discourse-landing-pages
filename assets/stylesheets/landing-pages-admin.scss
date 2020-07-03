@@ -17,6 +17,14 @@
     .page-select {
       min-width: 300px;
     }
+    
+    .buttons {
+      display: flex;
+      
+      .btn {
+        margin-left: 10px;
+      }
+    }
   }
   
   .page-header {
@@ -34,7 +42,7 @@
       display: flex;
       
       .btn {
-        margin-left: 15px;
+        margin-left: 10px;
         white-space: nowrap;
       }
     }

@@ -34,11 +34,12 @@
       </div>
       
       <div class="buttons">
-        {{d-button
-          class="btn-default download-link"
-          href=page.exportUrl
-          icon="download"
-          label="admin.landing_pages.page.export"}}
+        <a class="btn btn-default export"
+           rel="noopener noreferrer"
+           target="_blank"
+           href={{page.exportUrl}}>
+          {{d-icon "download"}} {{i18n "admin.landing_pages.page.export"}}
+        </a>
         {{d-button
           action=(action "destroyPage")
           label="admin.landing_pages.page.destroy"

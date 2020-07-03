@@ -23,17 +23,18 @@ class LandingPages::PageExporter
     destination_folder = File.join(@temp_folder, @export_name)
     FileUtils.mkdir_p(destination_folder)
     
-    File.write(
-      File.join(destination_folder, "meta.json"),
-      JSON.pretty_generate(
-        id: @page.id,
-        name: @page.name,
-        path: @page.path,
-        theme_id: @page.theme_id
-      )
-    )
+    meta = {
+      id: @page.id
+    }
     
-    @page.file_attrs.each do |attr|
+    LandingPages::Page.meta_attrs.each do |attr|
+      value = @page.send(attr)
+      meta[attr] = value if value.present?
+    end
+    
+    File.write(File.join(destination_folder, "meta.json"), JSON.pretty_generate(meta))
+    
+    LandingPages::Page.file_attrs.each do |attr|
       if (value = @page.try(attr)).present?
         pathname = Pathname.new(File.join(destination_folder, filename(attr)))
         pathname.parent.mkpath
