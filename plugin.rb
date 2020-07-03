@@ -38,11 +38,13 @@ after_initialize do
     ../lib/landing_pages/engine.rb
     ../lib/landing_pages/menu.rb
     ../lib/landing_pages/page.rb
+    ../lib/landing_pages/page_importer.rb
+    ../lib/landing_pages/page_exporter.rb
     ../lib/landing_page_constraint.rb
     ../config/routes.rb
     ../app/serializers/landing_pages/page.rb
     ../app/controllers/landing_pages/landing.rb
-    ../app/controllers/landing_pages/pages.rb
+    ../app/controllers/landing_pages/page.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
   ].each do |path|

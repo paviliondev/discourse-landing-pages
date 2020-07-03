@@ -5,6 +5,7 @@ import { dasherize } from "@ember/string";
 import discourseComputed from "discourse-common/utils/decorators";
 import { equal } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
+import showModal from "discourse/lib/show-modal";
 
 export default Controller.extend({  
   @discourseComputed('page.path')
@@ -65,6 +66,15 @@ export default Controller.extend({
       });
     },
     
+    exportPage() {
+      this.page.exportPage().catch(error => {
+        this.setProperties({
+          error: extractError(error),
+        });
+        later(() => this.set('error', null), 10000);
+      })
+    },
+    
     changePage(pageId) {
       LandingPage.find(pageId).then(data => {
         if (data) {
@@ -79,6 +89,17 @@ export default Controller.extend({
     
     createPage() {
       this.set('page', LandingPage.create({ creating: true }));
+    },
+    
+    importPages() {
+      const controller = showModal('import-pages');
+      controller.set('afterImport', (result) => {
+        this.setProperties({
+          page:  LandingPage.create(result.page),
+          currentPage: JSON.parse(JSON.stringify(result.page)),
+          pages: result.pages
+        });
+      })
     }
   }
 });

@@ -6,8 +6,16 @@ class LandingPages::Page
   
   attr_reader :id
   
-  def writable_attrs
-    %w(name path theme_id group_ids body).freeze
+  def self.meta_attrs
+    %w(name path theme_id group_ids).freeze
+  end
+  
+  def self.file_attrs
+    %w(body menu).freeze
+  end
+  
+  def self.writable_attrs
+    (meta_attrs + file_attrs).freeze
   end
   
   def initialize(page_id, data={})
@@ -16,7 +24,7 @@ class LandingPages::Page
   end
   
   def set(data)
-    writable_attrs.each do |attr|
+    LandingPages::Page.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
       value = value.dasherize if attr === 'path'
@@ -35,7 +43,7 @@ class LandingPages::Page
     if valid?
       data = {}
       
-      writable_attrs.each do |attr|
+      LandingPages::Page.writable_attrs.each do |attr|
         data[attr] = send(attr)
       end
       
@@ -57,7 +65,7 @@ class LandingPages::Page
     end
           
     if LandingPages::Page.exists?(path, 'path', exclude_id: id) ||
-       LandingPages::Page.application_paths.include?(path)
+        LandingPages::Page.application_paths.include?(path)
       add_error(I18n.t("landing_pages.error.path_exists"))
     end
   end
@@ -99,8 +107,26 @@ class LandingPages::Page
     PluginStoreRow.where(query).exists?
   end
   
-  def self.create(data)
-    page = LandingPages::Page.new(SecureRandom.hex(6), data)
+  def self.create(params)
+    page_id = params["id"] || SecureRandom.hex(16)
+    
+    data = {}
+    writable_attrs.each do |attr|
+      if params[attr].present?
+        if attr == "theme_id"
+          next unless Theme.where(id: params[attr].to_i).exists?
+        end
+        
+        if attr == "group_ids"
+          group_ids = params[attr].map(&:to_i)
+          params[attr] = Group.where(id: group_ids).pluck(:id)
+        end
+        
+        data[attr] = params[attr] if params[attr].present?
+      end
+    end
+        
+    page = LandingPages::Page.new(page_id, data)
     page.save
     page
   end
