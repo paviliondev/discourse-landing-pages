@@ -21,6 +21,9 @@ en:
             label: "Theme"
             instructions: "Theme with page assets"
             select: "Select theme"
+          groups:
+            label: "Groups"
+            instructions: "Limit access to group(s)"
           path:
             label: "Path"
             placeholder: "path"

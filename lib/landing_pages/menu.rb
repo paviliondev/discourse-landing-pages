@@ -18,7 +18,7 @@ class LandingPages::Menu
           {
             label: "Showcase",
             href: "/showcase",
-            description: "Case studies from our customisation and support work"
+            description: "Case studies and observations from our work"
           },
           {
             label: "Education",

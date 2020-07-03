@@ -19,6 +19,7 @@ const LandingPage = EmberObject.extend({
       name: this.name,
       path: this.path,
       theme_id: this.theme_id,
+      group_ids: this.group_ids,
       body: this.body
     }
     
