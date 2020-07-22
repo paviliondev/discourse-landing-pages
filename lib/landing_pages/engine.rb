@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ::LandingPages
   class Engine < ::Rails::Engine
     engine_name 'landing_pages'

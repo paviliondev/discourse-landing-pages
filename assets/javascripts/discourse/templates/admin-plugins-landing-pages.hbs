@@ -1,5 +1,5 @@
 <div class="page-controls">
-  {{combo-box
+  {{page-list
     value=page.id
     content=pages
     onChange=(action 'changePage')
@@ -9,9 +9,20 @@
     )}}
     
   <div class="buttons">
+    {{conditional-loading-spinner condition=importingFromRemote size="small"}}
+    {{d-button
+      action=(action "updateRemote")
+      title="admin.landing_pages.remote.repository.description"
+      icon="cog"}}
+    {{d-button
+      action=(action "importFromRemote")
+      label="admin.landing_pages.remote.import.label"
+      title="admin.landing_pages.remote.import.description"
+      icon="code-branch"}}
     {{d-button
       action=(action "importPages")
       label="admin.landing_pages.import.button"
+      title="admin.landing_pages.import.description"
       icon="upload"}}
     {{d-button
       action=(action "createPage")
@@ -20,42 +31,62 @@
   </div>
 </div>
 
+{{#if hasMessages}}
+  {{#each messages as |message|}}
+    <div class="page-message {{message.type}}">
+      {{{message.text}}}
+    </div>
+  {{/each}}
+{{/if}}
+
 {{#if loading}}
   {{loading-spinner}}
 {{else}}
   {{#if page}}
     <div class="page-header">
       <div class="page-name">
-        {{#if page.name}}
-          {{page.name}}
-        {{else}}
-          {{i18n 'admin.landing_pages.page.name.label'}}
-        {{/if}}
+        <span>
+          {{#if page.name}}
+            {{page.name}}
+          {{else}}
+            {{i18n 'admin.landing_pages.page.name.label'}}
+          {{/if}}
+        </span>
+        
+        <div class="page-meta">
+          {{#if page.remote}}
+            <div class="page-remote" title="{{i18n "admin.landing_pages.page.remote.description"}}">
+              {{d-icon "code-branch"}}
+              <span>{{i18n "admin.landing_pages.page.remote.label"}}</span>
+            </div>
+          {{else}}
+            <div class="page-local" title="{{i18n "admin.landing_pages.page.local.description"}}">
+              {{d-icon "desktop"}}
+              <span>{{i18n "admin.landing_pages.page.local.label"}}</span>
+            </div>
+          {{/if}}
+        </div>
       </div>
       
       <div class="buttons">
-        <a class="btn btn-default export"
-           rel="noopener noreferrer"
-           target="_blank"
-           href={{page.exportUrl}}>
-          {{d-icon "download"}} {{i18n "admin.landing_pages.page.export"}}
-        </a>
-        {{d-button
-          action=(action "destroyPage")
-          label="admin.landing_pages.page.destroy"
-          icon="times"}}
+        {{#unless page.creating}}
+          <a class="btn btn-default export"
+             rel="noopener noreferrer"
+             target="_blank"
+             href={{page.exportUrl}}>
+            {{d-icon "download"}} {{i18n "admin.landing_pages.page.export"}}
+          </a>
+          {{d-button
+            action=(action "destroyPage")
+            label="admin.landing_pages.page.destroy"
+            icon="times"}}
+        {{/unless}}
         {{d-button
           action=(action "savePage")
           label="admin.landing_pages.page.save"
           class="btn-primary"
           icon="save"}}
       </div>
-      
-      {{#if error}}
-        <div class="page-error">
-          {{{error}}}
-        </div>
-      {{/if}}
       
       <div class="page-url">
         <a href="{{pageUrl}}" target="_blank">
@@ -83,6 +114,24 @@
           class="page-path"}}
         <div class="control-instructions">
           {{i18n "admin.landing_pages.page.path.instructions"}}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">
+          {{i18n "admin.landing_pages.page.menu.label"}}
+        </label>
+        {{combo-box
+          content=menus
+          value=page.menu
+          valueProperty="name"
+          nameProperty="name"
+          onChange=(action (mut page.menu))
+          class="theme-select"
+          options=(hash
+            none='admin.landing_pages.page.menu.select'
+          )}}
+        <div class="control-instructions">
+          {{i18n "admin.landing_pages.page.menu.instructions"}}
         </div>
       </div>
     </div>

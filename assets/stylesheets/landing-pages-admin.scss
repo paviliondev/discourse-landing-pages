@@ -20,10 +20,26 @@
     
     .buttons {
       display: flex;
+      align-items: center;
       
       .btn {
         margin-left: 10px;
       }
+    }
+  }
+  
+  .page-message {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    color: $secondary;
+    margin-bottom: 20px;
+    
+    &.info {
+      background-color: $tertiary;
+    }
+    &.error {
+      background-color: $danger;
     }
   }
   
@@ -35,7 +51,27 @@
     margin-bottom: 20px;
     
     .page-name {
-      font-size: 1.7em;
+      display: flex;
+      align-items: center;
+      
+      &> span {
+        font-size: 1.7em;
+        margin-right: 20px;
+      }
+    }
+    
+    .page-meta {
+      display: flex;
+      align-items: center;
+      
+      > div {
+        display: flex;
+        align-items: center;
+        
+        .d-icon {
+          margin-right: 5px;
+        }
+      }
     }
     
     .buttons {
@@ -45,13 +81,6 @@
         margin-left: 10px;
         white-space: nowrap;
       }
-    }
-    
-    .page-error {
-      width: 100%;
-      padding: 10px;
-      background-color: $danger;
-      color: $secondary;
     }
     
     .page-url {
@@ -108,4 +137,8 @@
       bottom: 0;
     }
   }
+}
+
+.update-pages-remote {
+  min-width: 450px;
 }

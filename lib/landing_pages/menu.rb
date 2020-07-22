@@ -1,102 +1,124 @@
+# frozen_string_literal: true
+
 class LandingPages::Menu
-  def self.items
-    [
-      {
-        label: "Services",
-        description: "We provide software development, design, product development, technical support and site administration for online communities.",
-        items: [
-          {
-            label: "Customisations",
-            href: "/customisations",
-            description: "We customise community software to fit your use case"
-          },
-          {
-            label: "Support",
-            href: "/support",
-            description: "We provide technical support to community managers"
-          },
-          {
-            label: "Showcase",
-            href: "/showcase",
-            description: "Case studies and observations from our work"
-          },
-          {
-            label: "Education",
-            href: "/education",
-            description: "Courses on practical technical skills for community managers",
-            coming_soon: true
-          }
-        ]
-      },
-      {
-        label: "Open Source",
-        description: "We maintain open source plugins, themes, scripts and example implementions for these community platforms.",
-        items: [
-          {
-            label: "Discourse",
-            href: "/discourse",
-            description: "Market-leading forum software"
-          },
-          {
-            label: "Wordpress",
-            href: "/wordpress",
-            description: "Widely-used website and blog builder",
-            coming_soon: true
-          },
-          {
-            label: "Auth0",
-            href: "/auth0",
-            description: "Market-leading identity management platform",
-            coming_soon: true
-          },
-          {
-            label: "Shopify",
-            href: "/shopify",
-            description: "Market-leading shop platform",
-            coming_soon: true
-          },
-          {
-            label: "Discord",
-            href: "/discord",
-            description: "Community-focused chat application",
-            coming_soon: true
-          },
-          {
-            label: "Minecraft",
-            href: "/minecraft",
-            description: "Popular customisable game environment",
-            coming_soon: true
-          }
-        ]
-      },
-      {
-        label: "Coöperative",
-        description: "Pavilion exists to provide livelihoods for our workers, support online communities and empower open source.",
-        items:[
-          {
-            label: "Coöperative",
-            href: "/coöperative",
-            description: "More about our coöperative and its goals"
-          },
-          {
-            label: "Workers",
-            href: "/workers",
-            description: "More about our worker members"
-          },
-          {
-            label: "Community",
-            href: "/community",
-            description: "More about our community members",
-            coming_soon: true
-          },
-          {
-            label: "Join",
-            href: "/join",
-            description: "How you can join Pavilion",
-            coming_soon: true
-          },
-        ]
-      }
-    ]
+  include HasErrors
+  include ActiveModel::Serialization
+  
+  KEY ||= "menu"
+  
+  attr_reader :id
+  
+  attr_accessor :name,
+                :items
+  
+  def self.writable_attrs
+    %w(name items).freeze
+  end
+  
+  def initialize(menu_id, data={})
+    @id = menu_id
+    set(data)
+  end
+                
+  def set(data)
+    data = data.with_indifferent_access
+    
+    LandingPages::Menu.writable_attrs.each do |attr|
+      self.class.class_eval { attr_accessor attr }
+      value = data[attr]
+      
+      if value.present?
+        value = value.parameterize.underscore if attr === 'name'
+        value = value if attr === 'items'
+        
+        send("#{attr}=", value)
+      end
+    end
+  end
+  
+  def save
+    validate
+
+    if valid?
+      data = {}
+      
+      LandingPages::Menu.writable_attrs.each do |attr|
+        value = send(attr)
+        data[attr] = value if value.present?
+      end
+      
+      PluginStore.set(LandingPages::PLUGIN_NAME, id, data)
+    else
+      false
+    end
+  end
+  
+  def validate
+    %w(name items).each do |attr|
+      if send(attr).blank?
+        add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
+      end
+    end
+  end
+  
+  def valid?
+    errors.blank?
+  end
+  
+  def self.find(menu_id)
+    if data = PluginStore.get(LandingPages::PLUGIN_NAME, menu_id)
+      new(menu_id, data)
+    else
+      nil
+    end
+  end
+  
+  def self.where(attr, value)
+    PluginStoreRow.where(menu_query(attr, value))
+  end
+  
+  def self.find_by(attr, value)
+    records = where(attr, value)
+    
+    if records.exists?
+      params = records.pluck(:key, :value).flatten
+      new(params[0], JSON.parse(params[1]))
+    else
+      nil
+    end
+  end
+  
+  def self.create(params)
+    params = params.with_indifferent_access
+    menu_id = params[:id] || "#{KEY}_#{SecureRandom.hex(16)}"
+    
+    data = {}
+    writable_attrs.each do |attr|
+      if params[attr].present?
+        data[attr] = params[attr] if params[attr].present?
+      end
+    end
+        
+    menu = new(menu_id, data)
+    menu.save
+    menu
+  end
+  
+  def self.destroy(menu_id)
+    PluginStore.remove(LandingPages::PLUGIN_NAME, menu_id)
+  end
+  
+  def self.all
+    PluginStoreRow.where(menu_list_query).to_a.map do |row|
+      new(row['key'], JSON.parse(row['value']))
+    end
+  end
+  
+  def self.menu_query(attr, value)
+    menu_list_query + " AND value::json->>'#{attr}' = '#{value}'"
+  end
+  
+  def self.menu_list_query
+    "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key LIKE '#{KEY}_%'"
   end
 end

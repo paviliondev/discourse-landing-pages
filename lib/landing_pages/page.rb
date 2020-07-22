@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LandingPages::Page
   include HasErrors
   include ActiveModel::Serialization
@@ -6,8 +8,8 @@ class LandingPages::Page
   
   attr_reader :id
   
-  def self.meta_attrs
-    %w(name path theme_id group_ids).freeze
+  def self.about_attrs
+    %w(name path theme_id group_ids remote).freeze
   end
   
   def self.file_attrs
@@ -15,7 +17,7 @@ class LandingPages::Page
   end
   
   def self.writable_attrs
-    (meta_attrs + file_attrs).freeze
+    (about_attrs + file_attrs).freeze
   end
   
   def initialize(page_id, data={})
@@ -24,14 +26,17 @@ class LandingPages::Page
   end
   
   def set(data)
+    data = data.with_indifferent_access
+    
     LandingPages::Page.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
-      value = value.dasherize if attr === 'path'
-      value = value.to_i if (attr === 'theme_id' && value.present?)
-      value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
       
       if value.present?
+        value = value.dasherize if attr === 'path'
+        value = value.to_i if (attr === 'theme_id' && value.present?)
+        value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
+        
         send("#{attr}=", value)
       end
     end
@@ -44,14 +49,11 @@ class LandingPages::Page
       data = {}
       
       LandingPages::Page.writable_attrs.each do |attr|
-        data[attr] = send(attr)
+        value = send(attr)
+        data[attr] = value if value.present?
       end
       
-      PluginStore.set(
-        LandingPages::PLUGIN_NAME,
-        LandingPages::Page.build_key(id),
-        data
-      )
+      PluginStore.set(LandingPages::PLUGIN_NAME, id, data)
     else
       false
     end
@@ -64,7 +66,7 @@ class LandingPages::Page
       end
     end
           
-    if LandingPages::Page.exists?(path, 'path', exclude_id: id) ||
+    if LandingPages::Page.exists?(path, attr: 'path', exclude_id: id) ||
         LandingPages::Page.application_paths.include?(path)
       add_error(I18n.t("landing_pages.error.path_exists"))
     end
@@ -75,40 +77,42 @@ class LandingPages::Page
   end
     
   def self.find(page_id)
-    if data = PluginStore.get(LandingPages::PLUGIN_NAME, build_key(page_id))
+    if data = PluginStore.get(LandingPages::PLUGIN_NAME, page_id)
       LandingPages::Page.new(page_id, data)
     else
       nil
     end
   end
   
-  def self.find_by_path(path)
-    record = PluginStoreRow.where(page_query('path', path))
+  def self.where(attr, value)
+    PluginStoreRow.where(page_query(attr, value))
+  end
+  
+  def self.find_by(attr, value)
+    records = where(attr, value)
     
-    if record.exists?
-      params = record.pluck(:key, :value).flatten
+    if records.exists?
+      params = records.pluck(:key, :value).flatten
       LandingPages::Page.new(params[0], JSON.parse(params[1]))
     else
       nil
     end
   end
   
-  def self.exists?(value, attr=nil, opts={})
+  def self.exists?(value, attr: nil, exclude_id: nil)
     if attr
       query = page_query(attr, value)
-      
-      if opts[:exclude_id]
-        query += "AND key != '#{build_key(opts[:exclude_id])}'"
-      end
+      query += "AND key != '#{exclude_id}'" if exclude_id
     else
-      query = "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = '#{build_key(value)}'"
+      query = "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = '#{value}'"
     end
     
     PluginStoreRow.where(query).exists?
   end
   
   def self.create(params)
-    page_id = params["id"] || SecureRandom.hex(16)
+    params = params.with_indifferent_access
+    page_id = params[:id] || "#{KEY}_#{SecureRandom.hex(16)}"
     
     data = {}
     writable_attrs.each do |attr|
@@ -132,20 +136,21 @@ class LandingPages::Page
   end
   
   def self.destroy(page_id)
-    PluginStore.remove(LandingPages::PLUGIN_NAME, LandingPages::Page.build_key(page_id))
+    PluginStore.remove(LandingPages::PLUGIN_NAME, page_id)
   end
   
   def self.all
-    PluginStoreRow.where("plugin_name = '#{LandingPages::PLUGIN_NAME}'").to_a
-      .map { |row| new(row['key'].split('_').last, JSON.parse(row['value'])) }
+    PluginStoreRow.where(page_list_query).to_a.map do |row|
+      new(row['key'], JSON.parse(row['value']))
+    end
+  end
+  
+  def self.page_list_query
+    "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key LIKE 'page_%'"
   end
     
   def self.page_query(attr, value)
-    "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND value::json->>'#{attr}' = '#{value}'"
-  end
-  
-  def self.build_key(page_id)
-    "#{KEY}_#{page_id}".freeze
+    page_list_query + " AND value::json->>'#{attr}' = '#{value}'"
   end
   
   def self.application_paths

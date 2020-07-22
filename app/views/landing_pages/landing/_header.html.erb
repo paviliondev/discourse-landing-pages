@@ -11,7 +11,9 @@
         </a>
       </div>
       <% unless mobile_view? %>
-        <%= render partial: "menu" %>
+        <%- if @menu.present? %>
+          <%= render partial: "menu" %>
+        <%- end %>
       <% end %>
     </div>
     <div class="panel">
@@ -31,5 +33,7 @@
 </header>
 
 <% if mobile_view? %>
-  <%= render partial: "menu" %>
+  <%- if @menu.present? %>
+    <%= render partial: "menu" %>
+  <%- end %>
 <% end %>

@@ -3,6 +3,7 @@ import { ajax } from 'discourse/lib/ajax';
 import DiscourseRoute from "discourse/routes/discourse";
 import Group from "discourse/models/group";
 import { set } from "@ember/object";
+import EmberObject from "@ember/object";
 import { all } from "rsvp";
 
 export default DiscourseRoute.extend({
@@ -18,8 +19,11 @@ export default DiscourseRoute.extend({
   },
 
   setupController(controller, model) {
+    console.log(model)
     controller.setProperties({
       pages: model.pages,
+      menus: model.menus,
+      remote: EmberObject.create(model.remote || {}),
       themes: model.themes,
       groups: model.groups
     });

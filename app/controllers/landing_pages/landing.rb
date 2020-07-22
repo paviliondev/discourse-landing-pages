@@ -6,6 +6,7 @@ class LandingPages::LandingController < ::ActionController::Base
   include CurrentUser
   
   before_action :find_page
+  before_action :find_menu
   before_action :load_theme
   before_action :check_access
 
@@ -13,7 +14,6 @@ class LandingPages::LandingController < ::ActionController::Base
     if @page.present?
       @title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
-      @menu_items = LandingPages::Menu.items
             
       render :inline => @page.body, :layout => "landing"
     else
@@ -22,10 +22,8 @@ class LandingPages::LandingController < ::ActionController::Base
   end
   
   def contact    
-    Jobs.enqueue(:send_contact_email,
-      from: contact_params[:email],
-      message: contact_params[:message]
-    )        
+    Jobs.enqueue(:send_contact_email, from: contact_params[:email], message: contact_params[:message])
+            
     respond_to do |format|
       format.html
       format.js { head :ok }
@@ -42,7 +40,13 @@ class LandingPages::LandingController < ::ActionController::Base
   private
   
   def find_page
-    @page = LandingPages::Page.find_by_path(params[:path])
+    @page = LandingPages::Page.find_by("path", params[:path])
+  end
+  
+  def find_menu
+    if @page.menu.present?
+      @menu = LandingPages::Menu.find_by("name", @page.menu)
+    end
   end
   
   def check_access

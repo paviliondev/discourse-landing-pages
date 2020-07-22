@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_dependency 'compression/zip'
-
-class LandingPages::PageExporter
-
+class LandingPages::ZipExporter < ThemeStore::ZipExporter
   def initialize(page)
     @page = page
     @temp_folder = "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
@@ -11,28 +8,37 @@ class LandingPages::PageExporter
     @export_name = "discourse-#{@export_name}" unless @export_name.starts_with?("discourse")
   end
 
-  def package_filename
-    export_package
-  end
-
-  def cleanup!
-    FileUtils.rm_rf(@temp_folder)
-  end
-
   def export_to_folder
     destination_folder = File.join(@temp_folder, @export_name)
     FileUtils.mkdir_p(destination_folder)
     
-    meta = {
-      id: @page.id
-    }
+    about = {}
     
-    LandingPages::Page.meta_attrs.each do |attr|
+    LandingPages::Page.about_attrs.each do |attr|
       value = @page.send(attr)
-      meta[attr] = value if value.present?
+      
+      next unless value.present?
+      
+      if attr === "theme_id"
+        if theme = Theme.find_by(id: value)
+          value = theme.name
+        else
+          value = nil
+        end
+      end
+      
+      if attr === "group_ids"
+        value = value.reduce do |result, group_id|
+          if group = Group.find_by(id: group_id)
+            result.push(group.name)
+          end
+        end
+      end
+      
+      about[attr] = value if value.present?
     end
     
-    File.write(File.join(destination_folder, "meta.json"), JSON.pretty_generate(meta))
+    File.write(File.join(destination_folder, "page.json"), JSON.pretty_generate(about))
     
     LandingPages::Page.file_attrs.each do |attr|
       if (value = @page.try(attr)).present?
@@ -47,12 +53,6 @@ class LandingPages::PageExporter
   end
 
   private
-
-  def export_package
-    export_to_folder
-
-    Compression::Zip.new.compress(@temp_folder, @export_name)
-  end
   
   def filename(attr)
     name = attr

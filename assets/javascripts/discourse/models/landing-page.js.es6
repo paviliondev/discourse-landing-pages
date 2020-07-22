@@ -1,6 +1,7 @@
 import EmberObject from "@ember/object";
 import { ajax } from 'discourse/lib/ajax';
 import { url } from "discourse/lib/computed";
+import { popupAjaxError } from "discourse/lib/ajax-error";
 
 const basePath = '/landing/page'
 
@@ -20,7 +21,8 @@ const LandingPage = EmberObject.extend({
       path: this.path,
       theme_id: this.theme_id,
       group_ids: this.group_ids,
-      body: this.body
+      body: this.body,
+      menu: this.menu
     }
     
     return ajax(path, {
@@ -34,17 +36,17 @@ const LandingPage = EmberObject.extend({
   destroyPage() {
     return ajax(`${basePath}/${this.id}`, {
       type: "DELETE"
-    });
+    }).catch(popupAjaxError);
   }
 });
 
 LandingPage.reopenClass({
   all() {
-    return ajax(basePath);
+    return ajax(basePath).catch(popupAjaxError);
   },
   
   find(pageId) {
-    return ajax(`${basePath}/${pageId}`);
+    return ajax(`${basePath}/${pageId}`).catch(popupAjaxError);
   },
 
   create(props = {}) {

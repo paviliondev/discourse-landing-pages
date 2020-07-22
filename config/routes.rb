@@ -7,6 +7,11 @@ LandingPages::Engine.routes.draw do
       post "import" => "page#import"
     end
   end
+  resource :remote do
+    collection do
+      get "pages" => "remotes#import"
+    end
+  end
   post "contact" => "landing#contact"
 end
 

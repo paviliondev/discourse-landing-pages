@@ -9,9 +9,14 @@ en:
     error:
       attr_required: "%{attr} required"
       path_exists: "Path already exists"
+      invalid_remote_url: "Invalid remote url"
+      import_handler: "Unable to establish import handler"
+      import_failed: "Failed to import"
+      import_page_json: "Page json format is incorrect"
+      import_update_failed: "Failed to update page from import"
+      import_menu_json: "Menu json format is incorrect"
     
-    import_error:
-      path_exists: "A page with path '%{path}' already exists."
+    imported: "%{page} imported"
     
   contact_mailer:
     title: "New Contact"
