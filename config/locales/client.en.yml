@@ -3,21 +3,18 @@ en:
     admin:
       landing_pages:
         title: "Landing Pages"
-        import:
-          title: "Import Page"
-          file_tip: ".zip file containing page"
-          button: "Import"
-          description: "Import page(s) from file"
+        documentation: "Learn more in the documentation"
+        
         page:
           label: "Pages"
           create: "Create"
           select: "Select page"
           save: "Save"
           export: "Export"
-          destroy: "Remove"
+          destroy: "Delete"
           remote: 
-            label: "Imported"
-            description: "This page is imported from a remote repository. Any local changes will be lost on the next import."
+            label: "Repository"
+            description: "This page is pulled from the repository. Changes will be lost on the next pull."
           local:
             label: "Local"
             description: "This page is saved locally."
@@ -42,15 +39,33 @@ en:
             label: "Menu"
             instructions: "Page menu"
             select: "Select menu"
+        
         remote:
           repository:
-            label: "Remote"
-            description: "Update remote repository"
-          import:
-            label: "Import"
-            description: "Import page(s) from remote"
+            label: "Repository"
+            description: "Update repository"
+            checking_status: "Checking status of the repository..."
+            not_fetched: "Please make your first pull from the repository"
+            up_to_date: "Up to date with the repository"
+            out_of_date: "Pull the new commits from the respository"
+            x_commits_behind:
+              one: "{{count}} commit behind"
+              other: "{{count}} commits behind"
+            pulled_x:
+              one: "Pulled {{count}} page from the repository"
+              other: "Pulled {{count}} pages from the repository"
+          pull:
+            label: "Pull"
+            description: "Pull page(s) from remote"
           title: Pages Repository
           url: "Repostiory url"
+          test: "Test Connection"
           private: "Repostiory is private"
           update: "Update"
+          
+        import:
+          title: "Import Pages"
+          file_tip: ".zip file containing page"
+          button: "Import"
+          description: "Import page(s) from file"
             

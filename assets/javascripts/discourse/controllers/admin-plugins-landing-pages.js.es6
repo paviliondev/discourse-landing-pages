@@ -1,82 +1,102 @@
-import { later } from "@ember/runloop";
 import LandingPage from '../models/landing-page';
 import Controller from "@ember/controller";
-import { dasherize } from "@ember/string";
 import discourseComputed from "discourse-common/utils/decorators";
-import { equal, notEmpty } from "@ember/object/computed";
+import { not, or, gt, notEmpty } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
 import showModal from "discourse/lib/show-modal";
 import { ajax } from 'discourse/lib/ajax';
-import { A } from "@ember/array";
 
 export default Controller.extend({
-  messages: A(),
-  hasMessages: notEmpty('messages'),
+  remoteDisconnected: not('remote.connected'),
+  pullDisabled: or('pullingFromRemote', 'remoteDisconnected'),
+  fetchingCommits: false,
+  commitsBehind: null,
+  hasCommitsBehind: gt('commitsBehind', 0),
+  hasMessage: notEmpty('message'),
   
-  @discourseComputed('page.path')
-  pageUrl(pagePath) {
-    const loation = window.location;
-    const port = (location.port ? ':' + location.port : '');
-    let url =  location.protocol + "//" + location.hostname + port;
-    if (pagePath) {
-      url += `/${dasherize(pagePath)}`;
+  @discourseComputed('staticMessage', 'resultMessage', 'page')
+  message(staticMessage, resultMessage, page) {
+    let text = '';
+    let icon = 'info-circle';
+    let status = '';
+       
+    if (resultMessage) {
+      text = resultMessage.text;
+      status = resultMessage.type;
+      setTimeout(() => {
+        this.set("resultMessage", null);
+      }, 7000);
+    } else if (staticMessage) {
+      text = staticMessage;
     }
-    return url;
+    
+    if (text) {
+      if (resultMessage) {
+        if (status == 'error') {
+          icon = 'exclamation-triangle';
+        } else if (status == 'success') {
+          icon = 'check';
+        }
+      } else if (page) {
+        if (page.remote) {
+          icon = 'book';
+        } else {
+          icon = 'desktop';
+        }
+      }
+      
+      return {
+        text,
+        icon,
+        status
+      };
+    } else {
+      return null;
+    }
   },
   
-  displayMessage(type, text) {
-    let obj = { type, text };
-    this.messages.pushObject(obj);
-    later(() => this.messages.removeObject(obj), 10000);
+  @discourseComputed(
+    'pagesNotFetched',
+    'hasCommitsBehind',
+    'fetchingCommits',
+    'page',
+    'remote'
+  )
+  staticMessage(
+    pagesNotFetched,
+    hasCommitsBehind,
+    fetchingCommits,
+    page,
+    remote
+  ) {
+    let key;
+    
+    if (page) {
+      if (page.remote) {
+        key = 'page.remote.description';
+      } else {
+        key = 'page.local.description';
+      }
+    } else if (remote) {
+      if (pagesNotFetched) {
+        key = 'remote.repository.not_fetched';
+      } else if (fetchingCommits) {
+        key = 'remote.repository.checking_status';
+      } else if (hasCommitsBehind) {
+        key = 'remote.repository.out_of_date';
+      } else {
+        key = 'remote.repository.up_to_date';
+      }
+    }
+    
+    if (key) {
+      return I18n.t(`admin.landing_pages.${key}`); 
+    } else {
+      return null;
+    }
   },
   
   actions: {
-    savePage() {
-      this.setProperties({
-        loading: true,
-        message: null
-      });
-      
-      const page = this.get('page');
-      let self = this;
-            
-      page.savePage().then(result => {
-        if (result.page) {
-          this.setProperties({
-            page:  LandingPage.create(result.page),
-            currentPage: JSON.parse(JSON.stringify(result.page)),
-            pages: result.pages
-          });
-        } else {
-          this.set('page', self.currentPage);
-        }
-      }).catch(error => {
-        this.displayMessage("error", extractError(error));
-        this.set("page", self.currentPage);
-      }).finally(() => {
-        this.set('loading', false);
-      });
-    },
-    
-    destroyPage() {
-      this.page.destroyPage().then(result => {
-        if (result.success) {
-          this.setProperties({
-            page: null,
-            pages: result.pages
-          })
-        }
-      }).finally(() => {
-        this.set('loading', false);
-      });
-    },
-    
-    exportPage() {
-      this.page.exportPage().catch(error => {
-        this.displayMessage("error", extractError(error));
-      })
-    },
-    
     changePage(pageId) {
       if (pageId) {
         LandingPage.find(pageId).then(result => {
@@ -113,17 +133,21 @@ export default Controller.extend({
     
     updateRemote() {
       const controller = showModal('update-pages-remote', {
-        model: this.remote
+        model: {
+          remote: this.remote,
+          buffered: JSON.parse(JSON.stringify(this.remote))
+        }
       });
       controller.set('afterUpdate', (result) => {
         this.setProperties({
-          pages: result.pages
+          remote: result.remote,
+          pagesNotFetched: true
         });
       });
     },
     
-    importFromRemote() {
-      this.set("importingFromRemote", true);
+    pullFromRemote() {
+      this.set("pullingFromRemote", true);
       
       ajax("/landing/remote/pages").then(result => {
         this.setProperties({
@@ -133,17 +157,40 @@ export default Controller.extend({
         
         let messages = [];
         if (result.report.errors.length) {
-          this.displayMessage("error", result.report.errors.join(", "));
+          this.set("resultMessage", {
+            type: "error",
+            text: result.report.errors.join(", ")
+          });
         }
         if (result.report.imported.length) {
-          this.displayMessage("info", result.report.imported.join(", "));
+          this.set("resultMessage", {
+            type: "success",
+            text: I18n.t("admin.landing_pages.remote.repository.pulled_x", {
+              count: result.report.imported.length
+            })
+          });
         }
       })
       .catch(error => {
-        this.displayMessage("error", extractError(error));
+        this.set("resultMessage", {
+          type: "error",
+          text: extractError(error)
+        });
       })
       .finally(() => {
-        this.set("importingFromRemote", false)
+        this.set("pullingFromRemote", false)
+      });
+    },
+    
+    commitsBehind() {
+      this.set("fetchingCommits", true);
+      
+      ajax("/landing/remote/commits-behind").then(result => {
+        if (result.commits_behind) {
+          this.set("commitsBehind", result.commits_behind)
+        }
+      }).finally(() => {
+        this.set("fetchingCommits", false);
       });
     }
   }

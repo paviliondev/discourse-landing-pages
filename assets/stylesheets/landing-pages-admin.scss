@@ -14,8 +14,14 @@
     justify-content: space-between;
     margin-bottom: 20px;
     
+    .page-list-container {
+      display: flex;
+      align-items: center;
+    }
+    
     .page-select {
       min-width: 300px;
+      margin-right: 10px;
     }
     
     .buttons {
@@ -29,17 +35,42 @@
   }
   
   .page-message {
+    background-color: $primary-low;
     width: 100%;
-    box-sizing: border-box;
     padding: 10px;
-    color: $secondary;
-    margin-bottom: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
     
-    &.info {
-      background-color: $tertiary;
+    &.success {
+      background-color: $success;
+      color: $secondary;
+      
+      a {
+        color: $secondary;
+      }
     }
+    
     &.error {
       background-color: $danger;
+      color: $secondary;
+      
+      a {
+        color: $secondary;
+      }
+    }
+    
+    .d-icon {
+      margin-right: 4px;
+    }
+    
+    a {
+      color: $primary;
+      text-decoration: underline;
+    }
+    
+    & + div {
+      margin-top: 30px;
     }
   }
   
@@ -110,8 +141,20 @@
         margin-bottom: 5px;
       }
       
+      .page-name {
+        width: 300px;
+      }
+      
       .page-path {
         width: 350px;
+      }
+      
+      .page-title {
+        width: 300px;
+      }
+      
+      .menu-select {
+        width: 150px;
       }
     }
   }
@@ -139,6 +182,46 @@
   }
 }
 
-.update-pages-remote {
-  min-width: 450px;
+.update-pages-remote-modal {
+  .modal-inner-container {
+    min-width: 450px;
+  }
+  
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    
+    .btn {
+      margin-bottom: 0;
+    }
+    
+    > .d-icon {
+      margin-left: 5px;
+    }
+    
+    &.success {
+      .d-icon {
+        color: $success;
+      }
+      
+      a {
+        color: $secondary;
+      }
+    }
+    
+    &.failed {
+      .d-icon {
+        color: $danger;
+      }
+      
+      a {
+        color: $secondary;
+      }
+    }
+    
+    a.d-modal-cancel {
+      margin-left: auto;
+    }
+  }
 }

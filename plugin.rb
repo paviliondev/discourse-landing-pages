@@ -66,4 +66,11 @@ after_initialize do
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
+  
+  TopicQuery.add_custom_filter(:definitions) do |results, query|
+    if query.options[:definitions]
+      results = results.where('COALESCE(categories.topic_id, 0) = topics.id')
+    end
+    results
+  end
 end

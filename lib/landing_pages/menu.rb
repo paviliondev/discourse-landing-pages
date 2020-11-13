@@ -98,7 +98,7 @@ class LandingPages::Menu
         data[attr] = params[attr] if params[attr].present?
       end
     end
-        
+    
     menu = new(menu_id, data)
     menu.save
     menu

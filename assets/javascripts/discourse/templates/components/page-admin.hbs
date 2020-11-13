@@ -1,0 +1,151 @@
+<div class="page-header">
+  <div class="page-name">
+    <span>
+      {{#if page.name}}
+        {{page.name}}
+      {{else}}
+        {{i18n 'admin.landing_pages.page.name.label'}}
+      {{/if}}
+    </span>
+  </div>
+  
+  <div class="buttons">
+    {{conditional-loading-spinner condition=updatingPage size="small"}}
+    
+    {{#unless page.creating}}
+      {{d-button
+        action=(action "exportPage")
+        label="admin.landing_pages.page.export"
+        href=page.exportUrl
+        disabled=updatingPage
+        icon="download"}}
+      
+      {{d-button
+        action=(action "destroyPage")
+        label="admin.landing_pages.page.destroy"
+        disabled=updatingPage
+        icon="times"}}
+    {{/unless}}
+    
+    {{d-button
+      action=(action "savePage")
+      label="admin.landing_pages.page.save"
+      class="btn-primary"
+      disabled=updatingPage
+      icon="save"}}
+  </div>
+  
+  <div class="page-url">
+    <a href="{{pageUrl}}" target="_blank">
+      {{pageUrl}}
+      {{#unless page.path}}
+        <span class="placeholder">
+          /<i>{{i18n 'admin.landing_pages.page.path.placeholder'}}</i>
+        </span>
+      {{/unless}}
+      {{d-icon "external-link-alt"}}
+    </a>
+  </div>
+</div>
+  
+<div class="page-details">
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.name.label"}}
+    </label>
+    
+    {{input
+      value=page.name
+      class="page-name"}}
+    
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.name.instructions"}}
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.path.label"}}
+    </label>
+    
+    {{input
+      value=page.path
+      class="page-path"}}
+    
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.path.instructions"}}
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.menu.label"}}
+    </label>
+    
+    {{combo-box
+      content=menus
+      value=page.menu
+      valueProperty="name"
+      nameProperty="name"
+      onChange=(action (mut page.menu))
+      class="menu-select"
+      options=(hash
+        none='admin.landing_pages.page.menu.select'
+      )}}
+    
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.menu.instructions"}}
+    </div>
+  </div>
+</div>
+
+<div class="page-assets">
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.theme.label"}}
+    </label>
+    
+    {{combo-box
+      content=themes
+      value=page.theme_id
+      onChange=(action (mut page.theme_id))
+      class="theme-select"
+      options=(hash
+        none='admin.landing_pages.page.theme.select'
+      )}}
+    
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.theme.instructions"}}
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.groups.label"}}
+    </label>
+    
+    {{group-chooser
+      content=groups
+      value=page.group_ids
+      labelProperty="name"
+      onChange=(action (mut page.group_ids))}}
+    
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.groups.instructions"}}
+    </div>
+  </div>
+</div>
+
+<div class="page-editor">
+  <label class="control-label">
+    {{i18n "admin.landing_pages.page.body.label"}}
+  </label>
+  
+  <div class="control-instructions">
+    {{i18n "admin.landing_pages.page.body.instructions"}}
+  </div>
+  
+  {{ace-editor
+    content=page.body
+    mode="html_ruby"}}
+</div>

@@ -13,4 +13,29 @@ class LandingPages::GitImporter < ThemeStore::GitImporter
     @private_key = private_key
     @branch = branch
   end
+  
+  def connected
+    return false unless @url
+        
+    begin
+      response = Discourse::Utils.execute_command(
+        { "GIT_SSH_COMMAND" => "ssh -i #{ssh_folder}/id_rsa -o StrictHostKeyChecking=no" },
+        "git", "ls-remote", url, "--exit-code"
+      )
+    rescue RuntimeError => err
+      response = 2
+    end
+    
+    response != 2
+  end
+  
+  private
+  
+  def ssh_folder
+    path = "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_ssh_#{SecureRandom.hex}"
+    FileUtils.mkdir_p path
+    File.write("#{path}/id_rsa", @private_key || '')
+    FileUtils.chmod(0600, "#{path}/id_rsa")
+    path
+  end
 end

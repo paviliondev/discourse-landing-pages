@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LandingPages::RemotesController < LandingPages::AdminController  
+class LandingPages::RemotesController < LandingPages::AdminController
   def update
     remote = LandingPages::Remote.update(remote_params)
     
@@ -29,6 +29,28 @@ class LandingPages::RemotesController < LandingPages::AdminController
       report: importer.report,
       pages: serialzed_pages
     )
+  end
+  
+  def test
+    remote = LandingPages::Remote.new(remote_params)
+    
+    if remote.connected
+      render json: success_json
+    else
+      render json: failed_json
+    end
+  end
+  
+  def commits_behind
+    remote = LandingPages::Remote.get
+    
+    if remote.connected
+      render json: {
+        commits_behind: remote.commits_behind
+      }
+    else
+      render json: failed_json
+    end
   end
   
   private

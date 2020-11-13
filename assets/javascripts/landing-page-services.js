@@ -1,5 +1,7 @@
 (function() {
   var themeSettings = {};
+  var Discourse = {};
+  window.Discourse = Discourse;
 
   Discourse.__container__ = {
     lookup: function(name) {

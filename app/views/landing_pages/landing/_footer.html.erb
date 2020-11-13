@@ -1,0 +1,35 @@
+<footer class="landing-footer">
+  <div class="footer-left">
+    <a href="<%= path local_assigns[:root] || "/" %>">
+      <%- if SiteSetting.logo_small.present? %>
+        <img src="<%= SiteSetting.logo_small %>" alt="<%= SiteSetting.title %>" id="site-logo">
+      <%- else %>
+        <h2 id='site-text-logo'><%= SiteSetting.title %></h2>
+      <%- end %>
+    </a>
+  </div>
+  <div class="footer-right">
+    <%- if @menu.present? %>
+      <ul class="menu">
+        <% @menu.items.each do |item| %>
+          <li class="primary-item">
+            <a href="<%= item[:href] %>" class="primary-item-link">
+              <label><%= item[:label] %></label>
+            </a>
+            <%- if item[:items] %>
+              <ul class="secondary-items">
+                <% item[:items].each do |item| %>
+                  <li class="item <%= 'coming-soon' if item[:coming_soon] %>">
+                    <a href="<%= item[:href] unless item[:coming_soon] %>" class="<%= item[:label].parameterize %>">
+                      <%= item[:label] %>
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
+            <%- end %>
+          </li>
+        <% end %>
+      </ul>
+    <%- end %>
+  </div>
+</footer>

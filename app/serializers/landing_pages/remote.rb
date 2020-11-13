@@ -1,3 +1,3 @@
 class LandingPages::RemoteSerializer < ::ApplicationSerializer
-  attributes :url, :branch, :private, :public_key
+  attributes :url, :branch, :private, :public_key, :connected, :commit
 end

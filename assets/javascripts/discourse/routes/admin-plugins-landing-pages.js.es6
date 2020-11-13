@@ -19,14 +19,21 @@ export default DiscourseRoute.extend({
   },
 
   setupController(controller, model) {
-    console.log(model)
     controller.setProperties({
       pages: model.pages,
       menus: model.menus,
       remote: EmberObject.create(model.remote || {}),
       themes: model.themes,
-      groups: model.groups
+      groups: model.groups,
     });
+    
+    if (model.remote) {
+      if (model.remote.commit) {
+        controller.send('commitsBehind');
+      } else {
+        controller.set('pagesNotFetched', true);
+      }
+    }
   },
   
   _getThemes(model) {

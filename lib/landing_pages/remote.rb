@@ -6,13 +6,17 @@ class LandingPages::Remote
   
   KEY ||= 'remote'
   
-  attr_accessor :url,
-                :public_key,
-                :private_key,
-                :branch
+  ATTRS ||= [
+    :url,
+    :public_key,
+    :private_key,
+    :branch,
+    :commit
+  ]
   
   def initialize(opts)
-    [:url, :public_key, :private_key, :branch].each do |key|
+    ATTRS.each do |key|
+      self.class.class_eval { attr_accessor key }
       instance_variable_set("@#{key}", opts[key]) if opts[key].present?
     end
   end
@@ -23,14 +27,12 @@ class LandingPages::Remote
   
   def save
     validate
-
+    
     if valid?
-      PluginStore.set(LandingPages::PLUGIN_NAME, KEY,
-        url: url,
-        public_key: public_key,
-        private_key: private_key,
-        branch: branch
-      )
+      remote = {}
+      ATTRS.each { |attr| remote[attr] = self.send(attr) }
+      PluginStore.set(LandingPages::PLUGIN_NAME, KEY, remote)
+      reset
     end
   end
   
@@ -40,12 +42,36 @@ class LandingPages::Remote
   
   def validate
     unless valid_url?
-      add_error(I18n.t("landing_pages.error.invalid_remote_url"))
+      add_error(I18n.t("landing_pages.error.remote_invalid_url"))
     end
   end
   
   def valid_url?
     url =~ URI::regexp
+  end
+  
+  def connected
+    return false unless valid_url?
+    
+    LandingPages::GitImporter.new(url,
+      private_key: private_key,
+      branch: branch
+    ).connected
+  end
+  
+  def commits_behind
+    @commits_behind ||= begin
+      importer = LandingPages::Importer.new(:git)
+      importer.import!
+            
+      if importer.report[:errors].blank?
+        importer.handler.commits_since(commit).last.to_i
+      end
+    end
+  end
+  
+  def reset
+    @commits_behind = nil
   end
   
   def self.update(params)

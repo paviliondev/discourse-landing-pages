@@ -1,0 +1,40 @@
+.user-top {
+  display: flex;
+  
+  img {
+    margin-right: 15px;
+    border-radius: 50%;
+  }
+  
+  .user-profile {
+    display: flex;
+  }
+  
+  .user-location {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    
+    .d-icon {
+      height: 1em;
+      width: 1em;
+      margin-right: 5px;
+    }
+  }
+  
+  .user-groups {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    
+    span {
+      font-size: 0.8em;
+      margin-right: 10px;
+    }
+  }
+}
+
+.user-bio {
+  margin-top: 20px;
+  display: block;
+}

@@ -5,6 +5,7 @@ class LandingPages::Importer
               :bundle
   
   attr_accessor :handler,
+                :remote,
                 :report
   
   def initialize(type, bundle: nil)
@@ -25,20 +26,20 @@ class LandingPages::Importer
         bundle.original_filename
       )
     elsif type == :git
-      remote = LandingPages::Remote.get
-      @handler = LandingPages::GitImporter.new(remote.url,
-        private_key: remote.private_key,
-        branch: remote.branch
+      @remote = LandingPages::Remote.get
+      @handler = LandingPages::GitImporter.new(@remote.url,
+        private_key: @remote.private_key,
+        branch: @remote.branch
       )
     end
     
-    if @handler.blank?
+    if @handler.blank? || !@handler.connected
       add_error(I18n.t("landing_pages.error.import_handler"))
     else
       begin
         @handler.import!
       rescue RemoteTheme::ImportError => e
-        add_error(I18n.t("landing_pages.error.import_failed"))    
+        add_error(e.message || I18n.t("landing_pages.error.import_failed"))    
       end
     end
   end
@@ -47,7 +48,7 @@ class LandingPages::Importer
     @handler.all_files
   end
   
-  def update!    
+  def update!
     files.each do |path|
       if path.match? /page.json|menu.json/
         import_path = path.rpartition("/").first
@@ -106,6 +107,12 @@ class LandingPages::Importer
         end
       end
     end
+    
+    if data["menu"].present?
+      if menu = LandingPages::Menu.find_by("name", data["menu"])
+        params[:menu] = menu.name
+      end
+    end
         
     page = LandingPages::Page.find_by("path", params[:path])
         
@@ -160,7 +167,12 @@ class LandingPages::Importer
     report[:errors].push(error)
   end
   
-  def import_complete(page)
-    report[:imported].push(I18n.t("landing_pages.imported", page: page))
+  def import_complete(page_name)
+    report[:imported].push(page_name)
+    
+    if type == :git
+      @remote.commit = @handler.version
+      @remote.save
+    end
   end
 end

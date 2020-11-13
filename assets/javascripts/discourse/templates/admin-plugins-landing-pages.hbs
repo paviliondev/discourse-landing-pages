@@ -1,184 +1,71 @@
 <div class="page-controls">
-  {{page-list
-    value=page.id
-    content=pages
-    onChange=(action 'changePage')
-    class="page-select"
-    options=(hash
-      none='admin.landing_pages.page.select'
-    )}}
+  <div class="page-list-container">
+    {{page-list
+      value=page.id
+      content=pages
+      onChange=(action 'changePage')
+      class="page-select"
+      options=(hash
+        none='admin.landing_pages.page.select'
+      )}}
+    {{d-button
+      action=(action "createPage")
+      label="admin.landing_pages.page.create"
+      class="page-create"
+      icon="plus"}}
+  </div>
     
   <div class="buttons">
-    {{conditional-loading-spinner condition=importingFromRemote size="small"}}
+    {{#if pullingFromRemote}}
+      {{loading-spinner size="small"}}
+    {{else}}
+      {{#if hasCommitsBehind}}
+        {{i18n 'admin.landing_pages.remote.repository.x_commits_behind' count=commitsBehind}}
+      {{/if}}
+    {{/if}}
+
+    {{d-button
+      action=(action "pullFromRemote")
+      label="admin.landing_pages.remote.pull.label"
+      title="admin.landing_pages.remote.pull.description"
+      icon="arrow-down"
+      disabled=pullDisabled}}
+    
     {{d-button
       action=(action "updateRemote")
       title="admin.landing_pages.remote.repository.description"
-      icon="cog"}}
-    {{d-button
-      action=(action "importFromRemote")
-      label="admin.landing_pages.remote.import.label"
-      title="admin.landing_pages.remote.import.description"
-      icon="code-branch"}}
+      label="admin.landing_pages.remote.repository.label"
+      icon="book"}}
+      
     {{d-button
       action=(action "importPages")
       label="admin.landing_pages.import.button"
       title="admin.landing_pages.import.description"
       icon="upload"}}
-    {{d-button
-      action=(action "createPage")
-      label="admin.landing_pages.page.create"
-      icon="plus"}}
   </div>
 </div>
 
-{{#if hasMessages}}
-  {{#each messages as |message|}}
-    <div class="page-message {{message.type}}">
-      {{{message.text}}}
+<div class="page-message {{message.status}}">
+  {{#if hasMessage}}
+    <div class="message-block">
+      {{d-icon message.icon}}
+      <span>{{message.text}}</span>
     </div>
-  {{/each}}
-{{/if}}
+  {{/if}}
+
+  <div class="message-block">
+    {{d-icon 'question-circle'}}
+        
+    <a href={{documentationUrl}} target="_blank">
+      {{i18n 'admin.landing_pages.documentation'}}
+    </a>
+  </div>
+</div>
 
 {{#if loading}}
   {{loading-spinner}}
 {{else}}
   {{#if page}}
-    <div class="page-header">
-      <div class="page-name">
-        <span>
-          {{#if page.name}}
-            {{page.name}}
-          {{else}}
-            {{i18n 'admin.landing_pages.page.name.label'}}
-          {{/if}}
-        </span>
-        
-        <div class="page-meta">
-          {{#if page.remote}}
-            <div class="page-remote" title="{{i18n "admin.landing_pages.page.remote.description"}}">
-              {{d-icon "code-branch"}}
-              <span>{{i18n "admin.landing_pages.page.remote.label"}}</span>
-            </div>
-          {{else}}
-            <div class="page-local" title="{{i18n "admin.landing_pages.page.local.description"}}">
-              {{d-icon "desktop"}}
-              <span>{{i18n "admin.landing_pages.page.local.label"}}</span>
-            </div>
-          {{/if}}
-        </div>
-      </div>
-      
-      <div class="buttons">
-        {{#unless page.creating}}
-          <a class="btn btn-default export"
-             rel="noopener noreferrer"
-             target="_blank"
-             href={{page.exportUrl}}>
-            {{d-icon "download"}} {{i18n "admin.landing_pages.page.export"}}
-          </a>
-          {{d-button
-            action=(action "destroyPage")
-            label="admin.landing_pages.page.destroy"
-            icon="times"}}
-        {{/unless}}
-        {{d-button
-          action=(action "savePage")
-          label="admin.landing_pages.page.save"
-          class="btn-primary"
-          icon="save"}}
-      </div>
-      
-      <div class="page-url">
-        <a href="{{pageUrl}}" target="_blank">
-          {{pageUrl}}{{#unless page.path}}<span class="placeholder">/<i>{{i18n 'admin.landing_pages.page.path.placeholder'}}</i></span>{{/unless}}{{d-icon "external-link-alt"}}
-        </a>
-      </div>
-    </div>
-      
-    <div class="page-details">
-      <div class="control-group">
-        <label class="control-label">
-          {{i18n "admin.landing_pages.page.name.label"}}
-        </label>
-        {{input value=page.name}}
-        <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.name.instructions"}}
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">
-          {{i18n "admin.landing_pages.page.path.label"}}
-        </label>
-        {{input
-          value=page.path
-          class="page-path"}}
-        <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.path.instructions"}}
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label">
-          {{i18n "admin.landing_pages.page.menu.label"}}
-        </label>
-        {{combo-box
-          content=menus
-          value=page.menu
-          valueProperty="name"
-          nameProperty="name"
-          onChange=(action (mut page.menu))
-          class="theme-select"
-          options=(hash
-            none='admin.landing_pages.page.menu.select'
-          )}}
-        <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.menu.instructions"}}
-        </div>
-      </div>
-    </div>
-    
-    <div class="page-assets">
-      <div class="control-group">
-        <label class="control-label">
-          {{i18n "admin.landing_pages.page.theme.label"}}
-        </label>
-        {{combo-box
-          content=themes
-          value=page.theme_id
-          onChange=(action (mut page.theme_id))
-          class="theme-select"
-          options=(hash
-            none='admin.landing_pages.page.theme.select'
-          )}}
-        <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.theme.instructions"}}
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label class="control-label">
-          {{i18n "admin.landing_pages.page.groups.label"}}
-        </label>
-        {{group-chooser
-          content=groups
-          value=page.group_ids
-          labelProperty="name"
-          onChange=(action (mut page.group_ids))}}
-        <div class="control-instructions">
-          {{i18n "admin.landing_pages.page.groups.instructions"}}
-        </div>
-      </div>
-    </div>
-    
-    <div class="page-editor">
-      <label class="control-label">
-        {{i18n "admin.landing_pages.page.body.label"}}
-      </label>
-      <div class="control-instructions">
-        {{i18n "admin.landing_pages.page.body.instructions"}}
-      </div>
-      {{ace-editor
-        content=page.body
-        mode="html_ruby"}}
-    </div>
+    {{page-admin page=page themes=themes groups=groups menus=menus}}
   {{/if}}
 {{/if}}

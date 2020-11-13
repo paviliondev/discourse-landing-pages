@@ -9,14 +9,13 @@ en:
     error:
       attr_required: "%{attr} required"
       path_exists: "Path already exists"
-      invalid_remote_url: "Invalid remote url"
+      remote_invalid_url: "Invalid remote url"
+      remote_connection_error: "Unable to connect to repository"
       import_handler: "Unable to establish import handler"
       import_failed: "Failed to import"
       import_page_json: "Page json format is incorrect"
       import_update_failed: "Failed to update page from import"
       import_menu_json: "Menu json format is incorrect"
-    
-    imported: "%{page} imported"
     
   contact_mailer:
     title: "New Contact"

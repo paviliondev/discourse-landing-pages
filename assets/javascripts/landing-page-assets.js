@@ -2,5 +2,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require discourse-loader
-//= require discourse-objects
 //= require_directory ./vendor

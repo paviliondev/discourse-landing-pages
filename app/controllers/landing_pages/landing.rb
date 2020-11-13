@@ -3,6 +3,7 @@ class LandingPages::InvalidAccess < StandardError; end
 class LandingPages::LandingController < ::ActionController::Base
   prepend_view_path(Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views'))
   helper ::ApplicationHelper
+  helper ::EmojiHelper
   include CurrentUser
   
   before_action :find_page

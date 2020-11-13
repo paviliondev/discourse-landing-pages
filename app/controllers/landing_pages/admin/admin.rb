@@ -30,6 +30,10 @@ class LandingPages::AdminController < ::Admin::AdminController
     )
   end
   
+  def serialized_remote
+    LandingPages::RemoteSerializer.new(LandingPages::Remote.get, root: false)
+  end
+  
   def render_page(page, include_pages: false)
     if page.valid?
       json = {

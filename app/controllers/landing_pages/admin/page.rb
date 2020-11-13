@@ -2,6 +2,8 @@
 
 class LandingPages::PageController < LandingPages::AdminController
   skip_before_action :check_xhr, only: [:export]
+  
+  before_action :refresh_remote, only: [:index]
   before_action :check_page_exists, only: [:show, :update, :destroy, :export]
   before_action :find_page, only: [:show, :update, :export]
   
@@ -9,7 +11,7 @@ class LandingPages::PageController < LandingPages::AdminController
     render_json_dump(
       pages: serialzed_pages,
       menus: serialize_menus,
-      remote: LandingPages::RemoteSerializer.new(LandingPages::Remote.get, root: false)
+      remote: serialized_remote
     )
   end
 
@@ -47,7 +49,7 @@ class LandingPages::PageController < LandingPages::AdminController
     exporter.cleanup!
   end
   
-  def import
+  def upload
     importer = LandingPages::Importer.new(:zip, bundle: params[:page])
     importer.perform!
     
@@ -70,5 +72,11 @@ class LandingPages::PageController < LandingPages::AdminController
         :menu,
         group_ids: []
       ).to_h
+  end
+  
+  def refresh_remote
+    if remote = LandingPages::Remote.get
+      remote.reset
+    end
   end
 end

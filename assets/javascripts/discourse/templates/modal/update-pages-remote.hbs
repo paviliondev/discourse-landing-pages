@@ -1,29 +1,49 @@
 {{#d-modal-body class="update-pages-remote" title="admin.landing_pages.remote.title"}}
   <div class="repo">
     <div class="label">{{i18n "admin.landing_pages.remote.url"}}</div>
-    {{input value=model.url placeholder=urlPlaceholder}}
+    {{input value=model.remote.url placeholder=urlPlaceholder}}
   </div>
 
   <div class="branch">
     <div class="label">{{i18n "admin.customize.theme.remote_branch"}}</div>
-    {{input value=model.branch placeholder="master"}}
+    {{input value=model.remote.branch placeholder="master"}}
   </div>
 
   <div class="check-private">
     <label>
-      {{input type="checkbox" checked=model.private}}
+      {{input type="checkbox" checked=model.remote.private}}
       {{i18n "admin.landing_pages.remote.private"}}
     </label>
   </div>
+  
   {{#if showPublicKey}}
     <div class="public-key">
       <div class="label">{{i18n "admin.customize.theme.public_key"}}</div>
-      {{textarea readonly=true value=model.public_key}}
+      {{textarea readonly=true value=model.remote.public_key}}
     </div>
   {{/if}}
 {{/d-modal-body}}
 
-<div class="modal-footer">
-  {{d-button action=(action "update") disabled=updateDisabled class="btn btn-primary" label="admin.landing_pages.remote.update"}}
+<div class="modal-footer {{testStatus}}">
+  {{d-button
+    action=(action "update")
+    disabled=updateDisabled
+    class="btn btn-primary"
+    label="admin.landing_pages.remote.update"}}
+  
+  {{d-button
+    action="test"
+    class="btn btn-test"
+    disabled=testDisabled
+    label="admin.landing_pages.remote.test"}}
+    
+  {{#if testing}}
+    {{loading-spinner size="small"}}
+  {{else}}
+    {{#if tested}}
+      {{d-icon testIcon}}
+    {{/if}}
+  {{/if}}
+  
   {{d-modal-cancel close=(route-action "closeModal")}}
 </div>

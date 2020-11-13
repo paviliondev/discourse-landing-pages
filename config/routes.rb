@@ -4,12 +4,14 @@ LandingPages::Engine.routes.draw do
       get "export" => "page#export"
     end
     collection do
-      post "import" => "page#import"
+      post "upload" => "page#upload"
     end
   end
   resource :remote do
     collection do
       get "pages" => "remotes#import"
+      post "test" => "remotes#test"
+      get "commits-behind" => "remotes#commits_behind"
     end
   end
   post "contact" => "landing#contact"
