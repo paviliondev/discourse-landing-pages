@@ -15,7 +15,7 @@
           <%- if item[:description] %>
             <li class="primary-description">
               <%- if item[:href] %>
-                <a href="<% item[:href] %>">
+                <a href="<%= item[:href] %>">
                   <span>
                     <%= item[:description] %>
                     <label class="more">Learn more <%= SvgSprite.raw_svg('angle-right') %></label>
