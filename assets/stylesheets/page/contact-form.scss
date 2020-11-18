@@ -5,6 +5,8 @@
   flex-direction: column;
   width: 30px;
   font-size: 1.1rem;
+  min-height: 350px;
+  margin-top: 10px;
   
   input,
   textarea {
@@ -17,17 +19,27 @@
     min-height: 150px;
   }
   
+  input,
+  textarea,
+  button {
+    animation: fade-in 1s;
+    display: block;
+  }
+  
   .btn-primary {
-
     .submitted-label {
       display: none;
     }
-    
-    &.submitting {
+  }
+  
+  &.submitting {
+    .btn-primary {
       background-color: $loading;
     }
-    
-    &.submitted {
+  }
+  
+  &.submitted {
+    .btn-primary {
       background-color: $success;
       
       label {
@@ -39,5 +51,29 @@
         }
       }
     }
-  }  
+  }
+  
+  .success-message {
+    display: none;
+    animation: fade-out 1s;
+  }
+  
+  &.submitted.has-success-message {
+    input,
+    button,
+    textarea {
+      animation: fade-out 1s;
+      display: none;
+    }
+    
+    .success-message {
+      text-align: center;
+      padding: 10px;
+      display: block;
+      background-color: $success;
+      color: $secondary;
+      animation: fade-in 1s;
+      display: block;
+    }
+  }
 }

@@ -165,6 +165,18 @@
     .theme-select {
       min-width: 300px;
     }
+    
+    .select-kit.multi-select {
+      width: 350px;
+      
+      .choices .choice {
+        height: 24px;
+        
+        input {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
   
   .page-editor .ace-wrapper {

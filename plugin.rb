@@ -73,4 +73,10 @@ after_initialize do
     end
     results
   end
+  
+  on(:before_email_send) do |message, email_type|
+    if message.subject == I18n.t("contact_mailer.title")
+      message.header[:return_path].value = message.header[:reply_to].value
+    end
+  end
 end

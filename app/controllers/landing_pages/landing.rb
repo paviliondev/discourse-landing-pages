@@ -6,10 +6,10 @@ class LandingPages::LandingController < ::ActionController::Base
   helper ::EmojiHelper
   include CurrentUser
   
-  before_action :find_page
-  before_action :find_menu
-  before_action :load_theme
-  before_action :check_access
+  before_action :find_page, only: [:show]
+  before_action :check_access, only: [:show]
+  before_action :find_menu, only: [:show]
+  before_action :load_theme, only: [:show]
 
   def show    
     if @page.present?
@@ -22,8 +22,11 @@ class LandingPages::LandingController < ::ActionController::Base
     end
   end
   
-  def contact    
-    Jobs.enqueue(:send_contact_email, from: contact_params[:email], message: contact_params[:message])
+  def contact
+    Jobs.enqueue(:send_contact_email,
+      from: contact_params[:email],
+      message: contact_params[:message]
+    )
             
     respond_to do |format|
       format.html
@@ -66,6 +69,8 @@ class LandingPages::LandingController < ::ActionController::Base
   end
   
   def contact_params
-    params.permit(:name, :email, :message)
+    params.require(:email)
+    params.require(:message)
+    params.permit(:email, :message)
   end
 end

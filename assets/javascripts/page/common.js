@@ -1,18 +1,25 @@
-var $form = $("#contact-form");
+var $contactForm = $("#contact-form");
 
-if ($form.length) {
-  var $submit = $form.find('.btn-primary');
-
-  $form.on("ajax:send", function() {
-    $submit.addClass('submitting');
-    $submit.attr("disabled", true);
+if ($contactForm.length) {
+  var $contactSubmit = $contactForm.find('.btn-primary');
+  
+  $contactForm.find('input, textarea').on("keydown", function(e) {
+    if (e.keyCode == 13 && e.shiftKey) {
+      $contactForm.submit();
+    }
   });
 
-  $form.on("ajax:success", function() {
-    $submit.removeClass('submitting');
-    $submit.addClass('submitted');
-    $submit.attr("disabled", false);
-    setTimeout(function() { $submit.removeClass('submitted'); }, 7000);
+  $contactForm.on("ajax:send", function() {
+    $contactForm.addClass('submitting');
+    $contactSubmit.attr("disabled", true);
+  });
+
+  $contactForm.on("ajax:success", function() {
+    $contactForm.removeClass('submitting');
+    $contactForm.addClass('submitted');
+    $contactForm.find('input, textarea').val('');
+    $contactSubmit.attr("disabled", false);
+    setTimeout(function() { $contactForm.removeClass('submitted'); }, 10000);
   });
 }
 

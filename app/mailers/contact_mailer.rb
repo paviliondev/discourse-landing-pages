@@ -7,7 +7,8 @@ class ContactMailer < ::ActionMailer::Base
       template: 'contact_mailer',
       locale: 'en',
       from: from,
-      message: message
+      message: message,
+      use_from_address_for_reply_to: true
     )
   end
 end
