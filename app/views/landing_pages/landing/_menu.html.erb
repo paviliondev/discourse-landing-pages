@@ -14,7 +14,16 @@
         <ul class="menu-dropdown <%= 'has-description' if item[:description] %>">
           <%- if item[:description] %>
             <li class="primary-description">
-              <span><%= item[:description] %></span>
+              <%- if item[:href] %>
+                <a href="<% item[:href] %>">
+                  <span>
+                    <%= item[:description] %>
+                    <label class="more">Learn more <%= SvgSprite.raw_svg('angle-right') %></label>
+                  </span>
+                </a>
+              <%- else %>
+                <span><%= item[:description] %></span>
+              <%- end %>
             </li>
           <%- end %>
           <% item[:items].each do |item| %>
