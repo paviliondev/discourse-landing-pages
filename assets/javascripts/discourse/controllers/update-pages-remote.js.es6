@@ -71,9 +71,10 @@ export default Controller.extend({
   
   @observes("model.remote.private")
   privateWasChecked() {
-    const remote = this.model.remote;
+    const model = this.model;
+    if (!model || !model.remote) return;
     
-    if (!remote) return;
+    const remote = model.remote;
     
     remote.private
       ? this.set("urlPlaceholder", "git@github.com:paviliondev/pages.git")

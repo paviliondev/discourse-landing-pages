@@ -70,14 +70,14 @@ export default Controller.extend({
     remote
   ) {
     let key;
-    
+        
     if (page) {
       if (page.remote) {
         key = 'page.remote.description';
       } else {
         key = 'page.local.description';
       }
-    } else if (remote) {
+    } else if (remote && remote.connected) {
       if (pagesNotFetched) {
         key = 'remote.repository.not_fetched';
       } else if (fetchingCommits) {

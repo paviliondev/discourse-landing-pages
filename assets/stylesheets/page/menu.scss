@@ -10,6 +10,7 @@
   
   ul {
     list-style: none;
+    padding: 0;
   }
   
   > a:hover {
@@ -71,7 +72,7 @@
   box-sizing: border-box;
   display: flex;
   left: 0;
-  padding: 4rem 6.25rem 3rem;
+  padding: 4rem 6.25rem 4rem;
   position: absolute;
   transition: visibility 0s linear 0s;
   visibility: hidden;
@@ -99,7 +100,6 @@
   li {
     backface-visibility: hidden;
     opacity: 0;
-    padding: 0 3rem 3rem 0;
     position: relative;
     transform: translateY(-5%);
     transition: all .1s ease-in .05s;
@@ -143,53 +143,60 @@
       position: relative;
       padding-bottom: 3rem;
       
-      span {
+      span:not(.more) {
         max-width: 700px;
         display: inline-block;
         line-height: 1.7em;
       }
     }
+  }
+}
+
+.menu-item-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  width: 100%;
+  
+  .item {
+    position: relative;
     
-    .item {
+    &.coming-soon a {
+      cursor: default;
+      pointer-events: none;
+    }
+    
+    &.coming-soon .content {
+      color: rgba($primary, 0.5);
+    }
+    
+    &.coming-soon .image {
       position: relative;
       
-      &.coming-soon a {
-        cursor: default;
-        pointer-events: none;
+      &:after {
+        content: " ";
+        z-index: 10;
+        display: block;
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.5);
       }
-      
-      &.coming-soon .content {
-        color: rgba($primary, 0.5);
-      }
-      
-      &.coming-soon .image {
-        position: relative;
-        
-        &:after {
-          content: " ";
-          z-index: 10;
-          display: block;
-          position: absolute;
-          height: 100%;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: rgba(255, 255, 255, 0.5);
-        }
-      }
-      
-      .label {
-        margin: 10px 0;
-        white-space: nowrap;
-        display: inline-block;
-      }
-      
-      .coming-soon {
-        display: inline-block;
-        margin-left: 10px;
-        font-size: 0.8em;
-        font-style: italic;
-      }
+    }
+    
+    .label {
+      margin: 10px 0;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    
+    .coming-soon {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 0.8em;
+      font-style: italic;
     }
   }
 }
