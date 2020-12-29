@@ -3,7 +3,6 @@ footer {
   max-width: 100%;
   background: $tertiary;
   color: $secondary;
-  margin-top: 100px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -11,15 +10,18 @@ footer {
 
 .footer-left {
   padding: 60px;
+  width: 40%;
   
   img {
-    width: 100px;
-    height: 100px;
+    width: auto;
+    height: 50px;
+    margin-bottom: 30px;
   }
 }
 
 .footer-right {
   padding: 60px;
+  width: 60%;
   border-left: 2px solid $secondary;
   
   .menu {

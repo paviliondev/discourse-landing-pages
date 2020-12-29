@@ -13,7 +13,7 @@ class LandingPages::Page
   end
   
   def self.file_attrs
-    %w(body menu).freeze
+    %w(body menu assets).freeze
   end
   
   def self.writable_attrs

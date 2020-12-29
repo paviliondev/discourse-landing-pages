@@ -1,11 +1,16 @@
-<%= form_tag(landing_pages.contact_path, remote: true, id: 'contact-form', class: local_assigns[:success_message].present? ? 'has-success-message' : '') do %>
-  <%= text_field_tag(:email, nil, placeholder: t('landing_pages.contact.email')) %>
-  <%= text_area_tag(:message, nil, placeholder: t('landing_pages.contact.message')) %>
+<%= form_tag(landing_pages.contact_path, remote: true, id: 'contact-form') do %>
+  
+  <%= text_field_tag(:email, nil, placeholder: local_assigns[:email_placeholder] || t('landing_pages.contact.email')) %>
+  <%= text_area_tag(:message, nil, placeholder: local_assigns[:message_placeholder] || t('landing_pages.contact.message')) %>
+  
   <%= button_tag(type: "submit", class: "btn btn-primary") do %>
-    <label class="submit-label"><%= t('landing_pages.contact.submit') %></label>
-    <label class="submitted-label"><%= t('landing_pages.contact.submitted') %></label>
+    <label class="submit-label">
+      <%= local_assigns[:submit_text] || t('landing_pages.contact.submit') %>
+    </label>
   <% end %>
-  <% if local_assigns[:success_message].present? %>
-    <div class="success-message"><%= local_assigns[:success_message] %></div>
-  <% end %>
+  
+  <div class="success-message">
+    <%= local_assigns[:submitted_text] || t('landing_pages.contact.submitted') %>
+  </div>
+
 <% end %>

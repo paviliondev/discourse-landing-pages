@@ -1,12 +1,17 @@
 <footer class="landing-footer">
   <div class="footer-left">
     <a href="<%= path local_assigns[:root] || "/" %>">
-      <%- if SiteSetting.logo_small.present? %>
-        <img src="<%= SiteSetting.logo_small %>" alt="<%= SiteSetting.title %>" id="site-logo">
+      <%- if SiteSetting.logo.present? %>
+        <img src="<%= SiteSetting.logo %>" alt="<%= SiteSetting.title %>" id="site-logo">
       <%- else %>
         <h2 id='site-text-logo'><%= SiteSetting.title %></h2>
       <%- end %>
     </a>
+    <%- if local_assigns[:left_text].present? %>
+      <div class="text">
+        <%= local_assigns[:left_text].html_safe %>
+      </div>
+    <%- end %>
   </div>
   <div class="footer-right">
     <%- if @menu.present? %>

@@ -49,107 +49,19 @@ class LandingPages::Importer
   end
   
   def update!
+    updater = LandingPages::Updater.new(type, handler)
+    
     files.each do |path|
-      if path.match? /page.json|menu.json/
-        import_path = path.rpartition("/").first
-        updated = update("#{import_path}/")
+      if path.match? /page.json|menu.json|assets.json|pages.json/
+        updater.update(path.rpartition("/").first)
         
-        if updated.blank?
-          add_error(I18n.t("landing_pages.error.import_update_failed"))
-        elsif updated.errors.any?
-          add_error(updated_page.errors.full_messages.join(", "), name: updated.name)
+        if updater.errors.any?
+          add_error(updater.errors.full_messages.join(", "))
         else
-          import_complete(updated.name)
+          import_complete(updater.updated)
         end
       end
     end
-  end
-  
-  def update(path="")    
-    if @handler[path + "page.json"]
-      update_page(path)
-    elsif @handler[path + "menu.json"]
-      update_menu(path)
-    else
-      nil
-    end
-  end
-  
-  def update_page(path)
-    begin
-      data = JSON.parse(@handler[path + "page.json"])
-    rescue TypeError, JSON::ParserError
-      add_error(I18n.t("landing_pages.error.import_page_json"))
-    end
-    
-    return if report[:errors].any?
-    
-    params = {
-      name: data["name"],
-      path: data["path"],
-      body: @handler[path + "body.html.erb"]
-    }
-    
-    params[:remote] = @handler.url if type == :git
-    
-    if data["theme"].present?
-      if theme = Theme.find_by(name: data["theme"])
-        params[:theme_id] = theme.id
-      end
-    end
-    
-    if data["groups"].present?
-      params[:group_ids] = []
-      
-      data["groups"].each do |group_name|
-        if group = Group.find_by(name: group_name)
-          params[:group_ids].push(group.id)
-        end
-      end
-    end
-    
-    if data["menu"].present?
-      if menu = LandingPages::Menu.find_by("name", data["menu"])
-        params[:menu] = menu.name
-      end
-    end
-        
-    page = LandingPages::Page.find_by("path", params[:path])
-        
-    if page.blank?
-      page = LandingPages::Page.create(params)
-    else
-      page.set(params)
-      page.save
-    end
-    
-    page
-  end
-  
-  def update_menu(path)    
-    begin
-      data = JSON.parse(@handler[path + "menu.json"])
-    rescue TypeError, JSON::ParserError
-      add_error(I18n.t("landing_pages.error.import_menu_json"))
-    end
-    
-    return if report[:errors].any?
-    
-    params = {
-      name: data["name"],
-      items: data["items"]
-    }
-        
-    menu = LandingPages::Menu.find_by("name", params[:name])
-        
-    if menu.blank?
-      menu = LandingPages::Menu.create(params)
-    else
-      menu.set(params)
-      menu.save
-    end
-    
-    menu
   end
   
   def cleanup!
@@ -167,8 +79,8 @@ class LandingPages::Importer
     report[:errors].push(error)
   end
   
-  def import_complete(page_name)
-    report[:imported].push(page_name)
+  def import_complete(imported)
+    report[:imported].push(*imported)
     
     if type == :git
       @remote.commit = @handler.version

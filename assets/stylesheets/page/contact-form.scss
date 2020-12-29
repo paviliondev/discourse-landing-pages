@@ -26,31 +26,8 @@
     display: block;
   }
   
-  .btn-primary {
-    .submitted-label {
-      display: none;
-    }
-  }
-  
-  &.submitting {
-    .btn-primary {
-      background-color: $loading;
-    }
-  }
-  
-  &.submitted {
-    .btn-primary {
-      background-color: $success;
-      
-      label {
-        &.submitted-label {
-          display: block;
-        }
-        &.submit-label {
-          display: none;
-        }
-      }
-    }
+  &.submitting .btn-primary {
+    background-color: $loading;
   }
   
   .success-message {
@@ -58,7 +35,7 @@
     animation: fade-out 1s;
   }
   
-  &.submitted.has-success-message {
+  &.submitted {
     input,
     button,
     textarea {

@@ -28,9 +28,21 @@
   <%- end %>
     
   <%= preload_script "landing-page-loader" %>
+  
+  <% if @scripts.present? %>
+    <% @scripts.each do |script| %>
+      <script src="<%= script %>"></script>
+    <% end %>
+  <% end %>
 </head>
 <body class="landing-page <%= @classes %>">
+  <% if @header %>
+    <%= render partial: "header", locals: @header %>
+  <% end %>
   <%= yield %>
+  <% if @footer %>
+    <%= render partial: "footer", locals: @footer %>
+  <% end %>
   <%- if theme_ids.present? %>
     <%= theme_lookup("body_tag") %>
   <%- end %>

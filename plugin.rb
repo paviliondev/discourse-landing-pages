@@ -45,14 +45,18 @@ after_initialize do
   %w[
     ../lib/landing_pages/engine.rb
     ../lib/landing_pages/menu.rb
+    ../lib/landing_pages/asset.rb
     ../lib/landing_pages/page.rb
+    ../lib/landing_pages/pages.rb
     ../lib/landing_pages/remote.rb
+    ../lib/landing_pages/updater.rb
     ../lib/landing_pages/import_export/git_importer.rb
     ../lib/landing_pages/import_export/zip_exporter.rb
     ../lib/landing_pages/import_export/zip_importer.rb
     ../lib/landing_pages/importer.rb
     ../lib/landing_page_constraint.rb
     ../config/routes.rb
+    ../app/controllers/landing_pages/concerns/landing_helper.rb
     ../app/serializers/landing_pages/page.rb
     ../app/serializers/landing_pages/menu.rb
     ../app/serializers/landing_pages/remote.rb
@@ -62,7 +66,8 @@ after_initialize do
     ../app/controllers/landing_pages/admin/remote.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
-    ../extensions/application_helper.rb
+    ../extensions/upload_validator.rb
+    ../extensions/upload_creator.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
@@ -79,4 +84,8 @@ after_initialize do
       message.header[:return_path].value = message.header[:reply_to].value
     end
   end
+  
+  ::Upload.attr_accessor :for_landing_page
+  ::UploadValidator.prepend UploadValidatorLandingPagesExtension
+  ::UploadCreator.prepend UploadCreatorLandingPagesExtension
 end

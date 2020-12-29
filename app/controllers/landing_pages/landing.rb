@@ -2,19 +2,28 @@ class LandingPages::InvalidAccess < StandardError; end
 
 class LandingPages::LandingController < ::ActionController::Base
   prepend_view_path(Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views'))
-  helper ::ApplicationHelper
   helper ::EmojiHelper
+  helper ::ApplicationHelper
+  helper LandingHelper
   include CurrentUser
   
+  before_action :find_pages_data, only: [:show]
   before_action :find_page, only: [:show]
   before_action :check_access, only: [:show]
   before_action :find_menu, only: [:show]
+  before_action :find_assets, only: [:show]
   before_action :load_theme, only: [:show]
 
   def show    
     if @page.present?
       @title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
+      
+      if @pages
+        @scripts = @pages.scripts if @pages.scripts.present?
+        @header = @pages.header if @pages.header.present?
+        @footer = @pages.footer if @pages.footer.present?
+      end
             
       render :inline => @page.body, :layout => "landing"
     else
@@ -43,6 +52,10 @@ class LandingPages::LandingController < ::ActionController::Base
   
   private
   
+  def find_pages_data
+    @pages = LandingPages::Pages.find
+  end
+  
   def find_page
     @page = LandingPages::Page.find_by("path", params[:path])
   end
@@ -50,6 +63,16 @@ class LandingPages::LandingController < ::ActionController::Base
   def find_menu
     if @page.menu.present?
       @menu = LandingPages::Menu.find_by("name", @page.menu)
+    end
+  end
+  
+  def find_assets
+    if @page.assets.present?
+      @page.assets.each do |asset_name|
+        if asset = LandingPages::Asset.find_by("name", asset_name)
+          instance_variable_set("@#{asset.name}", asset)
+        end
+      end
     end
   end
   

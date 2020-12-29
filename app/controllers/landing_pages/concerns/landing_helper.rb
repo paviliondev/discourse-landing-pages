@@ -1,4 +1,4 @@
-module ::ApplicationHelper
+module LandingHelper
   def user_profile(user: user, username: username, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
     return nil if user.blank? && username.blank?
     

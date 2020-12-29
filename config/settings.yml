@@ -1,3 +1,7 @@
 plugins:
   landing_contact_email:
     default: 'contact@thepavilion.io'
+  landing_authorized_extensions:
+    default: "jpg|jpeg|png|woff|woff2|svg|eot|ttf|otf|gif|js|json"
+    type: list
+    list_type: compact
