@@ -55,7 +55,7 @@ module LandingHelper
     end
   end
   
-  def user_list(group_name: nil, order: order)
+  def user_list(group_name: nil, order: "DESC")
     if group_name
       group = Group.find_by(name: group_name)
       
