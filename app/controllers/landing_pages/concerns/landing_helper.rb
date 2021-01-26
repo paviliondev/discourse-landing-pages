@@ -1,6 +1,6 @@
 module LandingHelper
-  def user_profile(user: user, username: username, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
-    return nil if user.blank? && username.blank?
+  def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
+    return nil if user.blank?
     
     user = User.find_by(username: username) if user.blank?
     
