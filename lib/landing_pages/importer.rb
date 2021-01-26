@@ -45,21 +45,23 @@ class LandingPages::Importer
   end
   
   def files
-    @handler.all_files
+    @handler.all_files.reduce([]) do |result, path|
+      if path.match? /page.json|menu.json|assets.json|pages.json/
+        result.push(path.rpartition("/").first)
+      end
+      result
+    end
   end
   
   def update!
     updater = LandingPages::Updater.new(type, handler)
-    
     files.each do |path|
-      if path.match? /page.json|menu.json|assets.json|pages.json/
-        updater.update(path.rpartition("/").first)
+      updater.update(path)
         
-        if updater.errors.any?
-          add_error(updater.errors.full_messages.join(", "))
-        else
-          import_complete(updater.updated)
-        end
+      if updater.errors.any?
+        add_error(updater.errors.full_messages.join(", "))
+      else
+        import_complete(updater.updated)
       end
     end
   end
@@ -69,7 +71,7 @@ class LandingPages::Importer
   end
   
   def report
-    @report ||= { imported: [], errors: [] }
+    @report ||= { imported: nil, errors: [] }
   end
   
   def add_error(message, page: nil)
@@ -79,8 +81,8 @@ class LandingPages::Importer
     report[:errors].push(error)
   end
   
-  def import_complete(imported)
-    report[:imported].push(*imported)
+  def import_complete(updated)
+    report[:imported] = updated
     
     if type == :git
       @remote.commit = @handler.version

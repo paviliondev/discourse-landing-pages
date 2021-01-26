@@ -6,50 +6,43 @@ import { extractError } from "discourse/lib/ajax-error";
 import showModal from "discourse/lib/show-modal";
 import { ajax } from 'discourse/lib/ajax';
 
+const statusIcons = {
+  error: 'exclamation-triangle',
+  success: 'check'
+}
+
 export default Controller.extend({
   remoteDisconnected: not('remote.connected'),
   pullDisabled: or('pullingFromRemote', 'remoteDisconnected'),
   fetchingCommits: false,
   commitsBehind: null,
   hasCommitsBehind: gt('commitsBehind', 0),
-  hasMessage: notEmpty('message'),
+  hasMessages: notEmpty('messages.items'),
   
-  @discourseComputed('staticMessage', 'resultMessage', 'page')
-  message(staticMessage, resultMessage, page) {
-    let text = '';
-    let icon = 'info-circle';
-    let status = '';
-       
-    if (resultMessage) {
-      text = resultMessage.text;
-      status = resultMessage.type;
+  @discourseComputed('staticMessage', 'resultMessages')
+  messages(staticMessage, resultMessages) {
+    if (resultMessages) {
       setTimeout(() => {
-        this.set("resultMessage", null);
-      }, 7000);
-    } else if (staticMessage) {
-      text = staticMessage;
-    }
-    
-    if (text) {
-      if (resultMessage) {
-        if (status == 'error') {
-          icon = 'exclamation-triangle';
-        } else if (status == 'success') {
-          icon = 'check';
-        }
-      } else if (page) {
-        if (page.remote) {
-          icon = 'book';
-        } else {
-          icon = 'desktop';
-        }
-      }
+        this.set("resultMessages", null);
+      }, 15000);
       
       return {
-        text,
-        icon,
-        status
-      };
+        status: resultMessages.type,
+        items: resultMessages.messages.map(message => {
+          return {
+            icon: statusIcons[resultMessages.type],
+            text: message
+          }
+        })
+      }
+    } else if (staticMessage) {
+      return {
+        status: 'static',
+        items: [{
+          icon: staticMessage.icon,
+          text: staticMessage.text
+        }]
+      }
     } else {
       return null;
     }
@@ -70,12 +63,15 @@ export default Controller.extend({
     remote
   ) {
     let key;
+    let icon = 'info-circle';
         
     if (page) {
       if (page.remote) {
         key = 'page.remote.description';
+        icon = 'book';
       } else {
         key = 'page.local.description';
+        icon = 'desktop';
       }
     } else if (remote && remote.connected) {
       if (pagesNotFetched) {
@@ -90,7 +86,10 @@ export default Controller.extend({
     }
     
     if (key) {
-      return I18n.t(`admin.landing_pages.${key}`); 
+      return {
+        icon,
+        text: I18n.t(`admin.landing_pages.${key}`)
+      }; 
     } else {
       return null;
     }
@@ -150,31 +149,51 @@ export default Controller.extend({
       this.set("pullingFromRemote", true);
       
       ajax("/landing/remote/pages").then(result => {
+        const pages = result.pages;
+        const menus = result.menus;
+        const report = result.report;
+        
         this.setProperties({
-          pages: result.pages,
+          pages,
+          menus,
           page: null
         });
-        
-        let messages = [];
-        if (result.report.errors.length) {
-          this.set("resultMessage", {
+                        
+        if (report.errors.length) {
+          this.set("resultMessages", {
             type: "error",
-            text: result.report.errors.join(", ")
+            messages: result.report.errors
           });
-        }
-        if (result.report.imported.length) {
-          this.set("resultMessage", {
+        } else {
+          let imported = report.imported;
+          let messages = [];
+          
+          ['scripts', 'menus', 'assets', 'pages'].forEach(listType => {
+            if (imported[listType].length) {
+              messages.push(
+                I18n.t(`admin.landing_pages.imported.x_${listType}`, {
+                  count: imported[listType].length
+                })
+              );
+            }
+          });
+          
+          ['footer', 'header'].forEach(boolType => {
+            messages.push(
+              I18n.t(`admin.landing_pages.imported.${boolType}`)
+            );
+          });
+                    
+          this.set("resultMessages", {
             type: "success",
-            text: I18n.t("admin.landing_pages.remote.repository.pulled_x", {
-              count: result.report.imported.length
-            })
+            messages
           });
         }
       })
       .catch(error => {
-        this.set("resultMessage", {
+        this.set("resultMessages", {
           type: "error",
-          text: extractError(error)
+          messages: [ extractError(error) ]
         });
       })
       .finally(() => {

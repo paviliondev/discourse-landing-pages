@@ -77,7 +77,7 @@
   transition: visibility 0s linear 0s;
   visibility: hidden;
   width: 100%;
-  top: 5.8rem;
+  top: 9em;
   z-index: 200;
   background-color: $secondary;
   
@@ -134,7 +134,7 @@
     }
     
     &.has-description {
-      padding-top: 3rem;
+      padding-top: 0;
     }
     
     .primary-description {
@@ -220,10 +220,10 @@
     }
   }
   
-  .menu {
+  .mobile-header .menu {
     position: fixed;
     overflow: scroll;
-    top: 70px;
+    top: 6em;
     bottom: 0;
     right: 0;
     left: 0;
@@ -232,21 +232,22 @@
     background-color: white;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .menu-dropdown {
-    display: none;
+    
+    .menu-dropdown {
+      display: none;
+    }
   }
   
   body.menu-visible {
     overflow: hidden;
   
-    .menu {
+    .mobile-header .menu {
       visibility: visible;
       overflow: scroll;
+      padding: 2em;
       
       li.primary-item {
-        margin: 0;
+        margin: 0 0 1em 0;
         width: 100%;
         
         a {
@@ -255,6 +256,11 @@
         
         &:last-of-type {
           padding-bottom: 60px;
+        }
+        
+        .primary-description .more {
+          display: flex;
+          margin: 7px 0;
         }
       }
       
@@ -282,17 +288,32 @@
         top: initial;
         padding: 0;
         
-        li.item {
-          width: 100%;
-          backface-visibility: visible;
-          opacity: 1;
-          padding: 0;
-          margin-bottom: 30px;
+        .menu-item-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: unset;
+          margin: 15px 0;
           
-          a .image {
-            float: left;
-            margin-right: 0.8rem;
-            background-position: initial;
+          li.item {
+            width: 100%;
+            backface-visibility: visible;
+            opacity: 1;
+            padding: 0;
+            margin: 1.5em 0;
+            
+            a .image {
+              float: left;
+              margin-right: 0.8rem;
+              background-position: initial;
+            }
+            
+            .content {
+              display: flex;
+              
+              .label {
+                margin-top: 0;
+              }
+            }
           }
         }
       }

@@ -1,10 +1,13 @@
 $('.primary-item').hover(
   function(){
+    $('.primary-item').removeClass('hover');
     $(this).addClass('hover');
     $('body').addClass('menu-visible');
-  },
+  }
+)
+$('.landing-header').mouseleave(
   function(){
-    $(this).removeClass('hover');
+    $('.primary-item').removeClass('hover');
     $('body').removeClass('menu-visible');
   }
 )

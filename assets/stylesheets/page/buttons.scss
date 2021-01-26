@@ -6,6 +6,8 @@
   margin-bottom: 0;
   font-size: 1em;
   cursor: pointer;
+  color: $primary;
+  background-color: $secondary;
   
   label {
     cursor: pointer;
@@ -15,9 +17,4 @@
 .btn-primary {
   background-color: $tertiary;
   color: $secondary;
-}
-
-.btn-cta {
-  font-size: 1.2em;
-  display: inline-block;
 }

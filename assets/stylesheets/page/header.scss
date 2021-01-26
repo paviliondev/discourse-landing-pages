@@ -26,11 +26,7 @@ header.landing-header {
     
     a {
       white-space: nowrap;
-      line-height: 30px;
-      
-      &:hover {
-        color: $tertiary;
-      }
+      margin-left: 1em;
     }
   }
   

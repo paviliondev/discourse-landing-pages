@@ -47,7 +47,7 @@ after_initialize do
     ../lib/landing_pages/menu.rb
     ../lib/landing_pages/asset.rb
     ../lib/landing_pages/page.rb
-    ../lib/landing_pages/pages.rb
+    ../lib/landing_pages/global.rb
     ../lib/landing_pages/remote.rb
     ../lib/landing_pages/updater.rb
     ../lib/landing_pages/import_export/git_importer.rb
@@ -66,6 +66,7 @@ after_initialize do
     ../app/controllers/landing_pages/admin/remote.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
+    ../extensions/content_security_policy.rb
     ../extensions/upload_validator.rb
     ../extensions/upload_creator.rb
   ].each do |path|
@@ -85,6 +86,7 @@ after_initialize do
     end
   end
   
+  ::ContentSecurityPolicy::Extension.singleton_class.prepend ContentSecurityPolicyLandingPagesExtension
   ::Upload.attr_accessor :for_landing_page
   ::UploadValidator.prepend UploadValidatorLandingPagesExtension
   ::UploadCreator.prepend UploadCreatorLandingPagesExtension

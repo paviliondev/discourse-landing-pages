@@ -1,5 +1,6 @@
 en:
   landing_pages:
+    go_to_forum: "Go to forum"
     contact:
       email: "Your email"
       message: "How can we help?"
@@ -13,7 +14,7 @@ en:
       remote_connection_error: "Unable to connect to repository"
       import_handler: "Unable to establish import handler"
       import_failed: "Failed to import"
-      import_json: "%{path} format is incorrect"
+      import_json: "%{path} json is invalid: %{error}"
       import_update_failed: "Failed to update page from import"
     
   contact_mailer:

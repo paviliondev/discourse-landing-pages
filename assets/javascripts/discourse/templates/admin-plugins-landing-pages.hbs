@@ -45,11 +45,15 @@
   </div>
 </div>
 
-<div class="page-message {{message.status}}">
-  {{#if hasMessage}}
-    <div class="message-block">
-      {{d-icon message.icon}}
-      <span>{{message.text}}</span>
+<div class="page-message {{messages.status}}">
+  {{#if hasMessages}}
+    <div class="messages">
+      {{#each messages.items as |item|}}
+        <div class="message-block">
+          {{d-icon item.icon}}
+          <span>{{item.text}}</span>
+        </div>
+      {{/each}}
     </div>
   {{/if}}
 

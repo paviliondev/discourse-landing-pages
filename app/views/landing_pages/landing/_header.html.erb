@@ -23,17 +23,14 @@
             <%= SvgSprite.raw_svg('bars') %>
           </a>
         <% else %>
-          <%- unless current_user %>
-            <span class='header-buttons'>
-              <%- if can_sign_up? %>
-                <a href="<%= path "/signup"%>" class='btn btn-primary btn-small sign-up-button'>
-                  <%= I18n.t('sign_up') %>
-                </a>
-              <%- end %>
-              <a href="<%= path "/login"%>" class='btn btn-primary btn-small login-button btn-icon-text'>
-                <%= SvgSprite.raw_svg('fa-user') %><%= I18n.t('log_in') %>
-              </a>
-            </span>
+          <%- if current_user %>
+            <a href="<%= path "/"%>" class='btn btn-primary forum-button'>
+              <%= I18n.t('landing_pages.go_to_forum') %>
+            </a>
+          <% else %>
+            <a href="<%= path "/login"%>" class='btn btn-primary login-button'>
+              <%= I18n.t('log_in') %>
+            </a>
           <%- end %>
         <% end %>
       </span>
@@ -43,6 +40,8 @@
 
 <% if mobile_view? %>
   <%- if @menu.present? %>
-    <%= render partial: "menu" %>
+    <div class="mobile-header">
+      <%= render partial: "menu" %>
+    </div>
   <%- end %>
 <% end %>

@@ -28,14 +28,13 @@
   <%- end %>
     
   <%= preload_script "landing-page-loader" %>
-  
-  <% if @scripts.present? %>
+</head>
+<body class="landing-page <%= @classes %>">
+  <% if @scripts %>
     <% @scripts.each do |script| %>
       <script src="<%= script %>"></script>
     <% end %>
   <% end %>
-</head>
-<body class="landing-page <%= @classes %>">
   <% if @header %>
     <%= render partial: "header", locals: @header %>
   <% end %>

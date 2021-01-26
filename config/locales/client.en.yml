@@ -51,9 +51,6 @@ en:
             x_commits_behind:
               one: "{{count}} commit behind"
               other: "{{count}} commits behind"
-            pulled_x:
-              one: "Pulled {{count}} page from the repository"
-              other: "Pulled {{count}} pages from the repository"
           pull:
             label: "Pull"
             description: "Pull page(s) from remote"
@@ -68,4 +65,20 @@ en:
           file_tip: ".zip file containing page"
           button: "Import"
           description: "Import page(s) from file"
+        
+        imported:
+          footer: Imported footer
+          header: Imported header
+          x_scripts:
+            one: "Imported {{count}} script"
+            other: "Imported {{count}} scripts"
+          x_menus:
+            one: "Imported {{count}} menu"
+            other: "Imported {{count}} menus"
+          x_assets:
+            one: "Imported {{count}} asset"
+            other: "Imported {{count}} assets"
+          x_pages:
+            one: "Imported {{count}} page"
+            other: "Imported {{count}} pages"
             

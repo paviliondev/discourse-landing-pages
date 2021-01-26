@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class LandingPages::Pages
+class LandingPages::Global
   include HasErrors
   
-  KEY ||= "pages"
+  KEY ||= "global"
     
   def self.writable_attrs
     %w(scripts footer header).freeze
@@ -16,7 +16,7 @@ class LandingPages::Pages
   def set(data)
     data = data.with_indifferent_access
     
-    LandingPages::Pages.writable_attrs.each do |attr|
+    self.class.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
       
@@ -32,7 +32,7 @@ class LandingPages::Pages
     if valid?
       data = {}
       
-      LandingPages::Page.writable_attrs.each do |attr|
+      self.class.writable_attrs.each do |attr|
         value = send(attr)
         data[attr] = value if value.present?
       end
@@ -53,7 +53,7 @@ class LandingPages::Pages
     
   def self.find
     if data = PluginStore.get(LandingPages::PLUGIN_NAME, KEY)
-      LandingPages::Page.new(data)
+      LandingPages::Global.new(data)
     else
       nil
     end
@@ -61,5 +61,10 @@ class LandingPages::Pages
   
   def self.destroy
     PluginStore.remove(LandingPages::PLUGIN_NAME, KEY)
+  end
+  
+  def self.scripts
+    global = self.find
+    global ? global.scripts : []
   end
 end

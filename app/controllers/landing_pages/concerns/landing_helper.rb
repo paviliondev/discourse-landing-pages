@@ -1,5 +1,5 @@
 module LandingHelper
-  def user_profile(user: user, username: username, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
+  def user_profile(user: user, username: username, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
     return nil if user.blank? && username.blank?
     
     user = User.find_by(username: username) if user.blank?
@@ -35,11 +35,15 @@ module LandingHelper
         end
       end
       
+      avatar = include_avatar ?
+        "<img width='#{(avatar_size/2).to_s}' height='#{(avatar_size/2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>" :
+        ""
+      
       <<~HTML.html_safe
         <div class="user-profile">
           <div class="user-top">
             <a href="/u/#{user.username}" class="user-profile">
-              <img width="#{(avatar_size/2).to_s}" height="#{(avatar_size/2).to_s}" src="#{user.avatar_template.gsub('{size}', avatar_size.to_s)}" class="avatar">
+              #{avatar}
               <div class="user-profile-details"><div class="user-name">#{user.readable_name}</div>#{group_html}#{location_html}</div>
             </a>
             <div class="top-extra">#{top_extra.present? ? top_extra : ''}</div>

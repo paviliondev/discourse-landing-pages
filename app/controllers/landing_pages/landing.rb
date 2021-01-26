@@ -7,7 +7,7 @@ class LandingPages::LandingController < ::ActionController::Base
   helper LandingHelper
   include CurrentUser
   
-  before_action :find_pages_data, only: [:show]
+  before_action :find_global, only: [:show]
   before_action :find_page, only: [:show]
   before_action :check_access, only: [:show]
   before_action :find_menu, only: [:show]
@@ -19,10 +19,10 @@ class LandingPages::LandingController < ::ActionController::Base
       @title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
       
-      if @pages
-        @scripts = @pages.scripts if @pages.scripts.present?
-        @header = @pages.header if @pages.header.present?
-        @footer = @pages.footer if @pages.footer.present?
+      if @global
+        @scripts = @global.scripts if @global.scripts.present?
+        @header = @global.header if @global.header.present?
+        @footer = @global.footer if @global.footer.present?
       end
             
       render :inline => @page.body, :layout => "landing"
@@ -52,8 +52,8 @@ class LandingPages::LandingController < ::ActionController::Base
   
   private
   
-  def find_pages_data
-    @pages = LandingPages::Pages.find
+  def find_global
+    @global = LandingPages::Global.find
   end
   
   def find_page

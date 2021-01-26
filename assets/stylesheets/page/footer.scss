@@ -5,23 +5,23 @@ footer {
   color: $secondary;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .footer-left {
   padding: 60px;
-  width: 40%;
+  max-width: 35%;
   
   img {
     width: auto;
-    height: 50px;
+    height: 40px;
     margin-bottom: 30px;
   }
 }
 
 .footer-right {
   padding: 60px;
-  width: 60%;
+  max-width: 35%;
   border-left: 2px solid $secondary;
   
   .menu {

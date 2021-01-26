@@ -7,22 +7,29 @@ class LandingPages::Updater
   def initialize(type, handler)
     @type = type
     @handler = handler
-    @updated = []
+    @updated = {
+      scripts: [],
+      footer: false,
+      header: false,
+      menus: [],
+      assets: [],
+      pages: []
+    }
   end
   
   def update(path="")
-    pages_data = read_file(path + "/pages.json")
+    global_data = read_file(path + "/pages.json")
     asset_data = read_file(path + "/assets.json")
     page_data = read_file(path + "/page.json")
     
     return if errors.any?
-    
-    if pages_data.present?
-      update_pages(
-        scripts: pages_data['scripts'],
-        header: pages_data['header'],
-        footer: pages_data['footer'],
-        menus: pages_data['menus']
+        
+    if global_data.present?
+      update_global(
+        scripts: global_data['scripts'],
+        header: global_data['header'],
+        footer: global_data['footer'],
+        menus: global_data['menus']
       )
     end
     
@@ -76,7 +83,7 @@ class LandingPages::Updater
     if page.errors.any?
       add_errors_from(page)
     else
-      @updated.push(page.name)
+      @updated[:pages].push(page.name)
     end
   end
   
@@ -98,14 +105,25 @@ class LandingPages::Updater
       if asset.errors.any?
         add_errors_from(asset)
       else
-        @updated.push(asset.name)
+        @updated[:assets].push(asset.name)
       end
     end
   end
   
-  def update_pages(params)
-    pages = LandingPages::Pages.new(params.slice(:scripts, :header, :footer))
-    pages.save
+  def update_global(params)
+    updated_scripts = []
+    updated_menus = []
+    updated_footer = false
+    updated_header = false
+    
+    global_params = params.slice(:scripts, :header, :footer)
+    global = LandingPages::Global.new(global_params)
+    
+    if global.save
+      updated_scripts = global_params[:scripts]
+      updated_footer = global_params[:header].present?
+      updated_header = global_params[:footer].present?
+    end
     
     if params[:menus].present?
       params[:menus].each do |menu_data|
@@ -123,21 +141,29 @@ class LandingPages::Updater
         end
         
         if menu.errors.any?
-          add_errors_from(menu)
+          add_errors_from(menu)          
         else
-          @updated.push(menu.name)
+          updated_menus.push(menu.name)
         end
       end
-    end  
+    end 
+    
+    unless errors.any?
+      @updated[:scripts] = updated_scripts if updated_scripts.length
+      @updated[:menus] = updated_menus if updated_menus.length
+      @updated[:header] = updated_header
+      @updated[:footer] = updated_footer
+    end
   end
   
   def read_file(path)
     file = @handler[path]
     return unless file.present?
+    
     begin
       JSON.parse(file)
     rescue TypeError, JSON::ParserError => error
-      add_error(I18n.t("landing_pages.error.import_json", path: path))
+      add_error(I18n.t("landing_pages.error.import_json", path: path, error: error))
     end
   end
 end
