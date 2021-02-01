@@ -19,7 +19,7 @@
   
   <%= preload_script "landing-page-assets" %>
   <%= preload_script "landing-page-services" %>
-  <%= stylesheet_link_tag "page/page" %>
+  <%= discourse_stylesheet_link_tag "discourse-landing-pages" %>
 
   <%- if theme_ids.present? %>
     <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme) %>

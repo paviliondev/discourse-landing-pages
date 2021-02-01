@@ -1,10 +1,7 @@
-@import 'variables';
-
 .menu {
   display: inline-flex;
   align-items: center;
   margin: 0;
-  padding: 0;
   list-style: none;
   z-index: 200;
   
@@ -19,7 +16,7 @@
 }
 
 .primary-item {
-  margin: 0 3.125rem 0 0;
+  padding: 1.25em;
   
   a {
     font-size: 16px;
@@ -74,7 +71,6 @@
   left: 0;
   padding: 4rem 6.25rem 4rem;
   position: absolute;
-  transition: visibility 0s linear 0s;
   visibility: hidden;
   width: 100%;
   top: 9em;
@@ -84,25 +80,22 @@
   &:before {
     backface-visibility: hidden;
     background-color: white;
-    border-bottom: .0625rem solid #dbd9d2;
+    border-bottom: 1px solid $primary-medium;
     content: "";
-    height: calc(100% - 2rem);
-    left: 0;
-    opacity: 0;
     position: absolute;
-    top: 2rem;
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    transition: all .1s linear .05s;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
     width: 100%;
+    height: 100%;
   }
   
   li {
     backface-visibility: hidden;
     opacity: 0;
     position: relative;
-    transform: translateY(-5%);
-    transition: all .1s ease-in .05s;
     
     &:last-of-type {
       padding-right: 0;
@@ -110,7 +103,7 @@
   }
 }
 
-.primary-item.hover {
+.primary-item:hover {
   .primary-item-link {
     span.up {
       display: flex;
@@ -125,12 +118,10 @@
     
     &:before {
       opacity: 1;
-      transform: scaleY(1);
     }
     
     li {
       opacity: 1;
-      transform: translateY(0);
     }
     
     &.has-description {

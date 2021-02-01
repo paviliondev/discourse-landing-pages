@@ -92,13 +92,11 @@ class LandingPages::Asset
         end
                 
         if upload_file.present?
-          unless FileUtils.identical?(file, upload_file)
-            upload.for_landing_page = true
-            Discourse.store.remove_upload(upload)
-            upload.url = Discourse.store.store_upload(upload_file, upload)
-            upload.filesize = file.size
-            upload.save!
-          end
+          upload.for_landing_page = true
+          Discourse.store.remove_upload(upload)
+          upload.url = Discourse.store.store_upload(file, upload)
+          upload.filesize = file.size
+          upload.save!
         else
           upload.destroy
           upload = nil

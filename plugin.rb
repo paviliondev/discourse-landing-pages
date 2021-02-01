@@ -7,6 +7,7 @@
 # url: https://github.com/paviliondev/discourse-landing-pages
 
 register_asset "stylesheets/landing-pages-admin.scss"
+register_asset "stylesheets/page/page.scss"
 
 if respond_to?(:register_svg_icon)
   register_svg_icon "save" 

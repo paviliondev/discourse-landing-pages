@@ -1,5 +1,3 @@
-@import 'variables';
-
 #contact-form {
   display: flex;
   flex-direction: column;
@@ -27,7 +25,7 @@
   }
   
   &.submitting .btn-primary {
-    background-color: $loading;
+    background-color: rgba($tertiary, 0.5);
   }
   
   .success-message {
