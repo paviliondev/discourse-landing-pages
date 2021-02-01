@@ -31,6 +31,7 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
+    stylesheets/page/variables.scss
     stylesheets/page/buttons.scss
     stylesheets/page/header.scss
     stylesheets/page/footer.scss
