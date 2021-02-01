@@ -31,13 +31,16 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
-    vendor/waypoints.min.js
-    stylesheets/page/variables.scss
     stylesheets/page/buttons.scss
     stylesheets/page/header.scss
+    stylesheets/page/footer.scss
     stylesheets/page/contact-form.scss
     stylesheets/page/list.scss
+    stylesheets/page/menu.scss
     stylesheets/page/post.scss
+    stylesheets/page/search.scss
+    stylesheets/page/user.scss
+    stylesheets/page/utils.scss
     stylesheets/page/page.scss
   }
 end
