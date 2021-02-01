@@ -18,11 +18,8 @@ class LandingPages::Global
     
     self.class.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
-      value = data[attr]
-      
-      if value.present?        
-        send("#{attr}=", value)
-      end
+      value = data[attr]       
+      send("#{attr}=", value)
     end
   end
   
@@ -34,7 +31,7 @@ class LandingPages::Global
       
       self.class.writable_attrs.each do |attr|
         value = send(attr)
-        data[attr] = value if value.present?
+        data[attr] = value
       end
       
       PluginStore.set(LandingPages::PLUGIN_NAME, KEY, data)

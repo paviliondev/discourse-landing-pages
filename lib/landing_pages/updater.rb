@@ -149,8 +149,8 @@ class LandingPages::Updater
     end 
     
     unless errors.any?
-      @updated[:scripts] = updated_scripts if updated_scripts.length
-      @updated[:menus] = updated_menus if updated_menus.length
+      @updated[:scripts] = updated_scripts
+      @updated[:menus] = updated_menus
       @updated[:header] = updated_header
       @updated[:footer] = updated_footer
     end
