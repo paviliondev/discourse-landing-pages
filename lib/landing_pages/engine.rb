@@ -7,4 +7,11 @@ module ::LandingPages
   end
   
   PLUGIN_NAME ||= "landing_pages"
+  PATHS_KEY ||= "paths"
+  
+  def self.paths
+    LandingPages::Cache.wrap(PATHS_KEY) do
+      LandingPages::Page.all.map(&:path)
+    end
+  end
 end

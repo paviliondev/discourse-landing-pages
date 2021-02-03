@@ -22,7 +22,7 @@
   <%= discourse_stylesheet_link_tag "discourse-landing-pages" %>
 
   <%- if theme_ids.present? %>
-    <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme) %>
+    <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>
     <%= theme_js_lookup %>
     <%= theme_lookup("head_tag") %>
   <%- end %>

@@ -59,6 +59,7 @@ after_initialize do
     ../lib/landing_pages/import_export/zip_exporter.rb
     ../lib/landing_pages/import_export/zip_importer.rb
     ../lib/landing_pages/importer.rb
+    ../lib/landing_pages/cache.rb
     ../lib/landing_page_constraint.rb
     ../config/routes.rb
     ../app/controllers/landing_pages/concerns/landing_helper.rb
@@ -90,6 +91,9 @@ after_initialize do
       message.header[:return_path].value = message.header[:reply_to].value
     end
   end
+  
+  add_to_class(:site, :landing_paths) { ::LandingPages.paths }
+  add_to_serializer(:site, :landing_paths) { object.landing_paths }
   
   ::ContentSecurityPolicy::Extension.singleton_class.prepend ContentSecurityPolicyLandingPagesExtension
   ::Upload.attr_accessor :for_landing_page
