@@ -10,12 +10,12 @@
 @import 'post';
 @import 'search';
 
-body {
+body.landing-page {
   margin: 0;
   padding: 0;
   color: $primary;
 }
 
-body.forbidden {
+body.landing-page.forbidden {
   padding: 5em;
 }

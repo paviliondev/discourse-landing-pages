@@ -1,56 +1,58 @@
 @import 'variables';
 
-#contact-form {
-  display: flex;
-  flex-direction: column;
-  width: 30px;
-  font-size: 1.1rem;
-  min-height: 350px;
-  margin-top: 10px;
-  
-  input,
-  textarea {
-    margin-bottom: 10px;
-    border: 1px solid rgba($primary, 0.3);
-    padding: 10px;
-  }
-  
-  textarea {
-    min-height: 150px;
-  }
-  
-  input,
-  textarea,
-  button {
-    animation: fade-in 1s;
-    display: block;
-  }
-  
-  &.submitting .btn-primary {
-    background-color: rgba($tertiary, 0.5);
-  }
-  
-  .success-message {
-    display: none;
-    animation: fade-out 1s;
-  }
-  
-  &.submitted {
+body.landing-page {
+  #contact-form {
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    font-size: 1.1rem;
+    min-height: 350px;
+    margin-top: 10px;
+    
     input,
-    button,
     textarea {
-      animation: fade-out 1s;
-      display: none;
+      margin-bottom: 10px;
+      border: 1px solid rgba($primary, 0.3);
+      padding: 10px;
+    }
+    
+    textarea {
+      min-height: 150px;
+    }
+    
+    input,
+    textarea,
+    button {
+      animation: fade-in 1s;
+      display: block;
+    }
+    
+    &.submitting .btn-primary {
+      background-color: rgba($tertiary, 0.5);
     }
     
     .success-message {
-      text-align: center;
-      padding: 10px;
-      display: block;
-      background-color: $success;
-      color: $secondary;
-      animation: fade-in 1s;
-      display: block;
+      display: none;
+      animation: fade-out 1s;
+    }
+    
+    &.submitted {
+      input,
+      button,
+      textarea {
+        animation: fade-out 1s;
+        display: none;
+      }
+      
+      .success-message {
+        text-align: center;
+        padding: 10px;
+        display: block;
+        background-color: $success;
+        color: $secondary;
+        animation: fade-in 1s;
+        display: block;
+      }
     }
   }
 }

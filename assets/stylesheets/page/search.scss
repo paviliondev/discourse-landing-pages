@@ -1,7 +1,9 @@
 @import 'variables';
 
-#discourse-search {
-  input {
-    padding: 6px 12px;
+body.landing-page {
+  #discourse-search {
+    input {
+      padding: 6px 12px;
+    }
   }
 }

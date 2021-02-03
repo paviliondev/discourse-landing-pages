@@ -1,5 +1,7 @@
 @import 'variables';
 
-.lightbox .meta {
-  display: none;
+body.landing-page {
+  .lightbox .meta {
+    display: none;
+  }
 }
