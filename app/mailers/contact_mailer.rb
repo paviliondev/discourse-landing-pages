@@ -2,8 +2,9 @@ class ContactMailer < ::ActionMailer::Base
   include Email::BuildEmailHelper
 
   def contact_email(from, message)
+    contact_email = SiteSetting.landing_contact_email || SiteSetting.contact_email
     build_email(
-      SiteSetting.landing_contact_email,
+      contact_email,
       template: 'contact_mailer',
       locale: 'en',
       from: from,

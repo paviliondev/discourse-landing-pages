@@ -1,4 +1,4 @@
-<%= form_tag(landing_pages.contact_path, remote: true, id: 'contact-form') do %>
+<%= form_tag(landing_pages.contact_path, remote: true, class: 'contact-form') do %>
   
   <%= text_field_tag(:email, nil, placeholder: local_assigns[:email_placeholder] || t('landing_pages.contact.email')) %>
   <%= text_area_tag(:message, nil, placeholder: local_assigns[:message_placeholder] || t('landing_pages.contact.message')) %>
@@ -9,8 +9,12 @@
     </label>
   <% end %>
   
-  <div class="success-message">
-    <%= local_assigns[:submitted_text] || t('landing_pages.contact.submitted') %>
+  <div class="message success-message">
+    <%= local_assigns[:success_text] || t('landing_pages.contact.success') %>
+  </div>
+  
+  <div class="message error-message">
+    <%= local_assigns[:failed_text] || t('landing_pages.contact.error') %>
   </div>
 
 <% end %>

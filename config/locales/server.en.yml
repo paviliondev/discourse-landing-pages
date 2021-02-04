@@ -5,7 +5,8 @@ en:
       email: "Your email"
       message: "How can we help?"
       submit: "Send"
-      submitted: "Sent. We'll be in touch soon."
+      success: "Sent. We'll be in touch soon."
+      error: "Oops, that didn't work. Give it another shot."
       
     error:
       attr_required: "%{attr} required"

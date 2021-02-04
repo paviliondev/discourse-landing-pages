@@ -16,6 +16,13 @@
         <%- end %>
       <% end %>
     </div>
+    <% unless mobile_view? %>
+      <%- if local_assigns[:notice].present? %>
+        <a class="notice" href="<%= local_assigns[:notice][:href] %>">
+          <label class="highlight"><%= local_assigns[:notice][:text] %></label>
+        </a>
+      <%- end %>
+    <% end %>
     <div class="panel">
       <span class='header-buttons'>
         <% if mobile_view? %>

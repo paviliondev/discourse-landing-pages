@@ -1,4 +1,5 @@
 class LandingPages::InvalidAccess < StandardError; end
+class LandingPages::InvalidParameters < StandardError; end
 
 class LandingPages::LandingController < ::ActionController::Base
   prepend_view_path(Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views'))
@@ -94,6 +95,13 @@ class LandingPages::LandingController < ::ActionController::Base
   def contact_params
     params.require(:email)
     params.require(:message)
-    params.permit(:email, :message)
+    
+    result = params.permit(:email, :message)
+    
+    unless params[:email] =~ EmailValidator.email_regex
+      raise LandingPages::InvalidParameters.new(:email)
+    end
+    
+    result
   end
 end

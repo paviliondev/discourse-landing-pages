@@ -1,7 +1,7 @@
 @import 'variables';
 
 body.landing-page {
-  #contact-form {
+  .contact-form {
     display: flex;
     flex-direction: column;
     width: 500px;
@@ -36,6 +36,11 @@ body.landing-page {
       animation: fade-out 1s;
     }
     
+    .error-message {
+      display: none;
+      animation: fade-out 1s;
+    }
+    
     &.submitted {
       input,
       button,
@@ -44,11 +49,20 @@ body.landing-page {
         display: none;
       }
       
-      .success-message {
+      .message {
         text-align: center;
         padding: 10px;
-        display: block;
+      }
+      
+      &.success .success-message {
         background-color: $success;
+        color: $secondary;
+        animation: fade-in 1s;
+        display: block;
+      }
+      
+      &.error .error-message {
+        background-color: $danger;
         color: $secondary;
         animation: fade-in 1s;
         display: block;

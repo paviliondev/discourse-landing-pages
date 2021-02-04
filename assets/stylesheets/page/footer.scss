@@ -29,13 +29,19 @@ body.landing-page {
     .menu {
       display: flex;
       align-items: flex-start;
+      padding: 0;
       
       ul {
         padding: 0;
         
         li {
-          margin-bottom: 10px;
+          margin-bottom: 1em;
         }
+      }
+      
+      .primary-item {
+        min-width: 180px;
+        box-sizing: border-box;
       }
       
       a {

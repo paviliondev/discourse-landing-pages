@@ -86,12 +86,6 @@ after_initialize do
     results
   end
   
-  on(:before_email_send) do |message, email_type|
-    if message.subject == I18n.t("contact_mailer.title")
-      message.header[:return_path].value = message.header[:reply_to].value
-    end
-  end
-  
   add_to_class(:site, :landing_paths) { ::LandingPages.paths }
   add_to_serializer(:site, :landing_paths) { object.landing_paths }
   
