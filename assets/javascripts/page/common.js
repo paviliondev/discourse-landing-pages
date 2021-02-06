@@ -10,9 +10,7 @@ if ($contactForm.length) {
         $form.submit();
       }
     });
-    
-    console.log($form);
-    
+        
     $form.submit(function() {
       $form.addClass('submitting');
       $submit.attr("disabled", true);

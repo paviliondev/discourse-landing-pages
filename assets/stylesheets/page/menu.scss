@@ -106,7 +106,7 @@ body.landing-page {
     }
   }
 
-  .primary-item:hover {
+  header.landing-header .primary-item:hover {
     .primary-item-link {
       span.up {
         display: flex;
@@ -232,7 +232,7 @@ body.landing-page {
       }
     }
     
-    body.menu-visible {
+    &.menu-visible {
       overflow: hidden;
     
       .mobile-header .menu {
@@ -243,6 +243,7 @@ body.landing-page {
         li.primary-item {
           margin: 0 0 1em 0;
           width: 100%;
+          box-sizing: border-box;
           
           a {
             font-size: 1.1rem;

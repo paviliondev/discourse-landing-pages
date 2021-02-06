@@ -15,7 +15,7 @@ class LandingPages::LandingController < ::ActionController::Base
   before_action :find_assets, only: [:show]
   before_action :load_theme, only: [:show]
 
-  def show    
+  def show
     if @page.present?
       @title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize

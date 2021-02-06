@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="<%= html_lang %>">
-<head>
-  <meta charset="utf-8">
-  <title><%= @title %></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
-  <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
-  
-  <%- if SiteSetting.site_favicon_url.present? %>
-    <link rel="icon" type="image/png" href="<%=SiteSetting.site_favicon_url%>">
-  <%- end %>
-  <% site_apple_touch_icon_url = SiteSetting.site_apple_touch_icon_url %>
-  <%- if site_apple_touch_icon_url.present? %>
-    <link rel="apple-touch-icon" type="image/png" href="<%= ::UrlHelper.absolute(site_apple_touch_icon_url) %>">
-  <%- end %>
-
-  <%= csrf_meta_tag %>
-  
-  <%= preload_script "landing-page-assets" %>
-  <%= preload_script "landing-page-services" %>
-  <%= discourse_stylesheet_link_tag "discourse-landing-pages" %>
-
-  <%- if theme_ids.present? %>
-    <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>
-    <%= theme_js_lookup %>
-    <%= theme_lookup("head_tag") %>
-  <%- end %>
+  <head>
+    <meta charset="utf-8">
+    <title><%= @title %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
+    <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
     
-  <%= preload_script "landing-page-loader" %>
-</head>
-<body class="landing-page <%= @classes %>">
-  <% if @scripts %>
-    <% @scripts.each do |script| %>
-      <script src="<%= script %>"></script>
+    <%- if SiteSetting.site_favicon_url.present? %>
+      <link rel="icon" type="image/png" href="<%=SiteSetting.site_favicon_url%>">
+    <%- end %>
+    <% site_apple_touch_icon_url = SiteSetting.site_apple_touch_icon_url %>
+    <%- if site_apple_touch_icon_url.present? %>
+      <link rel="apple-touch-icon" type="image/png" href="<%= ::UrlHelper.absolute(site_apple_touch_icon_url) %>">
+    <%- end %>
+
+    <%= csrf_meta_tag %>
+    
+    <%= preload_script "landing-page-assets" %>
+    <%= preload_script "landing-page-services" %>
+    <%= discourse_stylesheet_link_tag "discourse-landing-pages" %>
+
+    <%- if theme_ids.present? %>
+      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>
+      <%= theme_js_lookup %>
+      <%= theme_lookup("head_tag") %>
+    <%- end %>
+      
+    <%= preload_script "landing-page-loader" %>
+  </head>
+  <body class="landing-page <%= @classes %>">
+    <% if @scripts %>
+      <% @scripts.each do |script| %>
+        <script src="<%= script %>"></script>
+      <% end %>
     <% end %>
-  <% end %>
-  <% if @header %>
-    <%= render partial: "header", locals: @header %>
-  <% end %>
-  <%= yield %>
-  <% if @footer %>
-    <%= render partial: "footer", locals: @footer %>
-  <% end %>
-  <%- if theme_ids.present? %>
-    <%= theme_lookup("body_tag") %>
-  <%- end %>
-  <%= javascript_include_tag "page/common" %>
-  <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
-</body>
+    <% if @header %>
+      <%= render partial: "header", locals: @header %>
+    <% end %>
+    <%= yield %>
+    <% if @footer %>
+      <%= render partial: "footer", locals: @footer %>
+    <% end %>
+    <%- if theme_ids.present? %>
+      <%= theme_lookup("body_tag") %>
+    <%- end %>
+    <%= javascript_include_tag "page/common" %>
+    <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
+  </body>
 </html>
