@@ -16,7 +16,11 @@ body.landing-page {
       
       .item-title {
         border-bottom: 1px solid $primary;
-        margin-bottom: 5px;
+        margin-bottom: .5em;
+      }
+      
+      .item-image {
+        margin: 1em 0;
       }
       
       .image {
