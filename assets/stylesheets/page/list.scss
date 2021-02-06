@@ -15,7 +15,7 @@ body.landing-page {
       display: inline-block;
       
       .item-title {
-        text-decoration: underline;
+        border-bottom: 1px solid $primary;
         margin-bottom: 5px;
       }
       
@@ -28,6 +28,11 @@ body.landing-page {
       
       &:hover {
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      }
+      
+      .emoji {
+        width: 20px;
+        height: 20px;
       }
     }
   }

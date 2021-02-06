@@ -79,13 +79,6 @@ after_initialize do
     load File.expand_path(path, __FILE__)
   end
   
-  TopicQuery.add_custom_filter(:definitions) do |results, query|
-    if query.options[:definitions]
-      results = results.where('COALESCE(categories.topic_id, 0) = topics.id')
-    end
-    results
-  end
-  
   add_to_class(:site, :landing_paths) { ::LandingPages.paths }
   add_to_serializer(:site, :landing_paths) { object.landing_paths }
   
