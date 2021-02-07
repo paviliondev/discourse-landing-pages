@@ -15,7 +15,7 @@ body.landing-page {
     }
     
     &:not(.btn-label) {
-      border: 1px solid rgba($primary-low, 0.3);
+      border: 1px solid $primary-low;
     }
   }
 
