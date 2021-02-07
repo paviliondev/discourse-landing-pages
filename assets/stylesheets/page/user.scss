@@ -29,10 +29,11 @@ body.landing-page {
     .user-groups {
       display: flex;
       align-items: center;
-      margin-top: 10px;
+      flex-wrap: wrap;
       
       span {
         font-size: 0.8em;
+        margin-top: 10px;
         margin-right: 10px;
       }
     }

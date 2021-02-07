@@ -29,7 +29,7 @@ module LandingHelper
         if user_groups.present?
           group_html = <<~HTML.html_safe
             <div class="user-groups">
-              #{user_groups.map { |g| "<span>#{g.title || g.full_name}</span>"}.join("")}
+              #{user_groups.map { |g| "<span>#{g.full_name}</span>"}.join("")}
             </div>
           HTML
         end

@@ -3,7 +3,6 @@
 body.landing-page {
   .btn {
     padding: 6px 12px;
-    border: 1px solid rgba(grey, 0.3);
     margin-bottom: 0;
     font-size: 1em;
     cursor: pointer;
@@ -13,6 +12,10 @@ body.landing-page {
     
     label {
       cursor: pointer;
+    }
+    
+    &:not(.btn-label) {
+      border: 1px solid rgba($primary-low, 0.3);
     }
   }
 
