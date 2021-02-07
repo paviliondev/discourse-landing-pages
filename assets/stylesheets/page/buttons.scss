@@ -17,6 +17,10 @@ body.landing-page {
     &:not(.btn-label) {
       border: 1px solid $primary-low;
     }
+    
+    &.btn-icon {
+      display: inline-flex;
+    }
   }
 
   .btn-primary {
