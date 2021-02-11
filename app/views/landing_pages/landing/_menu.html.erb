@@ -18,7 +18,7 @@
                 <a href="<%= item[:href] %>">
                   <h2><%= item[:label] %></h2>
                   <span><%= item[:description] %></span>
-                  <span class="more">Learn more <%= SvgSprite.raw_svg('angle-right') %></span>
+                  <span class="more"><%= SvgSprite.raw_svg('angle-right') %></span>
                 </a>
               <%- else %>
                 <h2><%= item[:label] %></h2>

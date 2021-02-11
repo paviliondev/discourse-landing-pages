@@ -46,6 +46,8 @@ class LandingPages::RemotesController < LandingPages::AdminController
     remote = LandingPages::Remote.get
     
     if remote.connected
+      remote.reset
+      
       render json: {
         commits_behind: remote.commits_behind
       }

@@ -53,11 +53,7 @@ body.landing-page {
       .more {
         display: inline-flex;
         align-items: center;
-        margin-left: 7px;
-        
-        .d-icon {
-          margin-left: 3px;
-        }
+        vertical-align: middle;
       }
     }
     
@@ -254,7 +250,6 @@ body.landing-page {
           }
           
           .primary-description .more {
-            display: flex;
             margin: 7px 0;
           }
         }

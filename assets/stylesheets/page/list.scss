@@ -21,6 +21,10 @@ body.landing-page {
       
       .item-image {
         margin: 1em 0;
+        
+        img {
+          max-width: 100%;
+        }
       }
       
       .image {

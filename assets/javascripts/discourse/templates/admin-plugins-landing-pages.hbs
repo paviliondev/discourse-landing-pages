@@ -19,7 +19,7 @@
     {{#if pullingFromRemote}}
       {{loading-spinner size="small"}}
     {{else}}
-      {{#if hasCommitsBehind}}
+      {{#if showCommitsBehind}}
         {{i18n 'admin.landing_pages.remote.repository.x_commits_behind' count=commitsBehind}}
       {{/if}}
     {{/if}}

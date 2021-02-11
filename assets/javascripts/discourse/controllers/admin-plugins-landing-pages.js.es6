@@ -19,6 +19,11 @@ export default Controller.extend({
   hasCommitsBehind: gt('commitsBehind', 0),
   hasMessages: notEmpty('messages.items'),
   
+  @discourseComputed('hasCommitsBehind', 'fetchingCommits')
+  showCommitsBehind(hasCommitsBehind, fetchingCommits) {
+    return hasCommitsBehind && !fetchingCommits;
+  },
+  
   @discourseComputed('staticMessage', 'resultMessages')
   messages(staticMessage, resultMessages) {
     if (resultMessages) {
@@ -188,6 +193,8 @@ export default Controller.extend({
             type: "success",
             messages
           });
+          
+          this.send('commitsBehind');
         }
       })
       .catch(error => {
