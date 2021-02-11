@@ -17,6 +17,14 @@ body.landing-page {
       .item-title {
         border-bottom: 1px solid $primary;
         margin-bottom: .5em;
+        line-height: 1.5em;
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+        
+        .emoji {
+          margin-left: .5em;
+        }
       }
       
       .item-image {
