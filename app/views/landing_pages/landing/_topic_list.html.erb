@@ -1,0 +1,21 @@
+<ul class="item-list">
+  <% local_assigns[:topics].each do |topic| %>
+    <li>
+      <a href="<%= topic.url %>" class="item">
+        <div class="item-title">
+          <%= emoji_codes_to_img(topic.fancy_title) %>
+        </div>
+        <% if topic.image_url.present? %>
+          <div class="item-image">
+            <img src="<%= topic.image_url %>" />
+          </div>
+        <% end %>
+        <% if topic.excerpt %>
+          <div class="item-description">
+            <%= emoji_codes_to_img(topic.excerpt.html_safe) %>
+          </div>
+        <% end %>
+      </a>
+    </li>
+  <% end %>
+</ul>
