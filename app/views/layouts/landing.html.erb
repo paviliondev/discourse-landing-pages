@@ -35,6 +35,9 @@
         <script src="<%= script %>"></script>
       <% end %>
     <% end %>
+    <%- if theme_ids.present? %>
+      <%= theme_lookup("header") %>
+    <%- end %>
     <% if @header %>
       <%= render partial: "header", locals: @header %>
     <% end %>
