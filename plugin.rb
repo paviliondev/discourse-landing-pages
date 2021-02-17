@@ -86,4 +86,22 @@ after_initialize do
   ::Upload.attr_accessor :for_landing_page
   ::UploadValidator.prepend UploadValidatorLandingPagesExtension
   ::UploadCreator.prepend UploadCreatorLandingPagesExtension
+  
+  TopicQuery.add_custom_filter(:definitions_only) do |topics, query|
+    if query.options[:category_id] && query.options[:definitions_only]
+      topics = topics.where("
+        topics.id in (SELECT topic_id FROM categories WHERE categories.id in (?))
+      ", Category.subcategory_ids(query.options[:category_id]))
+    end
+    
+    topics
+  end
+  
+  TopicQuery.add_custom_filter(:filter_categories) do |topics, query|
+    if query.options[:filter_categories].present?
+      topics = topics.where("topics.category_id not in (?)", query.options[:filter_categories])
+    end
+    
+    topics
+  end
 end
