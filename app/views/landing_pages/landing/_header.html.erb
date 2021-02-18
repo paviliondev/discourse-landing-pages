@@ -27,7 +27,8 @@
       <span class='header-buttons'>
         <% if mobile_view? %>
           <a class="mobile-toggle">
-            <%= SvgSprite.raw_svg('bars') %>
+            <span class="menu-icon"><%= SvgSprite.raw_svg('bars') %></span>
+            <span class="hide-menu-icon"><%= SvgSprite.raw_svg('times') %></span>
           </a>
         <% else %>
           <%- if current_user %>

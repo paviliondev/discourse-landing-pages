@@ -104,6 +104,14 @@ body.landing-page {
       .mobile-toggle {
         display: flex;
         
+        .menu-icon {
+          display: block;
+        }
+        
+        .hide-menu-icon {
+          display: none;
+        }
+           
         .d-icon {
           width: 30px;
           height: 30px;
@@ -113,6 +121,16 @@ body.landing-page {
     
     .primary-description h2 {
       display: none;
+    }
+    
+    &.menu-visible header.landing-header .mobile-toggle {
+      .menu-icon {
+        display: none;
+      }
+      
+      .hide-menu-icon {
+        display: block;
+      }
     }
   }
 }
