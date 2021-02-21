@@ -1,0 +1,36 @@
+{
+  "scripts": [
+    "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.6.5/lottie.min.js"
+  ],
+  "header": {
+    "root": "/my-page",
+    "notice": {
+      "href": "/my-page",
+      "text": "We're doing cool stuff!"
+    }
+  },
+  "footer": {
+    "root": "/welcome",
+    "logo": "https://thepavilion.io/uploads/default/original/2X/5/55f90858adf4cfef7eb2d9f90a4244943f3d4d26.svg",
+    "left_text": "These pages are copyright me 2021."
+  },
+  "menus": [
+    {
+      "name": "my-menu",
+      "items": [
+        {
+          "label": "My Page",
+          "description": "My cool page",
+          "href": "/my-page",
+          "items": [
+            {
+              "label": "My Secondary Page",
+              "href": "/my-secondary-page",
+              "description": "Page secondary to My Page"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

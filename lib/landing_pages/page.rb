@@ -8,16 +8,20 @@ class LandingPages::Page
   
   attr_reader :id
   
-  def self.about_attrs
-    %w(name path theme_id group_ids remote).freeze
+  def self.required_attrs
+    %w(name path body).freeze
   end
   
-  def self.file_attrs
-    %w(body menu assets).freeze
+  def self.discourse_attrs
+    %w(theme_id group_ids).freeze
+  end
+  
+  def self.pages_attrs
+    %w(remote menu assets).freeze
   end
   
   def self.writable_attrs
-    (about_attrs + file_attrs).freeze
+    (required_attrs + discourse_attrs + pages_attrs).freeze
   end
   
   def initialize(page_id, data={})
@@ -60,7 +64,7 @@ class LandingPages::Page
   end
   
   def validate
-    %w(name path body).each do |attr|
+    self.class.required_attrs.each do |attr|
       if send(attr).blank?
         add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
       end
@@ -85,6 +89,7 @@ class LandingPages::Page
   end
   
   def self.where(attr, value)
+    byebug
     PluginStoreRow.where(page_query(attr, value))
   end
   
@@ -157,5 +162,35 @@ class LandingPages::Page
     Rails.application.routes.routes.map do |r| 
       r.path.spec.to_s.split('/').reject(&:empty?).first
     end.uniq
+  end
+  
+  def self.find_discourse_objects(params)
+    if params[:theme].present?
+      if theme = Theme.find_by(name: params[:theme])
+        params[:theme_id] = theme.id
+      elsif theme = Theme.find_by_id(params[:theme])
+        params[:theme_id] = theme.id        
+      end
+      
+      ## We only save theme ids of themes on the Discourse instance
+      params.delete(:theme)
+    end
+    
+    if params[:groups].present?
+      params[:groups].each do |value|
+        if group = Group.find_by(name: value)
+          params[:group_ids] ||= []
+          params[:group_ids].push(group.id)
+        elsif group = Group.find_by_id(value)
+          params[:group_ids] ||= []
+          params[:group_ids].push(group.id)
+        end
+      end
+      
+      ## We only save group ids of groups on the Discourse instance
+      params.delete(:groups)
+    end
+    
+    params
   end
 end

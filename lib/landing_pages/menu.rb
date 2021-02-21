@@ -23,7 +23,7 @@ class LandingPages::Menu
   def set(data)
     data = data.with_indifferent_access
     
-    LandingPages::Menu.writable_attrs.each do |attr|
+    self.class.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
       
@@ -91,15 +91,7 @@ class LandingPages::Menu
   def self.create(params)
     params = params.with_indifferent_access
     menu_id = params[:id] || "#{KEY}_#{SecureRandom.hex(16)}"
-    
-    data = {}
-    writable_attrs.each do |attr|
-      if params[attr].present?
-        data[attr] = params[attr] if params[attr].present?
-      end
-    end
-    
-    menu = new(menu_id, data)
+    menu = new(menu_id, params)
     menu.save
     menu
   end

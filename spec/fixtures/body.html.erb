@@ -1,0 +1,175 @@
+<div class="landing page">  
+  <div class="container">
+    <div class="title-container">
+      <% if !mobile_view? && @welcome.present? %>
+        <div class="lottie title welcome"></div>
+      <% else %>
+        <h1>We Build Communities</h1>
+      <% end %>
+    </div>
+    <div class="text-container">
+      <div class="secondary-text">
+        We're a <a href="/who-we-are">non-profit cooperative</a> that <a href="/software">builds</a>, <a href="/consulting">consults on</a>, <a href="/customisations">customises</a> and <a href="/support">supports</a> community software.
+      </div>
+      <ul class="platform-shortlist">
+        <li><a href="https://discourse.org" target="_blank" title="Discourse">
+          <div class="image discourse"></div>
+        </a></li>
+        <li><a href="https://wordpress.org" target="_blank" title="Wordpress">
+          <div class="image wordpress"></div>
+        </a></li>
+        <li><a href="https://auth0.com" target="_blank" title="Auth0">
+          <div class="image auth0"></div>
+        </a></li>
+        <li><a href="https://shopify.com" target="_blank" title="Shopify">
+          <div class="image shopify"></div>
+        </a></li>
+        <li><a href="https://discord.com" target="_blank" title="Discord">
+          <div class="image discord"></div>
+        </a></li>
+        <li><a href="/software" class="more">more</a></li>
+      </ul>
+    </div>
+    <%= render partial: "contact_form", locals: { success_message: "Sent. We'll be in touch shortly." } %>
+  </div>
+</div>
+
+<div class="page first">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene rossatto large welcomesoftware"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text">
+        <span>We build user-friendly software</span>
+      </div>
+      <div class="secondary-text">
+        We build user-friendly open-source software for online communities. We have the large library <a href="/discourse">customisations for Discourse</a>, and we're building others for Wordpress, Auth0, Discord, Slack and the many <a href="/software#platforms">other platforms</a> we work with.
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="/software" class="btn btn-primary btn-cta">Learn more</a>
+    </div>
+  </div>
+</div>
+
+<div class="page second">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene rossatto large welcomeservices"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text">
+        <span>We provide affordable services</span>
+      </div>
+      <div class="secondary-text">
+        We provide consulting, customisation and support services for community software. <a href="/members">Our members</a> are experts in their fields, and 100% of our service fees go directly to them, which means we can provide professional services at affordable rates.
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="/services" class="btn btn-primary btn-cta">Learn more</a>
+    </div>
+  </div>
+</div>
+
+<div class="page third">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene rossatto large welcomemembers"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text">
+        <span>We empower freelancers</span>
+      </div>
+      <div class="secondary-text">
+        We're a non-profit focused on providing reliable work, support and education for freelancers, <a href="/members">our members</a>. Our members work on engaging open source projects that directly support their livelihood, pay no membership fees, and keep every dollar they earn.
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="/who-we-are" class="btn btn-primary btn-cta">Learn more</a>
+    </div>
+  </div>
+</div>
+
+<div class="page contact">
+  <div class="container">
+    <div class="title-container">
+      <% if !mobile_view? && @contact %>
+        <div class="lottie contact"></div>
+      <% else %>
+        <h1>Talk to Us</h1>
+      <% end %>
+    </div>
+    <%= render partial: "contact_form" %>
+  </div>
+</div>
+
+<% if @welcome.present? %>
+  <script>
+    var title = lottie.loadAnimation({
+      container: document.querySelector(".lottie.welcome"),
+      renderer: 'svg',
+      autoplay: true,
+      loop: false,
+      path: "<%= @welcome.upload.url %>"
+    });
+    title.setSpeed(0.2);
+  </script>
+<% end %>
+
+<% if @welcomesoftware.present? %>
+  <script>
+    setTimeout(() => {
+      lottie.loadAnimation({
+        container: document.querySelector(".lottie.welcomesoftware"),
+        renderer: 'svg',
+        autoplay: true,
+        loop: true,
+        path: "<%= @welcomesoftware.upload.url %>"
+      });
+    }, 50);
+  </script>
+<% end %>
+
+<% if @welcomeservices.present? %>
+  <script>
+    setTimeout(() => {
+      lottie.loadAnimation({
+        container: document.querySelector(".lottie.welcomeservices"),
+        renderer: 'svg',
+        autoplay: true,
+        loop: true,
+        path: "<%= @welcomeservices.upload.url %>"
+      });
+    }, 100);
+  </script>
+<% end %>
+
+<% if @welcomemembers.present? %>
+  <script>
+    setTimeout(() => {
+      lottie.loadAnimation({
+        container: document.querySelector(".lottie.welcomemembers"),
+        renderer: 'svg',
+        autoplay: true,
+        loop: true,
+        path: "<%= @welcomemembers.upload.url %>"
+      });
+    }, 150);
+  </script>
+<% end %>
+
+<% if @contact.present? %>
+  <script>
+    setTimeout(() => {
+      var contact = lottie.loadAnimation({
+        container: document.querySelector(".lottie.contact"),
+        renderer: 'svg',
+        autoplay: true,
+        loop: false,
+        path: "<%= @contact.upload.url %>"
+      });
+      contact.setSpeed(0.2);
+    }, 200);
+  </script>
+<% end %>

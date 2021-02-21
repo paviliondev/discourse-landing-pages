@@ -6,16 +6,12 @@ class LandingPages::Remote
   
   KEY ||= 'remote'
   
-  ATTRS ||= [
-    :url,
-    :public_key,
-    :private_key,
-    :branch,
-    :commit
-  ]
+  def self.writable_attrs
+    %w(url public_key private_key branch commit).freeze
+  end
   
   def initialize(opts)
-    ATTRS.each do |key|
+    self.class.writable_attrs.each do |key|
       self.class.class_eval { attr_accessor key }
       instance_variable_set("@#{key}", opts[key]) if opts[key].present?
     end
@@ -30,7 +26,7 @@ class LandingPages::Remote
     
     if valid?
       remote = {}
-      ATTRS.each { |attr| remote[attr] = self.send(attr) }
+      self.class.writable_attrs.each { |attr| remote[attr] = self.send(attr) }
       PluginStore.set(LandingPages::PLUGIN_NAME, KEY, remote)
       reset
     end
@@ -95,7 +91,7 @@ class LandingPages::Remote
     PluginStoreRow.transaction do
       remote_pages = LandingPages::Page.where("remote", remote.url)
       
-      if remote_pages.exist?
+      if remote_pages.exists?
         remote_pages.each do |record|
           value = JSON.parse(record['value'])
           value.delete("remote")

@@ -14,7 +14,7 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
     
     about = {}
     
-    LandingPages::Page.about_attrs.each do |attr|
+    %w(name path remote).each do |attr|
       value = @page.send(attr)
       
       next unless value.present?
@@ -40,7 +40,7 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
     
     File.write(File.join(destination_folder, "page.json"), JSON.pretty_generate(about))
     
-    LandingPages::Page.file_attrs.each do |attr|
+    %w(body menu assets).each do |attr|
       if (value = @page.try(attr)).present?
         pathname = Pathname.new(File.join(destination_folder, filename(attr)))
         pathname.parent.mkpath

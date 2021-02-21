@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'net/http'
+require 'addressable/uri'
+
 class LandingPages::Asset
   include HasErrors
   include ActiveModel::Serialization
@@ -10,6 +13,10 @@ class LandingPages::Asset
               :upload
   
   attr_accessor :file
+  
+  def self.required_attrs
+    %w(name file).freeze
+  end
   
   def self.writable_attrs
     %w(name upload_id).freeze
@@ -47,8 +54,9 @@ class LandingPages::Asset
   
   def save
     validate
-
+    
     if valid?
+      handle_upload
       data = {}
       
       LandingPages::Asset.writable_attrs.each do |attr|
@@ -63,13 +71,11 @@ class LandingPages::Asset
   end
   
   def validate
-    %w(name).each do |attr|
+    self.class.required_attrs.each do |attr|
       if send(attr).blank?
         add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
       end
     end
-    
-    handle_upload
   end
   
   def valid?
@@ -144,15 +150,7 @@ class LandingPages::Asset
   def self.create(params)
     params = params.with_indifferent_access
     asset_id = params[:id] || "#{KEY}_#{SecureRandom.hex(16)}"
-    
-    data = {}
-    writable_attrs.each do |attr|
-      if params[attr].present?
-        data[attr] = params[attr] if params[attr].present?
-      end
-    end
-    
-    asset = new(asset_id, data)
+    asset = new(asset_id, params)
     asset.file = params[:file] if params[:file]
     asset.save
     asset

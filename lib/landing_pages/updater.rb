@@ -55,22 +55,7 @@ class LandingPages::Updater
   def update_page(params)
     params[:remote] = @handler.url if @type == :git
     
-    if params[:theme].present?
-      if theme = Theme.find_by(name: params[:theme])
-        params[:theme_id] = theme.id
-      end
-    end
-    
-    if params[:groups].present?
-      params[:group_ids] = []
-      
-      params[:groups].each do |group_name|
-        if group = Group.find_by(name: group_name)
-          params[:group_ids].push(group.id)
-        end
-      end
-    end
-        
+    params = LandingPages::Page.find_discourse_objects(params)
     page = LandingPages::Page.find_by("path", params[:path])
     
     if page.blank?
