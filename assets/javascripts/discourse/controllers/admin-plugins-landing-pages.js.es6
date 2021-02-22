@@ -212,7 +212,7 @@ export default Controller.extend({
       this.set("fetchingCommits", true);
       
       ajax("/landing/remote/commits-behind").then(result => {
-        if (result.commits_behind) {
+        if (!result.failed) {
           this.set("commitsBehind", result.commits_behind)
         }
       }).finally(() => {

@@ -1,8 +1,6 @@
 require_relative '../plugin_helper'
 
 describe LandingPages::Global do
-  fab!(:user) { Fabricate(:user) }
-
   let(:raw_global) {
     JSON.parse(File.open(
       "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/pages.json"

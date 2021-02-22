@@ -23,13 +23,15 @@ class LandingPages::Importer
     if type == :zip && bundle.present?
       @handler = LandingPages::ZipImporter.new(
         bundle.tempfile.path,
-        bundle.original_filename
+        bundle.original_filename,
+        temp_folder: temp_folder
       )
     elsif type == :git
       @remote = LandingPages::Remote.get
       @handler = LandingPages::GitImporter.new(@remote.url,
         private_key: @remote.private_key,
-        branch: @remote.branch
+        branch: @remote.branch,
+        temp_folder: temp_folder
       )
     end
     
@@ -47,17 +49,24 @@ class LandingPages::Importer
   def files
     @handler.all_files.reduce([]) do |result, path|
       if path.match? /page.json|menu.json|assets.json|pages.json/
-        result.push(path.rpartition("/").first)
+        folder = path.rpartition("/").first
+        folder = "#{folder}/" if folder.length > 0
+        result.push(folder) if result.exclude?(folder)
       end
       result
     end
   end
   
+  def temp_folder
+    "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
+  end
+  
   def update!
     updater = LandingPages::Updater.new(type, handler)
+
     files.each do |path|
       updater.update(path)
-        
+
       if updater.errors.any?
         add_error(updater.errors.full_messages.join(", "))
       else

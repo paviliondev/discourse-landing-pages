@@ -18,12 +18,12 @@ class LandingPages::Updater
   end
   
   def update(path="")
-    global_data = read_file(path + "/pages.json")
-    asset_data = read_file(path + "/assets.json")
-    page_data = read_file(path + "/page.json")
-    
+    global_data = read_file(path + "pages.json")
+    asset_data = read_file(path + "assets.json")
+    page_data = read_file(path + "page.json")
+
     return if errors.any?
-        
+
     if global_data.present?
       update_global(
         scripts: global_data['scripts'],
@@ -32,7 +32,7 @@ class LandingPages::Updater
         menus: global_data['menus']
       )
     end
-    
+
     if asset_data.present?
       update_assets(
         register: asset_data['register']
@@ -54,7 +54,7 @@ class LandingPages::Updater
   
   def update_page(params)
     params[:remote] = @handler.url if @type == :git
-    
+
     params = LandingPages::Page.find_discourse_objects(params)
     page = LandingPages::Page.find_by("path", params[:path])
     
@@ -105,9 +105,9 @@ class LandingPages::Updater
     global = LandingPages::Global.new(global_params)
     
     if global.save
-      updated_scripts = global_params[:scripts]
-      updated_footer = global_params[:header].present?
-      updated_header = global_params[:footer].present?
+      updated_scripts = global.scripts.present?
+      updated_footer = global.header.present?
+      updated_header = global.footer.present?
     end
     
     if params[:menus].present?

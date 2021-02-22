@@ -1,8 +1,6 @@
 require_relative '../plugin_helper'
 
 describe LandingPages::Asset do
-  fab!(:user) { Fabricate(:user) }
-
   let(:asset_1_path) {
     "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/asset_1.json"
   }

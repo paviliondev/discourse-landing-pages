@@ -1,5 +1,6 @@
 {
   "register": {
-    "lottie": "lottie.json"
+    "asset_1": "asset_1.json",
+    "asset_2": "asset_2.json"
   }
 }

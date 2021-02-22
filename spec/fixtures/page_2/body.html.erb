@@ -1,0 +1,133 @@
+<div class="page landing">
+  <div class="container">
+    <div class="title-container">
+      <% if !mobile_view? && @about.present? %>
+        <div class="lottie title whoweare"></div>
+      <% else %>
+        <h1>Who We Are</h1>
+      <% end %>
+    </div>
+    <div class="text-container">
+      <div class="secondary-text">We're a non-profit cooperative that builds open-source software, creates work opportunities for freelancers and supports communities.</div>
+    </div>
+    <div class="buttons">
+      <a href="#objectives" class="btn btn-cta btn-primary scroll-and-center">Learn more</a>
+      <a href="/members" class="btn btn-cta">Our members</a>
+      <a href="/join" class="btn btn-cta">How to join</a>
+    </div>
+    <div class="image-container"></div>
+  </div>
+</div>
+
+<div id="objectives" class="page first">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene dotolina objectives"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text"><span>Our Objectives</span></div>
+      <div class="secondary-text">
+        We're registered as a corporation in the United Kingdom. Our articles of association require us to
+        <ul>
+        <li><b>Provide work, education and support to freelancers.</b></li>
+        <li><b>Provide services and products to online communities.</b></li>
+        <li><b>Ensure socioeconomic diversity amongst our stakeholders.</b></li>
+        </ul>
+        These are the standards the health of our organisation is judged by.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="model" class="page second">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene dotolina business"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text"><span>Our Business Model</span></div>
+      <div class="secondary-text">
+        Our members get 100% of the proceeds from services we provide. Pavilion takes no commission and charges no membership fee. Instead, our members help to build and support our open source software in exchange for work opportunities. That way our members are never out of pocket, and we can support communities of all sizes. 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="communities" class="page third">
+  <div class="container">
+    <div class="scene-container">
+      <div class="lottie scene dotolina diverse"></div>
+    </div>
+    <div class="text-container">
+      <div class="primary-text"><span>We Serve Everyone</span></div>
+      <div class="secondary-text">
+        We work hard to serve communities of all sizes through our software and services. We try to give discounts to smaller communities, and invest in maintaining our software for the benefit of communities who will never be able to pay us.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="contact" class="page contact">
+  <div class="container">
+    <div class="title-container">
+      <% if !mobile_view? && @contact %>
+        <div class="lottie contact"></div>
+      <% else %>
+        <h1>Talk to Us</h1>
+      <% end %>
+    </div>
+    <%= render partial: "contact_form" %>
+  </div>
+</div>
+
+<script>
+  var title = lottie.loadAnimation({
+    container: document.querySelector(".lottie.whoweare"),
+    renderer: 'svg',
+    autoplay: true,
+    loop: false,
+    path: "<%= @about.upload.url %>"
+  });
+  title.setSpeed(0.2);
+  
+  setTimeout(() => {
+    lottie.loadAnimation({
+      container: document.querySelector(".lottie.objectives"),
+      renderer: 'svg',
+      autoplay: true,
+      loop: true,
+      path: "https://pavilion-assets.nyc3.digitaloceanspaces.com/landing/lottie/objectives.json"
+    });
+  }, 50);
+  
+  setTimeout(() => {
+    lottie.loadAnimation({
+      container: document.querySelector(".lottie.business"),
+      renderer: 'svg',
+      autoplay: true,
+      loop: true,
+      path: "https://pavilion-assets.nyc3.digitaloceanspaces.com/landing/lottie/business.json"
+    });
+  }, 100);
+  
+  setTimeout(() => {
+    lottie.loadAnimation({
+      container: document.querySelector(".lottie.diverse"),
+      renderer: 'svg',
+      autoplay: true,
+      loop: true,
+      path: "https://pavilion-assets.nyc3.digitaloceanspaces.com/landing/lottie/diverse.json"
+    });
+  }, 150);
+  
+  setTimeout(() => {
+    var contact = lottie.loadAnimation({
+      container: document.querySelector(".lottie.contact"),
+      renderer: 'svg',
+      autoplay: true,
+      loop: false,
+      path: "<%= @contact.upload.url %>"
+    });
+    contact.setSpeed(0.2);
+  }, 200);
+</script>

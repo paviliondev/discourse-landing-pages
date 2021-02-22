@@ -56,7 +56,7 @@ class LandingPages::Page
         value = send(attr)
         data[attr] = value if value.present?
       end
-      
+
       PluginStore.set(LandingPages::PLUGIN_NAME, id, data)
     else
       false
@@ -89,13 +89,12 @@ class LandingPages::Page
   end
   
   def self.where(attr, value)
-    byebug
     PluginStoreRow.where(page_query(attr, value))
   end
   
   def self.find_by(attr, value)
     records = where(attr, value)
-    
+
     if records.exists?
       params = records.pluck(:key, :value).flatten
       LandingPages::Page.new(params[0], JSON.parse(params[1]))

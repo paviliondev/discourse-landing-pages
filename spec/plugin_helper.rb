@@ -6,7 +6,7 @@ if ENV['SIMPLECOV']
   SimpleCov.start do
     root "plugins/discourse-landing-pages"
     track_files "plugins/discourse-landing-pages/**/*.rb"
-    add_filter { |src| src.filename =~ /(\/spec\/|\/db\/|plugin\.rb)/ }
+    add_filter { |src| src.filename =~ /(\/spec\/|\/gems\/|plugin\.rb)/ }
   end
 end
 

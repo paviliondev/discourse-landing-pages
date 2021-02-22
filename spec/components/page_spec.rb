@@ -1,7 +1,6 @@
 require_relative '../plugin_helper'
 
 describe LandingPages::Page do
-  fab!(:user) { Fabricate(:user) }
   fab!(:theme) { Fabricate(:theme, name: 'Landing Theme') }
   fab!(:group) { Fabricate(:group, name: 'page_group') }
 

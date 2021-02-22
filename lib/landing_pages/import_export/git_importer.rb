@@ -3,13 +3,13 @@
 class LandingPages::GitImporter < ThemeStore::GitImporter
   attr_reader :temp_folder
   
-  def initialize(url, private_key: nil, branch: nil)
+  def initialize(url, private_key: nil, branch: nil, temp_folder: '/')
     @url = url
     if @url.present? && @url.start_with?("https://github.com") && !@url.end_with?(".git")
       @url = @url.gsub(/\/$/, '')
       @url += ".git"
     end
-    @temp_folder = "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
+    @temp_folder = temp_folder
     @private_key = private_key
     @branch = branch
   end

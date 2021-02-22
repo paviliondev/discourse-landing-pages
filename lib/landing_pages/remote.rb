@@ -59,7 +59,7 @@ class LandingPages::Remote
     @commits_behind ||= begin
       importer = LandingPages::Importer.new(:git)
       importer.import!
-            
+
       if importer.report[:errors].blank?
         importer.handler.commits_since(commit).last.to_i
       end
@@ -81,6 +81,10 @@ class LandingPages::Remote
     new(raw ? raw : {}) 
   end
   
+  def self.exists?
+    PluginStoreRow.exists?("plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = '#{KEY}'")
+  end
+  
   def self.raw
     PluginStore.get(LandingPages::PLUGIN_NAME, KEY)
   end
@@ -90,16 +94,16 @@ class LandingPages::Remote
     
     PluginStoreRow.transaction do
       remote_pages = LandingPages::Page.where("remote", remote.url)
-      
+
       if remote_pages.exists?
         remote_pages.each do |record|
           value = JSON.parse(record['value'])
           value.delete("remote")
-          record['value'] = value
+          record['value'] = value.to_json
           record.save
         end
       end
-      
+
       PluginStore.remove(LandingPages::PLUGIN_NAME, KEY)
     end
   end

@@ -96,6 +96,10 @@ class LandingPages::Menu
     menu
   end
   
+  def self.exists?(menu_id)
+    PluginStoreRow.exists?("plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = 'menu_id'")
+  end
+  
   def self.destroy(menu_id)
     PluginStore.remove(LandingPages::PLUGIN_NAME, menu_id)
   end

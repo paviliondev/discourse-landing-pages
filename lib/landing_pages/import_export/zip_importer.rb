@@ -3,8 +3,8 @@
 class LandingPages::ZipImporter < ThemeStore::ZipImporter
   attr_reader :temp_folder
   
-  def initialize(filename, original_filename)
-    @temp_folder = "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
+  def initialize(filename, original_filename, temp_folder: '/')
+    @temp_folder = temp_folder
     @filename = filename
     @original_filename = original_filename
   end

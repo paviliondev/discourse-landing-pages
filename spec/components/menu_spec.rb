@@ -1,8 +1,6 @@
 require_relative '../plugin_helper'
 
 describe LandingPages::Menu do
-  fab!(:user) { Fabricate(:user) }
-
   let(:raw_global) {
     JSON.parse(File.open(
       "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/pages.json"
@@ -10,16 +8,34 @@ describe LandingPages::Menu do
   }
   
   it "creates a menu" do
-    menu = LandingPages::Menu.create(raw_global['menus'][0])
+    raw_menu = raw_global["menus"].first
+    menu = LandingPages::Menu.create(raw_menu)
     
-    expect(menu.name).to eq(raw_global['menus'][0]['name'].parameterize.underscore)
-    expect(menu.items.length).to eq(raw_global['menus'][0]['items'].length)
+    expect(menu.name).to eq(raw_menu["name"].underscore)
+    expect(menu.items).to eq(raw_menu["items"])
+  end
+  
+  it "does not create a menu if required attributes are missing" do
+    raw_menu = raw_global["menus"].first
+    raw_menu['name'] = nil
+    menu = LandingPages::Menu.create(raw_menu)
+        
+    expect(menu.errors.full_messages.first).to eq(
+      I18n.t("landing_pages.error.attr_required", attr: 'name')
+    )
   end
   
   it "destroys a menu" do
-    menu = LandingPages::Menu.create(raw_global['menus'][0])
-    LandingPages::Menu.destroy(menu.id)
+    raw_menu = raw_global["menus"].first
+    menu = LandingPages::Menu.create(raw_menu)
     
-    expect(LandingPages::Menu.find(menu.id)).to eq(nil)
+    expect(LandingPages::Menu.exists?(menu.id)).to eq(false)
+  end
+  
+  it "lists menus" do
+    raw_menu = raw_global["menus"].first
+    LandingPages::Menu.create(raw_menu)
+    
+    expect(LandingPages::Menu.all.length).to eq(1)
   end
 end
