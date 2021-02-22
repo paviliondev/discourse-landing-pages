@@ -10,6 +10,13 @@
   </div>
   
   <div class="buttons">
+    {{#if resultMessage}}
+      <span class="{{resultMessage.type}}">
+        {{d-icon resultMessage.icon}}
+        {{resultMessage.text}}
+      </span>
+    {{/if}}
+    
     {{conditional-loading-spinner condition=updatingPage size="small"}}
     
     {{#unless page.creating}}

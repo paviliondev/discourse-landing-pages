@@ -218,6 +218,10 @@ export default Controller.extend({
       }).finally(() => {
         this.set("fetchingCommits", false);
       });
+    },
+    
+    updatePages(pages) {
+      this.set('pages', pages);
     }
   }
 });

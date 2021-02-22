@@ -107,6 +107,11 @@
     
     .buttons {
       display: flex;
+      align-items: center;
+      
+      .error {
+        color: $danger;
+      }
       
       .btn {
         margin-left: 10px;

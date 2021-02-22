@@ -70,6 +70,12 @@
   {{loading-spinner}}
 {{else}}
   {{#if page}}
-    {{page-admin page=page themes=themes groups=groups menus=menus}}
+    {{page-admin
+      page=page
+      currentPage=currentPage
+      themes=themes
+      groups=groups
+      menus=menus
+      updatePages=(action "updatePages")}}
   {{/if}}
 {{/if}}

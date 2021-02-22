@@ -26,26 +26,33 @@ export default Component.extend({
 
       const page = this.get('page');
       let self = this;
-            
+      
       page.savePage().then(result => {
         if (result.page) {
-          this.setProperties({
+          self.setProperties({
             page:  LandingPage.create(result.page),
-            currentPage: JSON.parse(JSON.stringify(result.page)),
-            pages: result.pages
+            currentPage: JSON.parse(JSON.stringify(result.page))
           });
+          self.updatePages(result.pages);
         } else {
-          this.set('page', self.currentPage);
+          self.set('page', self.currentPage);
         }
       }).catch(error => {
-        this.handleResult()
-        this.set("resultMessage", {
+        self.set("resultMessage", {
           type: 'error',
+          icon: 'times',
           text: extractError(error)
         });
-        this.set("page", self.currentPage);
+        
+        setTimeout(() => {
+          self.set('resultMessage', null);
+        }, 5000);
+        
+        if (self.currentPage) {
+          self.set("page", self.currentPage);
+        }  
       }).finally(() => {
-        this.set('savingPage', false);
+        self.set('savingPage', false);
       });
     },
     
@@ -54,10 +61,7 @@ export default Component.extend({
       
       this.page.destroyPage().then(result => {
         if (result.success) {
-          this.setProperties({
-            page: null,
-            pages: result.pages
-          })
+          this.set('page', null);
         }
       }).finally(() => {
         this.set('destroyingPage', false);
@@ -68,8 +72,13 @@ export default Component.extend({
       this.page.exportPage().catch(error => {
         this.set("resultMessage", {
           type: 'error',
+          icon: 'icon',
           text: extractError(error)
         });
+        
+        setTimeout(() => {
+          self.set('resultMessage', null);
+        }, 5000);
       })
     }
   }
