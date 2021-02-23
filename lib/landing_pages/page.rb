@@ -36,7 +36,7 @@ class LandingPages::Page
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
       
-      if value.present?
+      if value != nil
         value = value.dasherize if attr === 'path'
         value = value.to_i if (attr === 'theme_id' && value.present?)
         value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
@@ -164,7 +164,9 @@ class LandingPages::Page
   end
   
   def self.find_discourse_objects(params)
-    if params[:theme].present?
+    if params[:theme] != nil
+      params[:theme_id] = ""
+      
       if theme = Theme.find_by(name: params[:theme])
         params[:theme_id] = theme.id
       elsif theme = Theme.find_by_id(params[:theme])
@@ -175,13 +177,13 @@ class LandingPages::Page
       params.delete(:theme)
     end
     
-    if params[:groups].present?
+    if params[:groups] != nil
+      params[:group_ids] = []
+      
       params[:groups].each do |value|
         if group = Group.find_by(name: value)
-          params[:group_ids] ||= []
           params[:group_ids].push(group.id)
         elsif group = Group.find_by_id(value)
-          params[:group_ids] ||= []
           params[:group_ids].push(group.id)
         end
       end
