@@ -184,9 +184,11 @@ export default Controller.extend({
           });
           
           ['footer', 'header'].forEach(boolType => {
-            messages.push(
-              I18n.t(`admin.landing_pages.imported.${boolType}`)
-            );
+            if (imported[boolType]) {
+              messages.push(
+                I18n.t(`admin.landing_pages.imported.${boolType}`)
+              );
+            }
           });
                     
           this.set("resultMessages", {
