@@ -8,6 +8,7 @@ module Jobs
         raise Discourse::InvalidParameters.new(key) unless args[key].present?
       end
       message = ContactMailer.contact_email(args[:from], args[:message])
+      message.header['Auto-Submitted'] = nil
       Email::Sender.new(message, :contact_email).send
     end
   end
