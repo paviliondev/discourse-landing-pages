@@ -9,6 +9,7 @@ module Jobs
       end
       message = ContactMailer.contact_email(args[:from], args[:message])
       message.header['Auto-Submitted'] = nil
+      message.header['X-Auto-Response-Suppress'] = nil
       Email::Sender.new(message, :contact_email).send
     end
   end
