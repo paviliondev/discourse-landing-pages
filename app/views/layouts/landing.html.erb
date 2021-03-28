@@ -5,6 +5,9 @@
     <title><%= @title %></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
+    <%- if theme_ids.present? %>
+      <meta name="discourse_theme_ids" content="<%= theme_ids&.join(",") %>">
+    <%- end %>
     <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
     
     <%- if SiteSetting.site_favicon_url.present? %>
@@ -19,7 +22,7 @@
     
     <%= preload_script "landing-page-assets" %>
     <%= preload_script "landing-page-services" %>
-    <%= discourse_stylesheet_link_tag "discourse-landing-pages" %>
+    <%= discourse_stylesheet_link_tag "landing_page", theme_ids: nil %>
 
     <%- if theme_ids.present? %>
       <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>

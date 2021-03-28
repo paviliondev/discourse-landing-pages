@@ -104,4 +104,7 @@ after_initialize do
     
     topics
   end
+  
+  full_path = "#{Rails.root}/plugins/discourse-landing-pages/assets/stylesheets/page/page.scss"
+  Stylesheet::Importer.plugin_assets['landing_page'] = Set[full_path]
 end
