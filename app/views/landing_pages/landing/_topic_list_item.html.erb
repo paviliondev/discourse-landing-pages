@@ -1,0 +1,28 @@
+<article class="topic-list-item <%= local_assigns[:item_classes] %>">
+  <a class="topic-image" href="<%= local_assigns[:topic].url %>">
+    <img src="<%= local_assigns[:topic].image_url %>">
+  </a>
+  <div class="topic-details">
+    <a class="topic-link" href="<%= local_assigns[:topic].url %>">
+      <div class="header">
+        <h2 class="title">
+          <%= emoji_codes_to_img(local_assigns[:topic].fancy_title) %>
+        </h2>
+      </div>
+      <section class="excerpt">
+        <%= "#{local_assigns[:topic].excerpt.split[0...local_assigns[:topic_excerpt_length]].join(' ')} …" %>
+      </section>
+    </a>
+    <div class="topic-meta">
+      <div class="topic-byline">
+        <div class="author">
+          <%= user_profile(local_assigns[:topic].user, local_assigns[:user_profile_opts]) %>
+        </div>
+        <div class="bull">•</div>
+        <div class="date">
+          <%= short_date(local_assigns[:topic].created_at) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
