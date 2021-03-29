@@ -44,6 +44,7 @@ class LandingPages::Updater
         name: page_data["name"],
         path: page_data["path"],
         body: @handler[path + "/body.html.erb"],
+        parent: page_data["parent"],
         theme: page_data["theme"],
         groups: page_data["groups"],
         menu: page_data["menu"],
@@ -56,7 +57,14 @@ class LandingPages::Updater
     params[:remote] = @handler.url if @type == :git
 
     params = LandingPages::Page.find_discourse_objects(params)
-    page = LandingPages::Page.find_by("path", params[:path])
+    page = nil
+
+    if params[:parent] && parent_page = LandingPages::Page.find_by("path", params[:parent])
+      page = LandingPages::Page.find_child_page(params[:parent])
+      params[:parent_id] = parent_page.id
+    elsif params[:path]
+      page = LandingPages::Page.find_by("path", params[:path])
+    end
     
     if page.blank?
       page = LandingPages::Page.create(params)
