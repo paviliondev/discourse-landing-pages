@@ -21,7 +21,6 @@ if ($contactForm.length) {
         data: $(this).serialize(),
         dataType: "JSON",
       }).always(function(result) {
-        console.log(result)
         if (result && result.status == 200) {
           $form.addClass('success');
         } else {
