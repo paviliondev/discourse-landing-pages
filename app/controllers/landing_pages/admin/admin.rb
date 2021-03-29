@@ -13,8 +13,9 @@ class LandingPages::AdminController < ::Admin::AdminController
   end
   
   def serialzed_pages
-    ActiveModel::ArraySerializer.new(LandingPages::Page.all,
-      each_serializer: LandingPages::PageSerializer,
+    ActiveModel::ArraySerializer.new(
+      LandingPages::Page.all,
+      each_serializer: LandingPages::BasicPageSerializer,
       root: false
     )
   end
@@ -24,7 +25,8 @@ class LandingPages::AdminController < ::Admin::AdminController
   end
   
   def serialize_menus
-    ActiveModel::ArraySerializer.new(LandingPages::Menu.all,
+    ActiveModel::ArraySerializer.new(
+      LandingPages::Menu.all,
       each_serializer: LandingPages::MenuSerializer,
       root: false
     )

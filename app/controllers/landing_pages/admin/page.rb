@@ -67,6 +67,7 @@ class LandingPages::PageController < LandingPages::AdminController
       .permit(
         :name,
         :path,
+        :parent_id,
         :theme_id,
         :body,
         :menu,

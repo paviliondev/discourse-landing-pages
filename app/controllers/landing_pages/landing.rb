@@ -58,7 +58,15 @@ class LandingPages::LandingController < ::ActionController::Base
   end
   
   def find_page
-    @page = LandingPages::Page.find_by("path", params[:path])
+    if params[:param]
+      @page = LandingPages::Page.find_child_page(params[:path])
+    else
+      @page = LandingPages::Page.find_by("path", params[:path])
+    end
+    
+    unless @page.present?
+      raise LandingPages::InvalidParameters.new(:path)
+    end
   end
   
   def find_menu

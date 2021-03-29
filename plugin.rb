@@ -63,6 +63,7 @@ after_initialize do
     ../lib/landing_page_constraint.rb
     ../config/routes.rb
     ../app/controllers/landing_pages/concerns/landing_helper.rb
+    ../app/serializers/landing_pages/basic_page.rb
     ../app/serializers/landing_pages/page.rb
     ../app/serializers/landing_pages/menu.rb
     ../app/serializers/landing_pages/remote.rb

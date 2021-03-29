@@ -13,7 +13,7 @@
     {{#if resultMessage}}
       <span class="{{resultMessage.type}}">
         {{d-icon resultMessage.icon}}
-        {{resultMessage.text}}
+        {{{resultMessage.text}}}
       </span>
     {{/if}}
     
@@ -45,11 +45,6 @@
   <div class="page-url">
     <a href="{{pageUrl}}" target="_blank">
       {{pageUrl}}
-      {{#unless page.path}}
-        <span class="placeholder">
-          /<i>{{i18n 'admin.landing_pages.page.path.placeholder'}}</i>
-        </span>
-      {{/unless}}
       {{d-icon "external-link-alt"}}
     </a>
   </div>
@@ -69,18 +64,39 @@
       {{i18n "admin.landing_pages.page.name.instructions"}}
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label">
       {{i18n "admin.landing_pages.page.path.label"}}
     </label>
     
     {{input
-      value=page.path
+      value=(readonly pagePath)
+      disabled=hasParent
+      input=(action "onChangePath" value="target.value")
       class="page-path"}}
     
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.path.instructions"}}
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.parent.label"}}
+    </label>
+    
+    {{page-list
+      value=page.parent_id
+      content=pages
+      onChange=(action "onChangeParent")
+      class="page-select page-parent"
+      options=(hash
+        none='admin.landing_pages.page.select'
+      )}}
+
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.parent.instructions"}}
     </div>
   </div>
   

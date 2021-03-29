@@ -1,7 +1,5 @@
-class LandingPages::PageSerializer < ::ApplicationSerializer
-  attributes :id,
-             :name,
-             :path,
+class LandingPages::PageSerializer < ::LandingPages::BasicPageSerializer
+  attributes :parent_id,
              :theme_id,
              :group_ids,
              :body,

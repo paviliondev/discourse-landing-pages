@@ -10,7 +10,7 @@ en:
       
     error:
       attr_required: "%{attr} required"
-      path_exists: "Path already exists"
+      attr_exists: "%{attr} already exists"
       remote_invalid_url: "Invalid remote url"
       remote_connection_error: "Unable to connect to repository"
       import_handler: "Unable to establish import handler"

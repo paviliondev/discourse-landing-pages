@@ -32,6 +32,10 @@ en:
             label: "Path"
             placeholder: "path"
             instructions: "Page path, e.g. forum.com/page-path"
+          parent:
+            label: "Parent"
+            instructions: "Parent page, format parent-path/:param"
+            param_placeholder: "param"
           body:
             label: "Body"
             instructions: "Page body html.erb"
