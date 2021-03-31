@@ -97,7 +97,7 @@ module LandingHelper
     topics
   end
   
-  def topic(topic_id, opts: {}, instance_var: nil)
+  def topic_view(topic_id, opts: {}, instance_var: nil)
     topic_view = TopicView.new(topic_id.to_i, current_user, opts)
     instance_variable_set("@#{instance_var}", topic_view) if instance_var
     topic_view
