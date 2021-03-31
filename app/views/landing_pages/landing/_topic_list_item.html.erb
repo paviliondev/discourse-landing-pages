@@ -1,9 +1,9 @@
 <article class="topic-list-item <%= local_assigns[:item_classes] %>">
-  <a class="topic-image" href="<%= local_assigns[:topic].url %>">
+  <a class="topic-image" href="<%= local_assigns[:topic_url] || local_assigns[:topic].url %>">
     <img src="<%= local_assigns[:topic].image_url %>">
   </a>
   <div class="topic-details">
-    <a class="topic-link" href="<%= local_assigns[:topic].url %>">
+    <a class="topic-link" href="<%= local_assigns[:topic_url] || local_assigns[:topic].url %>">
       <div class="header">
         <h2 class="title">
           <%= emoji_codes_to_img(local_assigns[:topic].fancy_title) %>
