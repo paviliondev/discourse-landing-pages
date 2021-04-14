@@ -3,22 +3,22 @@
 class LandingPages::Importer  
   attr_reader :type,
               :bundle
-  
+
   attr_accessor :handler,
                 :remote,
                 :report
-  
+
   def initialize(type, bundle: nil)
     @type = type
     @bundle = bundle if bundle
   end
-  
+
   def perform!
     import!
     update! if report[:errors].blank?
     cleanup!
   end
-  
+
   def import!
     if type == :zip && bundle.present?
       @handler = LandingPages::ZipImporter.new(
@@ -34,7 +34,7 @@ class LandingPages::Importer
         temp_folder: temp_folder
       )
     end
-    
+
     if @handler.blank? || !@handler.connected
       add_error(I18n.t("landing_pages.error.import_handler"))
     else
@@ -45,57 +45,101 @@ class LandingPages::Importer
       end
     end
   end
-  
-  def files
+
+  def pages_data
     @handler.all_files.reduce([]) do |result, path|
-      if path.match? /page.json|menu.json|assets.json|pages.json/
-        folder = path.rpartition("/").first
-        folder = "#{folder}/" if folder.length > 0
-        result.push(folder) if result.exclude?(folder)
+      if path.include?("page.json")
+        data = read_json(path)
+        data[:body] = @handler[path.rpartition("/").first + "/body.html.erb"]
+
+        if result.select { |d| d[:name] === data[:name] }.first.blank?
+          result.push(data)
+        end
       end
+
       result
+    end.partition do |page|
+      !page.key?('parent')
+    end.flatten
+  end
+
+  def get_data_from_file(file)
+    file = @handler.all_files.select { |path| path.include?("#{file}.json") }.first
+
+    if file.present?
+      read_json(file)
+    else
+      nil
     end
   end
-  
+
   def temp_folder
     "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
   end
-  
+
   def update!
     updater = LandingPages::Updater.new(type, handler)
 
-    files.each do |path|
-      updater.update(path)
+    global_data = get_data_from_file("pages")
+    asset_data = get_data_from_file("assets")
 
-      if updater.errors.any?
-        add_error(updater.errors.full_messages.join(", "))
-      else
-        import_complete(updater.updated)
+    return if report[:errors].any?
+
+    updater.update_global(global_data) if global_data.present?
+    updater.update_assets(asset_data) if asset_data.present?
+    add_error(updater.errors.full_messages.join(", ")) if updater.errors.any?
+
+    return if report[:errors].any?
+
+    if pages_data.present?
+      pages_data.each do |page_data|
+        updater.update_page(page_data)
+
+        if updater.errors.any?
+          add_error(updater.errors.full_messages.join(", "))
+          break
+        end
       end
     end
+
+    return if report[:errors].any?
+
+    import_complete(updater.updated)
   end
-  
+
   def cleanup!
     @handler.cleanup!
   end
-  
+
   def report
     @report ||= { imported: nil, errors: [] }
   end
-  
+
   def add_error(message, page: nil)
     error = ""
     error += "#{page}: " if page.present?
     error += message
     report[:errors].push(error)
   end
-  
+
   def import_complete(updated)
     report[:imported] = updated
-    
+
     if type == :git
       @remote.commit = @handler.version
       @remote.save
+    end
+  end
+
+  def read_json(path)
+    file = @handler[path]
+    return unless file.present?
+
+    begin
+      json = JSON.parse(file)
+      json.with_indifferent_access
+    rescue TypeError, JSON::ParserError => error
+      add_error(I18n.t("landing_pages.error.import_json", path: path, error: error))
     end
   end
 end
