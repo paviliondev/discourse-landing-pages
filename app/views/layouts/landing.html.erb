@@ -9,7 +9,7 @@
       <meta name="discourse_theme_ids" content="<%= theme_ids&.join(",") %>">
     <%- end %>
     <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
-    
+
     <%- if SiteSetting.site_favicon_url.present? %>
       <link rel="icon" type="image/png" href="<%=SiteSetting.site_favicon_url%>">
     <%- end %>
@@ -19,17 +19,16 @@
     <%- end %>
 
     <%= csrf_meta_tag %>
-    
+
     <%= preload_script "landing-page-assets" %>
     <%= preload_script "landing-page-services" %>
     <%= discourse_stylesheet_link_tag "landing_page", theme_ids: nil %>
 
     <%- if theme_ids.present? %>
       <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>
-      <%= theme_js_lookup %>
       <%= theme_lookup("head_tag") %>
     <%- end %>
-      
+
     <%= preload_script "landing-page-loader" %>
   </head>
   <body class="landing-page <%= @classes %>">
