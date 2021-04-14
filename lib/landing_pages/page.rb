@@ -78,7 +78,7 @@ class LandingPages::Page
       add_error(I18n.t("landing_pages.error.attr_required", attr: 'path'))
     end
 
-    if !parent_id && self.class.path_exists?(path, id)
+    if !parent_id && path.present? && self.class.path_exists?(path, id)
       add_error(I18n.t("landing_pages.error.attr_exists", attr: 'path'))
     end
   end
