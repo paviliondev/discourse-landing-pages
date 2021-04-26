@@ -2,6 +2,7 @@
 
 class LandingPages::Global
   include HasErrors
+  include ActiveModel::Serialization
   
   KEY ||= "global"
     
@@ -18,8 +19,7 @@ class LandingPages::Global
     
     self.class.writable_attrs.each do |attr|
       self.class.class_eval { attr_accessor attr }
-      value = data[attr]       
-      send("#{attr}=", value)
+      send("#{attr}=", data[attr])
     end
   end
   

@@ -18,12 +18,8 @@ export default Controller.extend({
   commitsBehind: null,
   hasCommitsBehind: gt('commitsBehind', 0),
   hasMessages: notEmpty('messages.items'),
-  
-  @discourseComputed('hasCommitsBehind', 'fetchingCommits')
-  showCommitsBehind(hasCommitsBehind, fetchingCommits) {
-    return hasCommitsBehind && !fetchingCommits;
-  },
-  
+  showCommitsBehind: false,
+
   @discourseComputed('staticMessage', 'resultMessages')
   messages(staticMessage, resultMessages) {
     if (resultMessages) {
@@ -58,14 +54,16 @@ export default Controller.extend({
     'hasCommitsBehind',
     'fetchingCommits',
     'page',
-    'remote'
+    'remote',
+    'showGlobal'
   )
   staticMessage(
     pagesNotFetched,
     hasCommitsBehind,
     fetchingCommits,
     page,
-    remote
+    remote,
+    showGlobal
   ) {
     let key;
     let icon = 'info-circle';
@@ -78,6 +76,8 @@ export default Controller.extend({
         key = 'page.local.description';
         icon = 'desktop';
       }
+    } else if (showGlobal) {
+     key = 'global.description';
     } else if (remote && remote.connected) {
       if (pagesNotFetched) {
         key = 'remote.repository.not_fetched';
@@ -89,7 +89,7 @@ export default Controller.extend({
         key = 'remote.repository.up_to_date';
       }
     }
-    
+
     if (key) {
       return {
         icon,
@@ -99,7 +99,13 @@ export default Controller.extend({
       return null;
     }
   },
-  
+
+  @discourseComputed("showGlobal")
+  documentationUrl(showGlobal) {
+    const rootUrl = "https://thepavilion.io/t"
+    return showGlobal ? `${rootUrl}/4098` : `${rootUrl}/4094`;
+  },
+
   actions: {
     changePage(pageId) {
       if (pageId) {
@@ -108,7 +114,8 @@ export default Controller.extend({
             const page = LandingPage.create(result.page);
             this.setProperties({
               page,
-              currentPage: JSON.parse(JSON.stringify(page))
+              currentPage: JSON.parse(JSON.stringify(page)),
+              showGlobal: false
             });
           }
         });
@@ -156,14 +163,17 @@ export default Controller.extend({
       ajax("/landing/remote/pages").then(result => {
         const pages = result.pages;
         const menus = result.menus;
+        const global = result.global;
         const report = result.report;
-        
+
         this.setProperties({
           pages,
           menus,
-          page: null
+          global,
+          page: null,
+          showGlobal: false
         });
-                        
+
         if (report.errors.length) {
           this.set("resultMessages", {
             type: "error",
@@ -172,7 +182,7 @@ export default Controller.extend({
         } else {
           let imported = report.imported;
           let messages = [];
-          
+
           ['scripts', 'menus', 'assets', 'pages'].forEach(listType => {
             if (imported[listType].length) {
               messages.push(
@@ -224,6 +234,14 @@ export default Controller.extend({
     
     updatePages(pages) {
       this.set('pages', pages);
+    },
+    
+    toggleShowGlobal() {
+      this.setProperties({
+        showGlobal: true,
+        page: null,
+        currentPage: null
+      });
     }
   }
 });

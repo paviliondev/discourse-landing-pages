@@ -42,6 +42,12 @@
       label="admin.landing_pages.import.button"
       title="admin.landing_pages.import.description"
       icon="download"}}
+
+    {{d-button
+      action=(action "toggleShowGlobal")
+      label="admin.landing_pages.global.label"
+      title="admin.landing_pages.global.description"
+      icon="globe"}}
   </div>
 </div>
 
@@ -78,5 +84,9 @@
       groups=groups
       menus=menus
       updatePages=(action "updatePages")}}
+  {{/if}}
+  {{#if showGlobal}}
+    {{global-admin
+      global=global}}
   {{/if}}
 {{/if}}

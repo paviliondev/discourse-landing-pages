@@ -25,8 +25,9 @@ export default DiscourseRoute.extend({
       remote: EmberObject.create(model.remote || {}),
       themes: model.themes,
       groups: model.groups,
+      global: model.global
     });
-    
+
     if (model.remote) {
       if (model.remote.commit) {
         controller.send('commitsBehind');

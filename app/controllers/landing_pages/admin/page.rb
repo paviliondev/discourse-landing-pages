@@ -11,7 +11,8 @@ class LandingPages::PageController < LandingPages::AdminController
     render_json_dump(
       pages: serialzed_pages,
       menus: serialize_menus,
-      remote: serialized_remote
+      remote: serialized_remote,
+      global: serialized_global
     )
   end
 

@@ -67,10 +67,12 @@ after_initialize do
     ../app/serializers/landing_pages/page.rb
     ../app/serializers/landing_pages/menu.rb
     ../app/serializers/landing_pages/remote.rb
+    ../app/serializers/landing_pages/global.rb
     ../app/controllers/landing_pages/landing.rb
     ../app/controllers/landing_pages/admin/admin.rb
     ../app/controllers/landing_pages/admin/page.rb
     ../app/controllers/landing_pages/admin/remote.rb
+    ../app/controllers/landing_pages/admin/global.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
     ../extensions/content_security_policy.rb

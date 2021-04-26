@@ -19,13 +19,13 @@ class LandingPages::LandingController < ::ActionController::Base
     if @page.present?
       @title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
-      
-      if @global
+
+      if @global.present?
         @scripts = @global.scripts if @global.scripts.present?
         @header = @global.header if @global.header.present?
         @footer = @global.footer if @global.footer.present?
       end
-            
+
       render :inline => @page.body, :layout => "landing"
     else
       redirect_to path("/")

@@ -4,14 +4,14 @@ en:
       landing_pages:
         title: "Landing Pages"
         documentation: "Learn more in the documentation"
-        
+        save: "Save"
+        destroy: "Delete"
+
         page:
           label: "Pages"
           create: "Create"
           select: "Select page"
-          save: "Save"
           export: "Export"
-          destroy: "Delete"
           remote: 
             label: "Repository"
             description: "This page is pulled from the repository. Changes will be lost on the next pull."
@@ -85,4 +85,17 @@ en:
           x_pages:
             one: "Imported {{count}} page"
             other: "Imported {{count}} pages"
-            
+
+        global:
+          label: Global
+          description: Content to be applied to every page.
+          enabled: Enabled
+          scripts:
+            label: Scripts
+            description: "Add scripts to all pages. <a href='https://thepavilion.io/t/4098#scripts' target='_blank'>See further</a>."
+          header:
+            label: Header
+            description: "Add a header to all pages by defining header attributes JSON. <a href='https://thepavilion.io/t/4098#header' target='_blank'>See further</a>."
+          footer:
+            label: Footer
+            description: "Add a footer to all pages by defining footer attributes JSON. <a href='https://thepavilion.io/t/4098#footer' target='_blank'>See further</a>."

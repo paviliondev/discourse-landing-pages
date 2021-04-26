@@ -36,6 +36,10 @@ class LandingPages::AdminController < ::Admin::AdminController
     LandingPages::RemoteSerializer.new(LandingPages::Remote.get, root: false)
   end
   
+  def serialized_global
+    LandingPages::GlobalSerializer.new(LandingPages::Global.find, root: false)
+  end
+  
   def render_page(page, include_pages: false)
     if page.valid?
       json = {

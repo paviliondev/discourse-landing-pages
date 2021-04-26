@@ -7,13 +7,17 @@ LandingPages::Engine.routes.draw do
       post "upload" => "page#upload"
     end
   end
-  resource :remote do
+
+  resource :remote, constraints: AdminConstraint.new do
     collection do
       get "pages" => "remotes#import"
       post "test" => "remotes#test"
       get "commits-behind" => "remotes#commits_behind"
     end
   end
+
+  resource :global, constraints: AdminConstraint.new
+
   post "contact" => "landing#contact"
 end
 

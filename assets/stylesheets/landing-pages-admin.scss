@@ -135,7 +135,8 @@
   }
   
   .page-details,
-  .page-assets {
+  .page-assets,
+  .page-global {
     display: flex;
     flex-flow: wrap;
     align-items: center;
@@ -165,7 +166,11 @@
       background-color: $primary-low;
     }
   }
-  
+
+  .page-global .control-group {
+    width: 100%;
+  }
+
   .select-kit.multi-select {
     width: 350px;
     
@@ -178,7 +183,7 @@
     }
   }
   
-  .page-editor .ace-wrapper {
+  .ace-wrapper {
     position: relative;
     width: 100%;
     height: 600px;
@@ -190,6 +195,23 @@
       top: 0;
       bottom: 0;
     }
+  }
+  
+  .page-editor .ace-wrapper {
+    height: 600px;
+  }
+
+  .global-editor textarea {
+    width: 100%;
+    height: 150px;
+  }
+  
+  .value-list .select-kit {
+    width: 300px;
+  }
+  
+  .value-list input {
+    margin-bottom: 0;
   }
 }
 

@@ -28,7 +28,8 @@ class LandingPages::RemotesController < LandingPages::AdminController
     render_json_dump(
       report: importer.report,
       menus: serialize_menus,
-      pages: serialzed_pages
+      pages: serialzed_pages,
+      global: serialized_global
     )
   end
   

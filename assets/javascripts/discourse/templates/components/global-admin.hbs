@@ -1,0 +1,68 @@
+<div class="page-header">
+  <div class="page-name">
+    <span>{{i18n 'admin.landing_pages.global.label'}}</span>
+  </div>
+
+  <div class="buttons">
+    {{#if resultIcon}}
+      {{d-icon resultIcon}}
+    {{/if}}
+
+    {{conditional-loading-spinner
+      condition=updatingGlobal
+      size="small"}}
+
+    {{d-button
+      action=(action "destroyGlobal")
+      label="admin.landing_pages.destroy"
+      disabled=updatingGlobal
+      icon="times"}}
+
+    {{d-button
+      action=(action "saveGlobal")
+      label="admin.landing_pages.save"
+      class="btn-primary"
+      disabled=updatingGlobal
+      icon="save"}}
+  </div>
+</div>
+
+<div class="page-global">
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.global.scripts.label"}}
+    </label>
+
+    {{value-list
+      values=global.scripts
+      inputType="array"}}
+
+    <div class="control-instructions">
+      {{{i18n "admin.landing_pages.global.scripts.description"}}}
+    </div>
+  </div>
+
+  <div class="control-group global-editor">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.global.header.label"}}
+    </label>
+
+    <div class="control-instructions">
+      {{{i18n "admin.landing_pages.global.header.description"}}}
+    </div>
+
+    {{textarea value=headerJSON}}
+  </div>
+
+  <div class="control-group global-editor">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.global.footer.label"}}
+    </label>
+
+    <div class="control-instructions">
+      {{{i18n "admin.landing_pages.global.footer.description"}}}
+    </div>
+
+    {{textarea value=footerJSON}}
+  </div>
+</div>
