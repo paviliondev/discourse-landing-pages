@@ -72,11 +72,12 @@ function loadTopics($topicList) {
         classes: $topicList.data('item-classes'),
         excerpt_length: $topicList.data('item-excerpt-length'),
         include_avatar: $topicList.data('item-include-avatar'),
+        profile_details: $topicList.data('item-profile-details'),
         avatar_size: $topicList.data('item-avatar-size')
       }
     }
 
-    if (count >= (perPage * (page + 1)) {
+    if (count >= (perPage * (page + 1))) {
       $topicList.addClass('loading');
 
       $.ajax({
@@ -98,8 +99,6 @@ $window.on("scroll", function() {
   $body.toggleClass('scrolled', $window.scrollTop() > 0);
 
   if ($topicLists.length) {
-    $topicLists.each(function() {
-      loadTopics($(this));
-    });
+    $topicLists.each(function() { loadTopics($(this)); });
   }
 });

@@ -169,7 +169,7 @@ class LandingPages::LandingController < ::ActionController::Base
       hash = permitted[key].to_h.symbolize_keys
       hash.each do |key, val|
         hash[key] = val.to_i if [:page, :per_page, :excerpt_length, :avatar_size].include? key
-        hash[key] = val === 'true' if [:no_definitions, :include_avatar].include? key
+        hash[key] = val === 'true' if [:no_definitions, :include_avatar, :profile_details].include? key
       end
       result[key] = hash
     end

@@ -5,8 +5,11 @@ body.landing-page {
     display: flex;
 
     img {
-      margin-right: .5em;
       border-radius: 50%;
+    }
+
+    .user-profile-details {
+      margin-left: .5em;
     }
 
     .user-profile {

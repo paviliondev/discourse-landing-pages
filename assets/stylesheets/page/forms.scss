@@ -4,10 +4,8 @@ body.landing-page {
   .form {
     display: flex;
     flex-direction: column;
-    font-size: 1.1rem;
-    margin-top: 10px;
 
-    input,
+    input[type=text],
     textarea {
       margin-bottom: 10px;
       border: 1px solid rgba($primary, 0.3);
@@ -27,7 +25,6 @@ body.landing-page {
 
     input[type=checkbox] {
       transform: scale(1.2);
-      margin-top: 3px;
       cursor: pointer;
     }
 
@@ -86,6 +83,26 @@ body.landing-page {
 
       .message {
         padding: 10px;
+      }
+    }
+  }
+  
+  .subscription-form {
+    .subscribe-checkbox {
+      display: flex;
+
+      input {
+        margin-left: auto;
+      }
+    }
+
+    .subscribe-description {
+      margin: .3em 0 1em;
+      font-size: .9em;
+      color: $primary-medium;
+
+      p {
+        margin: 0;
       }
     }
   }

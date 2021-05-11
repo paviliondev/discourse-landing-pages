@@ -1,0 +1,11 @@
+<div class="modal <%= local_assigns[:class] %>">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h4 class="modal-title"><%= local_assigns[:title] %></h4>
+      <span class="modal-close"><%= SvgSprite.raw_svg('times') %></span>
+    </div>
+    <div class="modal-content">
+      <%= local_assigns[:content] %>
+    </div>
+  </div>
+</div>

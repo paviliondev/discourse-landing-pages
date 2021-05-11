@@ -235,14 +235,15 @@ body.landing-page {
         visibility: visible;
         overflow: scroll;
         padding: 2em;
-        
+
         li.primary-item {
           margin: 0 0 1em 0;
+          padding: 0;
           width: 100%;
           box-sizing: border-box;
-          
+
           a {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
           }
           
           &:last-of-type {

@@ -1,5 +1,5 @@
 module LandingHelper
-  def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
+  def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', profile_details: true, show_groups: [], show_location: false)
     return nil if user.blank?
 
     user = User.find_by(username: username) if user.blank?
@@ -8,11 +8,29 @@ module LandingHelper
       bio_html = ''
       location_html = ''
       group_html = ''
+      avatar_html = ''
+      profile_details_html = ''
 
-      if show_location && user.user_profile.location
-        location_html = <<~HTML.html_safe
-          <div class="user-location">#{SvgSprite.raw_svg('map-marker-alt')}<span>#{user.user_profile.location}</span></div>
-        HTML
+      if profile_details
+        if show_location && user.user_profile.location
+          location_html = <<~HTML.html_safe
+            <div class="user-location">#{SvgSprite.raw_svg('map-marker-alt')}<span>#{user.user_profile.location}</span></div>
+          HTML
+        end
+
+        if show_groups
+          user_groups = user.groups.where(name: show_groups)
+
+          if user_groups.present?
+            group_html = <<~HTML.html_safe
+              <div class="user-groups">
+                #{user_groups.map { |g| "<span>#{g.full_name}</span>"}.join("")}
+              </div>
+            HTML
+          end
+        end
+
+        profile_details_html = "<div class='user-profile-details'><div class='user-name'>#{user.readable_name}</div>#{group_html}#{location_html}</div>"
       end
 
       if add_bio
@@ -23,28 +41,16 @@ module LandingHelper
         HTML
       end
 
-      if show_groups
-        user_groups = user.groups.where(name: show_groups)
-
-        if user_groups.present?
-          group_html = <<~HTML.html_safe
-            <div class="user-groups">
-              #{user_groups.map { |g| "<span>#{g.full_name}</span>"}.join("")}
-            </div>
-          HTML
-        end
+      if include_avatar
+        avatar_html = "<img width='#{(avatar_size/2).to_s}' height='#{(avatar_size/2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>"
       end
-
-      avatar = include_avatar ?
-        "<img width='#{(avatar_size/2).to_s}' height='#{(avatar_size/2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>" :
-        ""
 
       <<~HTML.html_safe
         <div class="user-profile">
           <div class="user-top">
             <a href="/u/#{user.username}" class="user-profile" title="#{user.readable_name}">
-              #{avatar}
-              <div class="user-profile-details"><div class="user-name">#{user.readable_name}</div>#{group_html}#{location_html}</div>
+              #{avatar_html}
+              #{profile_details_html}
             </a>
             <div class="top-extra">#{top_extra.present? ? top_extra : ''}</div>
           </div>
