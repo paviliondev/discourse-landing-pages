@@ -1,0 +1,40 @@
+@import 'variables';
+
+body.landing-page {
+  .topic-meta {
+    margin-top: .5em;
+  }
+
+  .topic-byline {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    color: $primary-high;
+    width: 100%;
+
+    .author-list {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .bull {
+      opacity: 0.6;
+      padding: 1em;
+    }
+
+    .link {
+      display: flex;
+      align-items: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        margin-right: .5em;
+      }
+    }
+  }
+}

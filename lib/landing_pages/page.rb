@@ -13,11 +13,11 @@ class LandingPages::Page
   end
 
   def self.discourse_attrs
-    %w(theme_id group_ids).freeze
+    %w(theme_id group_ids category_id).freeze
   end
 
   def self.pages_attrs
-    %w(path parent_id remote menu assets).freeze
+    %w(path parent_id remote menu assets email).freeze
   end
 
   def self.writable_attrs
@@ -58,9 +58,30 @@ class LandingPages::Page
       end
 
       PluginStore.set(LandingPages::PLUGIN_NAME, id, data)
+
+      after_save
     else
       false
     end
+  end
+
+  def after_save
+    if self.category_id
+      cache = LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY)
+      category_id_map = cache.read || {}
+      category_id_map[self.category_id.to_i] = self.id
+      cache.write(category_id_map)
+    end
+  end
+
+  def destroy
+    if PluginStore.remove(LandingPages::PLUGIN_NAME, self.id)
+      after_destroy
+    end
+  end
+
+  def after_destroy
+    LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY).delete
   end
 
   def validate
@@ -96,6 +117,8 @@ class LandingPages::Page
   end
 
   def self.find(page_id)
+    return nil if !page_id
+
     if data = PluginStore.get(LandingPages::PLUGIN_NAME, page_id)
       new(page_id, data)
     else
@@ -144,6 +167,10 @@ class LandingPages::Page
           next unless self.exists?(opts[attr])
         end
 
+        if attr === "category_id"
+          next unless Category.where(id: opts[attr].to_i).exists?
+        end
+
         if attr === "group_ids"
           group_ids = opts[attr].map(&:to_i)
           opts[attr] = Group.where(id: group_ids).pluck(:id)
@@ -156,10 +183,6 @@ class LandingPages::Page
     page = new(page_id, data)
     page.save
     page
-  end
-
-  def self.destroy(page_id)
-    PluginStore.remove(LandingPages::PLUGIN_NAME, page_id)
   end
 
   def self.all

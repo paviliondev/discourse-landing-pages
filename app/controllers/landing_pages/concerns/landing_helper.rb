@@ -1,20 +1,20 @@
 module LandingHelper
   def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', show_groups: [], show_location: false)
     return nil if user.blank?
-    
+
     user = User.find_by(username: username) if user.blank?
-    
+
     if user
       bio_html = ''
       location_html = ''
       group_html = ''
-      
+
       if show_location && user.user_profile.location
         location_html = <<~HTML.html_safe
           <div class="user-location">#{SvgSprite.raw_svg('map-marker-alt')}<span>#{user.user_profile.location}</span></div>
         HTML
       end
-      
+
       if add_bio
         bio_html = <<~HTML.html_safe
           <div class="user-bio">
@@ -22,10 +22,10 @@ module LandingHelper
           </div>
         HTML
       end
-      
+
       if show_groups
         user_groups = user.groups.where(name: show_groups)
-        
+
         if user_groups.present?
           group_html = <<~HTML.html_safe
             <div class="user-groups">
@@ -34,15 +34,15 @@ module LandingHelper
           HTML
         end
       end
-      
+
       avatar = include_avatar ?
         "<img width='#{(avatar_size/2).to_s}' height='#{(avatar_size/2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>" :
         ""
-      
+
       <<~HTML.html_safe
         <div class="user-profile">
           <div class="user-top">
-            <a href="/u/#{user.username}" class="user-profile">
+            <a href="/u/#{user.username}" class="user-profile" title="#{user.readable_name}">
               #{avatar}
               <div class="user-profile-details"><div class="user-name">#{user.readable_name}</div>#{group_html}#{location_html}</div>
             </a>
@@ -54,7 +54,7 @@ module LandingHelper
       HTML
     end
   end
-  
+
   def user_list(group_name: nil, order: "DESC")
     if group_name
       group = Group.find_by(name: group_name)
@@ -68,38 +68,72 @@ module LandingHelper
         return users.to_ary
       end
     end
-    
+
     []
   end
-  
-  def topic_list(opts: {}, instance_var: nil, username: nil, group_name: nil)
-    topics = TopicQuery.new(nil, opts)
-    
-    if group_name
-      group = Group.find_by(name: group_name)
+
+  def topic_list(opts: {}, list_opts: {}, item_opts: {})
+    topics = list_topics(opts, list_opts)
+
+    if opts[:instance_var]
+      instance_variable_set("@#{opts[:instance_var]}", topics)
     end
-    
-    if username
-      user = User.find_by(username: username)
-    end
-    
-    if user
-      list = topics.list_topics_by(user)
-    elsif group
-      list = topics.list_group_topics(group)
+
+    if opts[:render_list]
+      <<~HTML.html_safe
+        <div class="topic-list"
+             data-scrolling-topic-list=true
+             data-page-id="#{@page.id}"
+             data-list-category="#{list_opts[:category]}"
+             data-list-per-page="#{list_opts[:per_page]}"
+             data-list-page="0"
+             data-list-no-definitions="#{list_opts[:no_definitions]}"
+             data-item-classes="#{item_opts[:classes]}"
+             data-item-excerpt-length="#{item_opts[:excerpt_length]}"
+             data-item-include-avatar="#{item_opts[:include_avatar]}"
+             data-item-avatar-size="#{item_opts[:avatar_size]}">
+          #{list_item_html(topics, item_opts)}
+        </div>
+      HTML
     else
-      list = topics.list_latest
+      topics
     end
-      
-    topics = list.topics
-    instance_variable_set("@#{instance_var}", topics) if instance_var
-    
-    topics
   end
-  
+
   def topic_view(topic_id, opts: {}, instance_var: nil)
     topic_view = TopicView.new(topic_id.to_i, current_user, opts)
     instance_variable_set("@#{instance_var}", topic_view) if instance_var
     topic_view
+  end
+
+  def set_category_user(category_slug, user: current_user)
+    if category = Category.find_by(slug: category_slug)
+      category_user = CategoryUser.find_by(
+        category_id: category.id,
+        user_id: user.id
+      )
+
+      if !category_user
+        category_user = CategoryUser.create!(
+          user: user,
+          category_id: category.id,
+          notification_level: CategoryUser.notification_levels[:regular]
+        )
+      end
+
+      instance_variable_set("@category_user", category_user)
+    end
+    
+    nil
+  end
+
+  def landing_post_html(post, remove_topic_image: true)
+    fragment = Nokogiri::XML.fragment(post.cooked)
+
+    if remove_topic_image && topic_image_id = @topic_view&.topic&.image_upload_id 
+      fragment.css("a[href*='#{topic_image_id}']").first.parent.remove
+    end
+
+    fragment.to_html
   end
 end

@@ -1,46 +1,81 @@
 @import 'variables';
 
 body.landing-page {
-  .contact-form {
+  .form {
     display: flex;
     flex-direction: column;
-    width: 500px;
     font-size: 1.1rem;
-    min-height: 350px;
     margin-top: 10px;
-    
+
     input,
     textarea {
       margin-bottom: 10px;
       border: 1px solid rgba($primary, 0.3);
       padding: 10px;
     }
-    
+
     textarea {
       min-height: 150px;
     }
-    
+
     input,
     textarea,
     button {
       animation: fade-in 1s;
       display: block;
     }
-    
+
+    input[type=checkbox] {
+      transform: scale(1.2);
+      margin-top: 3px;
+      cursor: pointer;
+    }
+
     &.submitting .btn-primary {
       background-color: rgba($tertiary, 0.5);
     }
-    
+
     .success-message {
       display: none;
       animation: fade-out 1s;
     }
-    
+
     .error-message {
       display: none;
       animation: fade-out 1s;
     }
-    
+
+    &.submitted {
+      button[type=submit] {
+        animation: fade-out 1s;
+        display: none;
+      }
+
+      .message {
+        text-align: center;
+        padding: 6px 12px;
+      }
+
+      &.success .success-message {
+        background-color: $success;
+        color: $secondary;
+        animation: fade-in 1s;
+        display: block;
+      }
+
+      &.error .error-message {
+        background-color: $danger;
+        color: $secondary;
+        animation: fade-in 1s;
+        display: block;
+      }
+    }
+  }
+
+  .contact-form {
+    width: 500px;
+    min-height: 350px;
+
     &.submitted {
       input,
       button,
@@ -48,24 +83,9 @@ body.landing-page {
         animation: fade-out 1s;
         display: none;
       }
-      
+
       .message {
-        text-align: center;
         padding: 10px;
-      }
-      
-      &.success .success-message {
-        background-color: $success;
-        color: $secondary;
-        animation: fade-in 1s;
-        display: block;
-      }
-      
-      &.error .error-message {
-        background-color: $danger;
-        color: $secondary;
-        animation: fade-in 1s;
-        display: block;
       }
     }
   }

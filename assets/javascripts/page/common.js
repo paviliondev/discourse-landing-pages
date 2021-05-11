@@ -1,20 +1,20 @@
-var $contactForm = $(".contact-form");
+var $forms = $(".contact-form, .subscription-form");
 
-if ($contactForm.length) {
-  $contactForm.each(function() {
+if ($forms.length) {
+  $forms.each(function() {
     var $form = $(this);
     var $submit = $(this).find('.btn-primary');
-    
+
     $form.find('input, textarea').on("keydown", function(e) {
       if (e.keyCode == 13 && e.shiftKey) {
         $form.submit();
       }
     });
-        
+
     $form.submit(function() {
       $form.addClass('submitting');
       $submit.attr("disabled", true);
-       
+
       $.ajax({
         type: "POST",
         url: $(this).attr('action'),
@@ -28,17 +28,17 @@ if ($contactForm.length) {
         }
         $form.removeClass('submitting');
         $form.addClass('submitted');
-        
-        $form.find('input, textarea').val('');
+
+        $form.find('input[type=text], textarea').val('');
         $submit.attr("disabled", false);
-        
+
         setTimeout(function() {
           $form.removeClass('submitted');
           $form.removeClass('success');
           $form.removeClass('error');
-        }, 5000);
+        }, 10000);
       });
-      
+
       return false;
     });
   });
@@ -46,52 +46,60 @@ if ($contactForm.length) {
 
 var $window = $(window);
 var $body = $("body");
+var $document = $(document);
+var $footer = $('footer');
+var $topicLists = $('.topic-list[data-scrolling-topic-list="true"]');
+
+function loadTopics($topicList) {
+  let topicListBottom = $topicList.offset().top + $topicList.outerHeight(true);
+  let windowBottom = $window.scrollTop() + $window.height();
+  let reachedBottom = topicListBottom <= (windowBottom - 50);
+  let loading = $topicList.hasClass('loading');
+
+  if (reachedBottom && !loading) {
+    const count = $topicList.children().length;
+    const perPage = Number($topicList.data('list-per-page'));
+    const page = Number($topicList.data('list-page'));
+    const data = {
+      page_id: $topicList.data('page-id'),
+      list_opts: {
+        category: $topicList.data('list-category'),
+        page,
+        per_page: perPage,
+        no_definitions: $topicList.data('list-no-definitions')
+      },
+      item_opts: {
+        classes: $topicList.data('item-classes'),
+        excerpt_length: $topicList.data('item-excerpt-length'),
+        include_avatar: $topicList.data('item-include-avatar'),
+        avatar_size: $topicList.data('item-avatar-size')
+      }
+    }
+
+    if (count >= (perPage * (page + 1)) {
+      $topicList.addClass('loading');
+
+      $.ajax({
+        type: "GET",
+        url: '/landing/topic-list',
+        data,
+        success: function(result) {
+          $topicList.append(result.topics_html);
+          $topicList.data('page', data.page + 1);
+        }
+      }).always(function() {
+        $topicList.removeClass('loading');
+      });
+    }
+  }
+}
 
 $window.on("scroll", function() {
   $body.toggleClass('scrolled', $window.scrollTop() > 0);
-});
 
-function getElementOffset(el) {
-  var elOffset = el.offset().top;
-  var elHeight = el.height();
-  var windowHeight = $(window).height();
-  var offset;
-
-  if (elHeight < windowHeight) {
-    offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
-  } else {
-    offset = elOffset;
+  if ($topicLists.length) {
+    $topicLists.each(function() {
+      loadTopics($(this));
+    });
   }
-
-  return offset;
-}
-
-window.addEventListener('DOMContentLoaded', (event) => {
-  $("a.scroll-and-center").on('click', function(e) {
-    e.preventDefault();
-    $('html, body').animate({
-      scrollTop: getElementOffset($(e.target.getAttribute('href')))
-    }, 400);
-  });
-
-  var $memberList = $('#member-list');
-  var $toggleList = $memberList.find('.item-list-toggle');
-  var $itemList = $memberList.find('.item-list');
-
-  function handleGroupToggle(group) {
-    if (group && group !== 'everyone') {
-      $itemList.find(`.item:not(.${group})`).removeClass("show");
-      $itemList.find(`.item.${group}`).addClass("show");
-    } else {
-      $itemList.find('.item').addClass('show');
-    }
-  }
-
-  handleGroupToggle(window.location.hash.replace(/^#/, ''));
-
-  $memberList.find('a.toggle').on("click", function(e) {
-    $toggleList.find('.toggle').removeClass('active');
-    $(e.target).addClass('active');
-    handleGroupToggle(e.target.getAttribute("data-group"));
-  });
 });

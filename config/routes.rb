@@ -19,6 +19,8 @@ LandingPages::Engine.routes.draw do
   resource :global, constraints: AdminConstraint.new
 
   post "contact" => "landing#contact"
+  post "subscription" => "landing#subscription"
+  get "topic-list" => "landing#topic_list"
 end
 
 Discourse::Application.routes.prepend do

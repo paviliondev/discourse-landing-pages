@@ -7,6 +7,7 @@
 # url: https://github.com/paviliondev/discourse-landing-pages
 
 register_asset "stylesheets/landing-pages-admin.scss"
+register_asset "stylesheets/landing-pages.scss"
 register_asset "stylesheets/page/page.scss"
 
 if respond_to?(:register_svg_icon)
@@ -22,6 +23,7 @@ config = Rails.application.config
 plugin_asset_path = "#{Rails.root}/plugins/discourse-landing-pages/assets"
 config.assets.paths << "#{plugin_asset_path}/javascripts"
 config.assets.paths << "#{plugin_asset_path}/stylesheets"
+config.paths.add "plugins/discourse-landing-pages/app/views/discourse"
 
 if Rails.env.production?
   config.assets.precompile += %w{
@@ -78,36 +80,64 @@ after_initialize do
     ../extensions/content_security_policy.rb
     ../extensions/upload_validator.rb
     ../extensions/upload_creator.rb
+    ../extensions/user_notifications.rb
+    ../extensions/user_email_job.rb
   ].each do |path|
     load File.expand_path(path, __FILE__)
   end
-  
+
   add_to_class(:site, :landing_paths) { ::LandingPages.paths }
   add_to_serializer(:site, :landing_paths) { object.landing_paths }
-  
+
   ::ContentSecurityPolicy::Extension.singleton_class.prepend ContentSecurityPolicyLandingPagesExtension
   ::Upload.attr_accessor :for_landing_page
   ::UploadValidator.prepend UploadValidatorLandingPagesExtension
   ::UploadCreator.prepend UploadCreatorLandingPagesExtension
-  
+  ::UserNotifications.prepend UserNotificationsLandingPagesExtension
+  ::Jobs::UserEmail.prepend UserEmailJobLandingPagesExtension
+
   TopicQuery.add_custom_filter(:definitions_only) do |topics, query|
     if query.options[:category_id] && query.options[:definitions_only]
       topics = topics.where("
         topics.id in (SELECT topic_id FROM categories WHERE categories.id in (?))
       ", Category.subcategory_ids(query.options[:category_id]))
     end
-    
+
     topics
   end
-  
+
   TopicQuery.add_custom_filter(:filter_categories) do |topics, query|
     if query.options[:filter_categories].present?
       topics = topics.where("topics.category_id not in (?)", query.options[:filter_categories])
     end
-    
+
     topics
   end
-  
+
   full_path = "#{Rails.root}/plugins/discourse-landing-pages/assets/stylesheets/page/page.scss"
   Stylesheet::Importer.plugin_assets['landing_page'] = Set[full_path]
+
+  add_to_class(:category, :landing_page_id) do
+    (LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY).read || {})
+      .transform_keys(&:to_i)[self.id]
+  end
+
+  add_to_class(:topic, :landing_page_url) do
+    return nil if !category
+
+    if category.landing_page_id &&
+        page = LandingPages::Page.find(category.landing_page_id)
+      page.path + "/#{id}"
+    else
+      nil
+    end
+  end
+
+  add_to_serializer(:topic_view, :landing_page_url) do
+    object.topic.landing_page_url
+  end
+
+  add_to_serializer(:topic_view, :include_landing_page_url?) do
+    object.topic.landing_page_url.present?
+  end
 end

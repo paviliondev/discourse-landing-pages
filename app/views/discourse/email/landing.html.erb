@@ -1,0 +1,34 @@
+<div id='main' class=<%= classes %>>
+  <div class='post-wrapper'>
+    <table>
+      <tr>
+        <td class='user-avatar'>
+          <img src="<%= post.user.small_avatar_url %>" title="<%= post.user.username%>">
+        </td>
+        <td>
+          <a class="username username-link" href="<%=Discourse.base_url%>/u/<%= post.user.username_lower%>" target="_blank"><%= post.user.username %></a>
+          <%- if post.user.name.present? %>
+            <span class='user-name username-title'><%= post.user.name %></span>
+          <% end %>
+          <%- if post.user.title.present? %>
+            <span class='user-title'><%= post.user.title %></span>
+          <% end %>
+          <br>
+          <span class='notification-date'><%= short_date(post.created_at) %></span>
+        </td>
+      </tr>
+    </table>
+    <div class='body'><%= format_for_email(post, false) %></div>
+  </div>
+  <div class='footer undecorated-link-footer'>
+    <%= I18n.t("landing_pages.subscription.read_more", page_url: post.topic.landing_page_url) %>
+  </div>
+  <div class='footer'>%{unsubscribe_instructions}</div>
+</div>
+
+<div itemscope itemtype="http://schema.org/EmailMessage" style="display:none">
+  <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+    <link itemprop="url" href="<%= Discourse.base_url %><%= post.topic.landing_page_url %>" />
+    <meta itemprop="name" content="<%= t 'read_full_topic' %>"/>
+  </div>
+</div>

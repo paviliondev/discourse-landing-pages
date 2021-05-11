@@ -1,4 +1,9 @@
 en:
+  js:
+    topic:
+      landing_page:
+        link: Landing Page
+
   admin_js:
     admin:
       landing_pages:
@@ -28,6 +33,9 @@ en:
           groups:
             label: "Groups"
             instructions: "Limit access to group(s)"
+          category:
+            label: "Category"
+            instructions: "Connect page to category (requires child pages)"
           path:
             label: "Path"
             placeholder: "path"

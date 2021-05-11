@@ -2,38 +2,38 @@
   .control-group {
     margin-bottom: 20px;
     margin-right: 20px;
-      
+
     input,
     .select-kit {
       margin-bottom: 5px;
     }
   }
-  
+
   .page-controls {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    
+
     .page-list-container {
       display: flex;
       align-items: center;
     }
-    
+
     .page-select {
       min-width: 300px;
       margin-right: 10px;
     }
-    
+
     .buttons {
       display: flex;
       align-items: center;
-      
+
       .btn {
         margin-left: 10px;
       }
     }
   }
-  
+
   .page-message {
     background-color: $primary-low;
     width: 100%;
@@ -41,84 +41,84 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    
+
     &.success {
       background-color: $success;
       color: $secondary;
-      
+
       a {
         color: $secondary;
       }
     }
-    
+
     &.error {
       background-color: $danger;
       color: $secondary;
-      
+
       a {
         color: $secondary;
       }
     }
-    
+
     .d-icon {
       margin-right: 4px;
     }
-    
+
     a {
       color: $primary;
       text-decoration: underline;
     }
-    
+
     & + div {
       margin-top: 30px;
     }
   }
-  
+
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     flex-flow: wrap;
     margin-bottom: 20px;
-    
+
     .page-name {
       display: flex;
       align-items: center;
-      
+
       &> span {
         font-size: 1.7em;
         margin-right: 20px;
       }
     }
-    
+
     .page-meta {
       display: flex;
       align-items: center;
-      
+
       > div {
         display: flex;
         align-items: center;
-        
+
         .d-icon {
           margin-right: 5px;
         }
       }
     }
-    
+
     .buttons {
       display: flex;
       align-items: center;
-      
+
       .error {
         color: $danger;
       }
-      
+
       .btn {
         margin-left: 10px;
         white-space: nowrap;
       }
     }
-    
+
     .page-url {
       width: 100%;
       background-color: $primary-very-low;
@@ -126,14 +126,14 @@
       padding: 10px 15px;
       margin-top: 10px;
       font-size: 1em;
-      
+
       .d-icon {
         margin-left: 7px;
         font-size: 0.9em;
       }
     }
   }
-  
+
   .page-details,
   .page-assets,
   .page-global {
@@ -141,27 +141,25 @@
     flex-flow: wrap;
     align-items: center;
   }
-  
+
   .control-group {
     margin-right: 20px;
-    
+
     input,
     .select-kit {
       margin-bottom: 5px;
     }
-    
+
     .page-name,
-    .menu-select,
-    .page-parent,
-    .theme-select {
-      width: 300px;
-    }
-    
     .page-path,
-    .select-kit.multi-select {
+    .page-parent,
+    .menu-select,
+    .theme-select,
+    .group-select,
+    .category-select {
       width: 400px;
     }
-    
+
     input:disabled {
       background-color: $primary-low;
     }
@@ -171,23 +169,21 @@
     width: 100%;
   }
 
-  .select-kit.multi-select {
-    width: 350px;
-    
+  .select-kit.multi-select {    
     .choices .choice {
       height: 24px;
-      
+
       input {
         margin-bottom: 0;
       }
     }
   }
-  
+
   .ace-wrapper {
     position: relative;
     width: 100%;
     height: 600px;
-    
+
     .ace_editor {
       position: absolute;
       left: 0;
@@ -196,7 +192,7 @@
       bottom: 0;
     }
   }
-  
+
   .page-editor .ace-wrapper {
     height: 600px;
   }
@@ -205,11 +201,11 @@
     width: 100%;
     height: 150px;
   }
-  
+
   .value-list .select-kit {
     width: 300px;
   }
-  
+
   .value-list input {
     margin-bottom: 0;
   }
@@ -219,40 +215,40 @@
   .modal-inner-container {
     min-width: 450px;
   }
-  
+
   .modal-footer {
     display: flex;
     align-items: center;
     padding-bottom: 15px;
-    
+
     .btn {
       margin-bottom: 0;
     }
-    
+
     > .d-icon {
       margin-left: 5px;
     }
-    
+
     &.success {
       .d-icon {
         color: $success;
       }
-      
+
       a {
         color: $secondary;
       }
     }
-    
+
     &.failed {
       .d-icon {
         color: $danger;
       }
-      
+
       a {
         color: $secondary;
       }
     }
-    
+
     a.d-modal-cancel {
       margin-left: auto;
     }

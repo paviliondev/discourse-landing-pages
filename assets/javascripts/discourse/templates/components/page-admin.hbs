@@ -8,7 +8,7 @@
       {{/if}}
     </span>
   </div>
-  
+
   <div class="buttons">
     {{#if resultMessage}}
       <span class="{{resultMessage.type}}">
@@ -16,9 +16,9 @@
         {{{resultMessage.text}}}
       </span>
     {{/if}}
-    
+
     {{conditional-loading-spinner condition=updatingPage size="small"}}
-    
+
     {{#unless page.creating}}
       {{d-button
         action=(action "exportPage")
@@ -26,14 +26,14 @@
         href=page.exportUrl
         disabled=updatingPage
         icon="upload"}}
-      
+
       {{d-button
         action=(action "destroyPage")
         label="admin.landing_pages.destroy"
         disabled=updatingPage
         icon="times"}}
     {{/unless}}
-    
+
     {{d-button
       action=(action "savePage")
       label="admin.landing_pages.save"
@@ -41,7 +41,7 @@
       disabled=updatingPage
       icon="save"}}
   </div>
-  
+
   <div class="page-url">
     <a href="{{pageUrl}}" target="_blank">
       {{pageUrl}}
@@ -49,17 +49,17 @@
     </a>
   </div>
 </div>
-  
+
 <div class="page-details">
   <div class="control-group">
     <label class="control-label">
       {{i18n "admin.landing_pages.page.name.label"}}
     </label>
-    
+
     {{input
       value=page.name
       class="page-name"}}
-    
+
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.name.instructions"}}
     </div>
@@ -69,13 +69,13 @@
     <label class="control-label">
       {{i18n "admin.landing_pages.page.path.label"}}
     </label>
-    
+
     {{input
       value=(readonly pagePath)
       disabled=hasParent
       input=(action "onChangePath" value="target.value")
       class="page-path"}}
-    
+
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.path.instructions"}}
     </div>
@@ -85,7 +85,7 @@
     <label class="control-label">
       {{i18n "admin.landing_pages.page.parent.label"}}
     </label>
-    
+
     {{page-list
       value=page.parent_id
       content=pages
@@ -99,12 +99,12 @@
       {{i18n "admin.landing_pages.page.parent.instructions"}}
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label">
       {{i18n "admin.landing_pages.page.menu.label"}}
     </label>
-    
+
     {{combo-box
       content=menus
       value=page.menu
@@ -115,7 +115,7 @@
       options=(hash
         none='admin.landing_pages.page.menu.select'
       )}}
-    
+
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.menu.instructions"}}
     </div>
@@ -127,7 +127,7 @@
     <label class="control-label">
       {{i18n "admin.landing_pages.page.theme.label"}}
     </label>
-    
+
     {{combo-box
       content=themes
       value=page.theme_id
@@ -136,25 +136,46 @@
       options=(hash
         none='admin.landing_pages.page.theme.select'
       )}}
-    
+
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.theme.instructions"}}
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label">
       {{i18n "admin.landing_pages.page.groups.label"}}
     </label>
-    
+
     {{group-chooser
+      class="group-select"
       content=groups
       value=page.group_ids
       labelProperty="name"
       onChange=(action (mut page.group_ids))}}
-    
+
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.groups.instructions"}}
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.category.label"}}
+    </label>
+
+    {{category-chooser
+      class="category-select"
+      value=page.category_id
+      allowUncategorized=false
+      onChange=(action (mut page.category_id))
+      options=(hash
+        disabled=hasParent
+      )
+    }}
+
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.category.instructions"}}
     </div>
   </div>
 </div>
@@ -163,11 +184,11 @@
   <label class="control-label">
     {{i18n "admin.landing_pages.page.body.label"}}
   </label>
-  
+
   <div class="control-instructions">
     {{i18n "admin.landing_pages.page.body.instructions"}}
   </div>
-  
+
   {{ace-editor
     content=page.body
     mode="html_ruby"}}

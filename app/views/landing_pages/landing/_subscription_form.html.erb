@@ -1,0 +1,26 @@
+<%= form_tag(landing_pages.subscription_path, remote: true, class: 'form subscription-form') do %>
+  <div class="subscribe-checkbox">
+    <span><%= local_assigns[:subscribe_label] || t('landing_pages.subscription.label', site: SiteSetting.title) %></span>
+    <%= check_box_tag 'subscribed', 'yes', local_assigns[:subscribed] %>
+  </div>
+
+  <div class="subscribe-description">
+    <p><%= local_assigns[:subscribe_description] || t('landing_pages.subscription.description') %></p> 
+  </div>
+
+  <input type="hidden" id="category_id" name="category_id" value="<%= local_assigns[:category_id] %>" />
+
+  <%= button_tag(type: "submit", class: "btn btn-primary") do %>
+    <label class="submit-label">
+      <%= local_assigns[:submit_text] || t('landing_pages.subscription.submit') %>
+    </label>
+  <% end %>
+
+  <div class="message success-message">
+    <%= local_assigns[:success_text] || t('landing_pages.subscription.success') %>
+  </div>
+
+  <div class="message error-message">
+    <%= local_assigns[:failed_text] || t('landing_pages.subscription.error') %>
+  </div>
+<% end %>

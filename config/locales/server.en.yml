@@ -7,7 +7,15 @@ en:
       submit: "Send"
       success: "Sent. We'll be in touch soon."
       error: "Oops, that didn't work. Give it another shot."
-      
+
+    subscription:
+      label: "Subscribe to %{site}'s posts."
+      description: You'll get an email when we make a new post.
+      submit: Submit
+      success: Subscription Updated
+      error: "Oops, that didn't work. Give it another shot."
+      read_more: "<a href='%{page_url}'>Read More</a>"
+
     error:
       attr_required: "%{attr} required"
       attr_exists: "%{attr} already exists"
@@ -17,6 +25,9 @@ en:
       import_failed: "Failed to import"
       import_json: "%{path} json is invalid: %{error}"
       import_update_failed: "Failed to update page from import"
+
+    topic_byline:
+      link: "Forum Topic"
     
   contact_mailer:
     title: "New Contact"

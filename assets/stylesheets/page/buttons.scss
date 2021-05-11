@@ -7,17 +7,13 @@ body.landing-page {
     font-size: 1em;
     cursor: pointer;
     color: $primary;
-    background-color: $secondary;
+    background-color: $primary-very-low;
     text-align: center;
-    
+
     label {
       cursor: pointer;
     }
-    
-    &:not(.btn-label) {
-      border: 1px solid $primary-medium;
-    }
-    
+
     &.btn-icon {
       display: inline-flex;
     }

@@ -96,7 +96,7 @@ describe LandingPages::Page do
 
   it "destroys a page" do
     page = LandingPages::Page.create(@params)
-    LandingPages::Page.destroy(page.id)
+    page.destroy
     expect(LandingPages::Page.exists?(page.id)).to eq(false)
   end
 
