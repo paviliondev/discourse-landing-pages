@@ -6,11 +6,11 @@
     <div class="topic-details">
       <a class="topic-link" href="<%= local_assigns[:topic_url] || local_assigns[:topic].url %>">
         <div class="header">
-          <h2 class="title">
+          <h2 class="topic-title">
             <%= emoji_codes_to_img(local_assigns[:topic].fancy_title) %>
           </h2>
         </div>
-        <section class="excerpt">
+        <section class="topic-excerpt">
           <%= "#{local_assigns[:topic].excerpt.split[0...local_assigns[:topic_excerpt_length]].join(' ')} …" %>
         </section>
       </a>
