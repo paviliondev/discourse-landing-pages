@@ -27,6 +27,7 @@ config.paths.add "plugins/discourse-landing-pages/app/views/discourse"
 
 if Rails.env.production?
   config.assets.precompile += %w{
+    landing-page-globals.js
     landing-page-assets.js
     landing-page-services.js
     landing-page-loader.js
