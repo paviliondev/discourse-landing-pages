@@ -34,18 +34,20 @@ if Rails.env.production?
     page/common.js
     page/desktop.js
     page/mobile.js
-    stylesheets/page/variables.scss
     stylesheets/page/buttons.scss
-    stylesheets/page/header.scss
     stylesheets/page/footer.scss
-    stylesheets/page/contact-form.scss
+    stylesheets/page/forms.scss
+    stylesheets/page/header.scss
     stylesheets/page/list.scss
     stylesheets/page/menu.scss
+    stylesheets/page/modal.scss
+    stylesheets/page/page.scss
     stylesheets/page/post.scss
     stylesheets/page/search.scss
+    stylesheets/page/topic.scss
     stylesheets/page/user.scss
     stylesheets/page/utils.scss
-    stylesheets/page/page.scss
+    stylesheets/page/variables.scss
   }
 end
 
