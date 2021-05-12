@@ -1,29 +1,25 @@
-<div id='main' class=<%= classes %>>
-  <div class='post-wrapper'>
-    <table>
-      <tr>
-        <td class='user-avatar'>
-          <img src="<%= post.user.small_avatar_url %>" title="<%= post.user.username%>">
-        </td>
-        <td>
-          <a class="username username-link" href="<%=Discourse.base_url%>/u/<%= post.user.username_lower%>" target="_blank"><%= post.user.username %></a>
-          <%- if post.user.name.present? %>
-            <span class='user-name username-title'><%= post.user.name %></span>
-          <% end %>
-          <%- if post.user.title.present? %>
-            <span class='user-title'><%= post.user.title %></span>
-          <% end %>
-          <br>
-          <span class='notification-date'><%= short_date(post.created_at) %></span>
-        </td>
-      </tr>
-    </table>
-    <div class='body'><%= format_for_email(post, false) %></div>
+<div style="width: 100%; background-color: #f1f1f1; display: flex;flex-direction: column; align-items: center;">
+  <div style="width: 100%; max-width: 500px; padding: 1em; background-color: #ffffff;">
+    <div style="background-image: url(<%= post.topic.image_url %>); height: 250px; width: 100%;"></div>
+    <div>
+      <h1 title="<%= post.topic.title %>" style="text-align: center;"><%= post.topic.title %></h1>
+      <section style="display: flex; justify-content: center; align-items: center; width: 100%;">
+        <a href="/u/<%= post.user.username %>" title="<%= post.user.readable_name %>" style="display: flex; justify-content: center;">
+          <img width="30" height="30" src="<%= post.user.avatar_template.gsub('{size}', "60") %>" style="border-radius: 50%;">
+          <div style="margin-left: .5em;"><%= post.user.readable_name %></div>
+        </a>
+      </section>
+    </div>
+    <div>
+      <%= PrettyText.format_for_email(::LandingPages::Post.html(post), post).html_safe %>
+    </div>
+    <div style="margin-top: 1em; text-align: center;">
+      <a href="<%= post.topic.landing_page_url %>" title="<%= t("landing_pages.subscription.read_more") %>">
+        <%= t("landing_pages.subscription.read_more") %>
+      </a>
+    </div>
   </div>
-  <div class='footer undecorated-link-footer'>
-    <%= I18n.t("landing_pages.subscription.read_more", page_url: post.topic.landing_page_url) %>
-  </div>
-  <div class='footer'>%{unsubscribe_instructions}</div>
+  <div>%{unsubscribe_instructions}</div>
 </div>
 
 <div itemscope itemtype="http://schema.org/EmailMessage" style="display:none">

@@ -14,7 +14,7 @@ en:
       submit: Submit
       success: Subscription Updated
       error: "Oops, that didn't work. Give it another shot."
-      read_more: "<a href='%{page_url}'>Read More</a>"
+      read_more: "Read More"
 
     error:
       attr_required: "%{attr} required"

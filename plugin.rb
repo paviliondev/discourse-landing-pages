@@ -54,6 +54,7 @@ after_initialize do
     ../lib/landing_pages/menu.rb
     ../lib/landing_pages/asset.rb
     ../lib/landing_pages/page.rb
+    ../lib/landing_pages/post.rb
     ../lib/landing_pages/global.rb
     ../lib/landing_pages/remote.rb
     ../lib/landing_pages/updater.rb

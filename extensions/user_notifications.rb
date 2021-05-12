@@ -28,7 +28,7 @@ module UserNotificationsLandingPagesExtension
   end
 
   def landing_email_html
-    return landing_page.email_html if landing_page.email_html.present?
+    return landing_page.email if landing_page.email.present?
 
     @instance ||= UserNotificationRenderer.with_view_paths(
       Rails.configuration.paths["plugins/discourse-landing-pages/app/views/discourse"]

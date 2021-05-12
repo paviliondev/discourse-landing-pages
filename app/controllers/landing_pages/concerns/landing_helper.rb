@@ -132,14 +132,4 @@ module LandingHelper
     
     nil
   end
-
-  def landing_post_html(post, remove_topic_image: true)
-    fragment = Nokogiri::XML.fragment(post.cooked)
-
-    if remove_topic_image && topic_image_id = @topic_view&.topic&.image_upload_id 
-      fragment.css("a[href*='#{topic_image_id}']").first.parent.remove
-    end
-
-    fragment.to_html
-  end
 end
