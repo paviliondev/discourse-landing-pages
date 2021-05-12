@@ -224,15 +224,12 @@ class LandingPages::Page
 
   def self.find_discourse_objects(opts)
     if opts[:theme] != nil
-      opts[:theme_id] = ""
-
       if theme = Theme.find_by(name: opts[:theme])
         opts[:theme_id] = theme.id
       elsif theme = Theme.find_by_id(opts[:theme])
         opts[:theme_id] = theme.id        
       end
 
-      ## We only save theme ids of themes on the Discourse instance
       opts.delete(:theme)
     end
 
@@ -247,8 +244,17 @@ class LandingPages::Page
         end
       end
 
-      ## We only save group ids of groups on the Discourse instance
       opts.delete(:groups)
+    end
+
+    if opts[:category] != nil
+      if category = Category.find_by(slug: opts[:category])
+        opts[:category_id] = category.id
+      elsif category = Category.find_by_id(opts[:category])
+        opts[:category_id] = category.id        
+      end
+
+      opts.delete(:category)
     end
 
     opts
