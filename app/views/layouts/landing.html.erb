@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title><%= @page_title %></title>
-    <meta name="description" content="">
+    <%= yield :head %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
     <%- if theme_ids.present? %>
       <meta name="discourse_theme_ids" content="<%= theme_ids&.join(",") %>">
