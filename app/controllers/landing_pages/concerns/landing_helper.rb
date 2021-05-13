@@ -110,10 +110,16 @@ module LandingHelper
     end
   end
 
-  def topic_view(topic_id, opts: {}, instance_var: nil)
-    topic_view = TopicView.new(topic_id.to_i, current_user, opts)
-    instance_variable_set("@#{instance_var}", topic_view) if instance_var
-    topic_view
+  def topic_view(id_or_slug, opts: {}, instance_var: nil, set_page_title: false)
+    return nil unless id_or_slug.present?
+    topic = Topic.where('id = ? or slug = ?', id_or_slug.to_i, id_or_slug.to_s)
+
+    if topic.exists?
+      topic_view = TopicView.new(topic.first, current_user, opts)
+      instance_variable_set("@#{instance_var}", topic_view) if instance_var
+      @page_title = topic.title if set_page_title
+      topic_view
+    end
   end
 
   def set_category_user(category_slug, user: current_user)

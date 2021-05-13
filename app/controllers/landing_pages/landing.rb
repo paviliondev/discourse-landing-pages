@@ -24,7 +24,7 @@ class LandingPages::LandingController < ::ActionController::Base
 
   def show
     if @page.present?
-      @title = SiteSetting.title + " | #{@page.name}"
+      @page_title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
 
       if @global.present?
@@ -79,7 +79,7 @@ class LandingPages::LandingController < ::ActionController::Base
 
   rescue_from LandingPages::InvalidAccess do |e|
     @group = Group.find(@page.group_ids.first)
-    @title = I18n.t("page_forbidden.title")
+    @page_title = I18n.t("page_forbidden.title")
     @classes = "forbidden"
     render status: 403, layout: 'landing', formats: [:html], template: '/exceptions/not_found'
   end
@@ -212,7 +212,7 @@ class LandingPages::LandingController < ::ActionController::Base
         partial: 'topic_list_item',
         locals: {
           topic: topic,
-          topic_url: "#{@page.path}/#{topic.id}"
+          topic_url: "#{@page.path}/#{topic.slug}"
         }.merge(item_opts)
       )
     end

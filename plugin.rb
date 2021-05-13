@@ -131,7 +131,7 @@ after_initialize do
 
     if category.landing_page_id &&
         page = LandingPages::Page.find(category.landing_page_id)
-      page.path + "/#{id}"
+      page.path + "/#{slug}"
     else
       nil
     end
