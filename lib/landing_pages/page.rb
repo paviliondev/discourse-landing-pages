@@ -127,7 +127,7 @@ class LandingPages::Page
   end
 
   def self.where(attr, value)
-    ::PluginStoreRow.where(page_query(attr, value))
+    ::PluginStoreRow.where(page_query(attr), value)
   end
 
   def self.find_by(attr, value)
@@ -143,13 +143,13 @@ class LandingPages::Page
 
   def self.exists?(value, attr: nil, exclude_id: nil)
     if attr
-      query = page_query(attr, value)
+      query = page_query(attr)
       query += "AND key != '#{exclude_id}'" if exclude_id
     else
-      query = "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = '#{value}'"
+      query = "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = ?"
     end
 
-    ::PluginStoreRow.where(query).exists?
+    ::PluginStoreRow.where(query, value).exists?
   end
 
   def self.create(opts)
@@ -195,13 +195,13 @@ class LandingPages::Page
     "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key LIKE 'page_%'"
   end
 
-  def self.page_query(attr, value)
-    page_list_query + " AND value::json->>'#{attr}' = '#{value}'"
+  def self.page_query(attr)
+    page_list_query + " AND value::json->>'#{attr}' = ?"
   end
 
   def self.find_child_page(path)
-    query = "#{page_list_query} AND value::json->>'parent_id' IN (SELECT key FROM plugin_store_rows WHERE #{page_query('path', path)})"
-    records = PluginStoreRow.where(query)
+    query = "#{page_list_query} AND value::json->>'parent_id' IN (SELECT key FROM plugin_store_rows WHERE #{page_query('path')})"
+    records = PluginStoreRow.where(query, path)
 
     if records.exists?
       opts = records.pluck(:key, :value).flatten
