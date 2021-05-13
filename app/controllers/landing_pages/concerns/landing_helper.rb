@@ -79,6 +79,7 @@ module LandingHelper
   end
 
   def topic_list(opts: {}, list_opts: {}, item_opts: {})
+    list_opts[:per_page] = 30 unless list_opts[:per_page].present?
     topics = list_topics(opts, list_opts)
 
     if opts[:instance_var]
@@ -86,10 +87,13 @@ module LandingHelper
     end
 
     if opts[:render_list]
+      list_end = topics.count < list_opts[:per_page]
+
       <<~HTML.html_safe
         <div class="topic-list"
              data-scrolling-topic-list=true
              data-page-id="#{@page.id}"
+             data-list-end=#{list_end}
              data-list-category="#{list_opts[:category]}"
              data-list-per-page="#{list_opts[:per_page]}"
              data-list-page="0"

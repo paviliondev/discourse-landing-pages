@@ -159,8 +159,8 @@ class LandingPages::LandingController < ::ActionController::Base
   def topic_list_params
     params.require(:list_opts)    
     permitted = params.permit(
-      list_opts: {},
-      item_opts: {},
+      list_opts: [:category, :page, :per_page, :no_definitions, except_topic_ids: []],
+      item_opts: [:classes, :excerpt_length, :include_avatar, :profile_details, :avatar_size],
       opts: {}
     )
 
@@ -170,6 +170,7 @@ class LandingPages::LandingController < ::ActionController::Base
       hash.each do |key, val|
         hash[key] = val.to_i if [:page, :per_page, :excerpt_length, :avatar_size].include? key
         hash[key] = val === 'true' if [:no_definitions, :include_avatar, :profile_details].include? key
+        hash[key] = val.map(&:to_i) if [:except_topic_ids].include? key
       end
       result[key] = hash
     end

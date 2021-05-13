@@ -55,15 +55,21 @@ function loadTopics($topicList) {
   let windowBottom = $window.scrollTop() + $window.height();
   let reachedBottom = topicListBottom <= (windowBottom - 50);
   let loading = $topicList.hasClass('loading');
+  let listEnd = $topicList.data('list-end');
 
-  if (reachedBottom && !loading) {
+  if (reachedBottom && !loading && !listEnd) {
     const count = $topicList.children().length;
     const perPage = Number($topicList.data('list-per-page'));
+    const currentTopicIds = $topicList.find('.topic-list-item').map(function() {
+      return Number($(this).data('topic-id'));
+    }).get();
     const page = Number($topicList.data('list-page'));
+
     const data = {
       page_id: $topicList.data('page-id'),
       list_opts: {
         category: $topicList.data('list-category'),
+        except_topic_ids: currentTopicIds,
         page,
         per_page: perPage,
         no_definitions: $topicList.data('list-no-definitions')
@@ -77,7 +83,7 @@ function loadTopics($topicList) {
       }
     }
 
-    if (count >= (perPage * (page + 1))) {
+    if (count === (perPage * (page + 1))) {
       $topicList.addClass('loading');
 
       $.ajax({
@@ -86,11 +92,24 @@ function loadTopics($topicList) {
         data,
         success: function(result) {
           $topicList.append(result.topics_html);
-          $topicList.data('page', data.page + 1);
+          let newCount = $topicList.children().length;
+
+          if (newCount === count) {
+            $topicList.attr('data-list-end', true);
+          } else {
+            let newPage = page + 1;
+            $topicList.attr('data-page', newPage);
+
+            if (newCount < (perPage * (newPage + 1))) {
+              $topicList.attr('data-list-end', true);
+            }
+          }
         }
       }).always(function() {
         $topicList.removeClass('loading');
       });
+    } else {
+      $topicList.attr('data-list-end', true);
     }
   }
 }

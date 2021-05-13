@@ -1,4 +1,4 @@
-<article class="topic-list-item <%= local_assigns[:classes] %>">
+<article class="topic-list-item <%= local_assigns[:classes] %>" data-topic-id="<%= local_assigns[:topic].id %>">
   <div class="contents">
     <a class="topic-image" href="<%= local_assigns[:topic_url] || local_assigns[:topic].url %>">
       <img src="<%= local_assigns[:topic].image_url.present? ? local_assigns[:topic].image_url : "/plugins/discourse-landing-pages/images/image-placeholder.svg" %>">
