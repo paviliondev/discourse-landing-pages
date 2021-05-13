@@ -3,10 +3,10 @@
     <div class="primary">
       <div class="header-title">
         <a href="<%= path local_assigns[:root] || "/" %>">
-          <%- if application_logo_url.present? %>
-            <img src="<%= application_logo_url %>" alt="<%= SiteSetting.title %>" id="site-logo">
+          <%- if local_assigns[:logo_url] || application_logo_url.present? %>
+            <img src="<%= local_assigns[:logo_url] || application_logo_url %>" alt="<%= local_assigns[:title] || SiteSetting.title %>" id="site-logo">
           <%- else %>
-            <h2 id='site-text-logo'><%= SiteSetting.title %></h2>
+            <h2 id='site-text-logo'><%= local_assigns[:title] || SiteSetting.title %></h2>
           <%- end %>
         </a>
       </div>
