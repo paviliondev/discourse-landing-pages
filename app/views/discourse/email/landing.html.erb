@@ -1,25 +1,25 @@
-<div style="width: 100%; background-color: #f1f1f1; display: flex;flex-direction: column; align-items: center;">
-  <div style="width: 100%; max-width: 500px; padding: 1em; background-color: #ffffff;">
+<div style="width: 100%; background-color: #f1f1f1;">
+  <div style="width: 100%; max-width: 500px; margin: 0 auto; padding: 1em; background-color: #ffffff;">
     <div style="background-image: url(<%= post.topic.image_url %>); height: 250px; width: 100%;"></div>
     <div>
       <h1 title="<%= post.topic.title %>" style="text-align: center;"><%= post.topic.title %></h1>
-      <section style="display: flex; justify-content: center; align-items: center; width: 100%;">
-        <a href="/u/<%= post.user.username %>" title="<%= post.user.readable_name %>" style="display: flex; justify-content: center;">
-          <img width="30" height="30" src="<%= post.user.avatar_template.gsub('{size}', "60") %>" style="border-radius: 50%;">
-          <div style="margin-left: .5em;"><%= post.user.readable_name %></div>
+      <div style="display: flex; width: 100%;">
+        <a href="/u/<%= post.user.username %>" title="<%= post.user.readable_name %>" style="margin: 0 auto;">
+          <img width="30" height="30" src="<%= post.user.avatar_template.gsub('{size}', "60") %>" style="border-radius: 50%; display: inline-block; vertical-align: middle;">
+          <div style="margin-left: .5em; display: inline-block; vertical-align: middle;"><%= post.user.readable_name %></div>
         </a>
-      </section>
+      </div>
     </div>
     <div>
       <%= PrettyText.format_for_email(LandingPages::Post.html(post), post).html_safe %>
     </div>
-    <div style="margin-top: 1em; text-align: center;">
-      <a href="<%= post.topic.landing_page_url %>" title="<%= t("landing_pages.subscription.read_more") %>">
+    <div style="text-align: center; display: inline-block; width: 100%;">
+      <a href="<%= post.topic.landing_page_url %>" title="<%= t("landing_pages.subscription.read_more") %>" style="color: #ffffff; background-color: #333333; padding: 6px 12px; margin: 1em 0; display: inline-block;">
         <%= t("landing_pages.subscription.read_more") %>
       </a>
     </div>
   </div>
-  <div>%{unsubscribe_instructions}</div>
+  <div style="text-align: center;padding-bottom: .25em;">%{unsubscribe_instructions}</div>
 </div>
 
 <div itemscope itemtype="http://schema.org/EmailMessage" style="display:none">
