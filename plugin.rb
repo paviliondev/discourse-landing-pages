@@ -66,6 +66,7 @@ after_initialize do
     ../lib/landing_pages/import_export/zip_importer.rb
     ../lib/landing_pages/importer.rb
     ../lib/landing_pages/cache.rb
+    ../lib/landing_email_renderer.rb
     ../lib/landing_page_constraint.rb
     ../config/routes.rb
     ../app/controllers/landing_pages/concerns/landing_helper.rb

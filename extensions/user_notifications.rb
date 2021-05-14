@@ -23,23 +23,24 @@ module UserNotificationsLandingPagesExtension
 
   def build_email(*builder_args)
     opts = builder_args[1]
-    builder_args[1][:html_override] = landing_email_html if landing_post(opts)
+    builder_args[1][:html_override] = landing_email_html(opts) if landing_post(opts)
     super(*builder_args)
   end
 
-  def landing_email_html
+  def landing_email_html(opts)
     return landing_page.email if landing_page.email.present?
 
-    @instance ||= UserNotificationRenderer.with_view_paths(
-      Rails.configuration.paths["plugins/discourse-landing-pages/app/views/discourse"]
-    )
-    @instance.render(
+    unstyled = LandingEmailRenderer.render(
       template: 'email/landing',
       format: :html,
       locals: {
-        post: @post,
-        classes: Rtl.new(@user).css_class 
+        post: @post
       }
     )
+    style = Email::Styles.new(unstyled, opts)
+
+    style.format_basic
+    style.format_html
+    style.to_html
   end
 end
