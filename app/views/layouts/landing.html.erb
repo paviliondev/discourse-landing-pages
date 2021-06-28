@@ -5,8 +5,8 @@
     <title><%= @page_title %></title>
     <%= yield :head %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
-    <%- if theme_ids.present? %>
-      <meta name="discourse_theme_ids" content="<%= theme_ids&.join(",") %>">
+    <%- if theme_id.present? %>
+      <meta name="discourse_theme_id" content="<%= theme_id %>">
     <%- end %>
     <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
 
@@ -23,10 +23,10 @@
     <%= preload_script "landing-page-globals" %>
     <%= preload_script "landing-page-assets" %>
     <%= preload_script "landing-page-services" %>
-    <%= discourse_stylesheet_link_tag "landing_page", theme_ids: nil %>
+    <%= discourse_stylesheet_link_tag "landing_page", theme_id: nil %>
 
-    <%- if theme_ids.present? %>
-      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_ids: theme_ids %>
+    <%- if theme_id.present? %>
+      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_id: theme_id %>
       <%= theme_js_lookup %>
       <%= theme_lookup("head_tag") %>
     <%- end %>
@@ -39,7 +39,7 @@
         <script src="<%= script %>"></script>
       <% end %>
     <% end %>
-    <%- if theme_ids.present? %>
+    <%- if theme_id.present? %>
       <%= theme_lookup("header") %>
     <%- end %>
     <% if @header %>
@@ -49,7 +49,7 @@
     <% if @footer %>
       <%= render partial: "footer", locals: @footer %>
     <% end %>
-    <%- if theme_ids.present? %>
+    <%- if theme_id.present? %>
       <%= theme_lookup("body_tag") %>
     <%- end %>
     <%= javascript_include_tag "page/common" %>

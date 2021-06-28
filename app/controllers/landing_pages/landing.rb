@@ -131,7 +131,7 @@ class LandingPages::LandingController < ::ActionController::Base
 
   def load_theme
     if @page.present? && @page.theme_id.present?
-      @theme_ids = request.env[:resolved_theme_ids] = [@page.theme_id]
+      @theme_id = request.env[:resolved_theme_id] = @page.theme_id
     end
   end
 
