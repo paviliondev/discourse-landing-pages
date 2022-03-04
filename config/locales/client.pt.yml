@@ -64,9 +64,9 @@ pt:
             label: "Pull"
             description: "Pull page(s) from remote"
           title: Pages Repository
-          url: "Repostiory url"
+          url: "Repository url"
           test: "Test Connection"
-          private: "Repostiory is private"
+          private: "Repository is private"
           update: "Update"
         import:
           title: "Import Pages"
