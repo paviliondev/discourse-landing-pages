@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 body.landing-page {
   ul.item-list {
@@ -16,14 +16,14 @@ body.landing-page {
 
       .item-title {
         border-bottom: 1px solid $primary;
-        margin-bottom: .5em;
+        margin-bottom: 0.5em;
         line-height: 1.5em;
         display: inline-flex;
         width: 100%;
         align-items: center;
-        
+
         .emoji {
-          margin-left: .5em;
+          margin-left: 0.5em;
         }
       }
 

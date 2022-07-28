@@ -24,7 +24,7 @@ class LandingPages::Page
     (required_attrs + discourse_attrs + pages_attrs).freeze
   end
 
-  def initialize(page_id, data={})
+  def initialize(page_id, data = {})
     @id = page_id
     set(data)
   end
@@ -144,7 +144,7 @@ class LandingPages::Page
   def self.exists?(value, attr: nil, exclude_id: nil)
     if attr
       query = page_query(attr)
-      query += "AND key != '#{exclude_id}'" if exclude_id
+      query += " AND key != '#{exclude_id}'" if exclude_id
     else
       query = "plugin_name = '#{LandingPages::PLUGIN_NAME}' AND key = ?"
     end
@@ -217,7 +217,7 @@ class LandingPages::Page
   end
 
   def self.application_paths
-    Rails.application.routes.routes.map do |r| 
+    Rails.application.routes.routes.map do |r|
       r.path.spec.to_s.split('/').reject(&:empty?).first
     end.uniq
   end
@@ -227,7 +227,7 @@ class LandingPages::Page
       if theme = Theme.find_by(name: opts[:theme])
         opts[:theme_id] = theme.id
       elsif theme = Theme.find_by_id(opts[:theme])
-        opts[:theme_id] = theme.id        
+        opts[:theme_id] = theme.id
       end
 
       opts.delete(:theme)
@@ -251,7 +251,7 @@ class LandingPages::Page
       if category = Category.find_by(slug: opts[:category])
         opts[:category_id] = category.id
       elsif category = Category.find_by_id(opts[:category])
-        opts[:category_id] = category.id        
+        opts[:category_id] = category.id
       end
 
       opts.delete(:category)

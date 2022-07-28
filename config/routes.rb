@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 LandingPages::Engine.routes.draw do
   resources :page, constraints: AdminConstraint.new do
     member do

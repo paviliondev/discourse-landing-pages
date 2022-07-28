@@ -1,11 +1,10 @@
 import Component from "@ember/component";
-import discourseComputed from "discourse-common/utils/decorators";
 import { or } from "@ember/object/computed";
-import LandingPageGlobal from '../models/landing-page-global';
+import LandingPageGlobal from "../models/landing-page-global";
 
 export default Component.extend({
-  classNames: 'global-admin',
-  updatingGlobal: or('destroyingGlobal', 'savingGlobal'),
+  classNames: "global-admin",
+  updatingGlobal: or("destroyingGlobal", "savingGlobal"),
 
   didReceiveAttrs() {
     this.initializeProps();
@@ -13,13 +12,13 @@ export default Component.extend({
 
   initializeProps() {
     const props = {
-      scripts: []
+      scripts: [],
     };
     const global = this.global;
 
     if (global) {
       if (global.scripts) {
-        props.scripts = global.scripts
+        props.scripts = global.scripts;
       }
 
       if (global.header) {
@@ -36,7 +35,7 @@ export default Component.extend({
 
   actions: {
     saveGlobal() {
-      this.set('savingGlobal', true);
+      this.set("savingGlobal", true);
 
       const scripts = this.scripts;
       const headerJSON = this.headerJSON;
@@ -46,54 +45,58 @@ export default Component.extend({
       const global = {
         scripts,
         header,
-        footer
-      }
+        footer,
+      };
 
       const data = { global };
       let self = this;
 
-      LandingPageGlobal.save(data).then(result => {
-        if (result.success) {
-          self.setProperties({
-            resultIcon: 'check',
-            global
-          });
-          self.initializeProps();
-        } else {
-          self.set('resultIcon', 'times');
-        }
+      LandingPageGlobal.save(data)
+        .then((result) => {
+          if (result.success) {
+            self.setProperties({
+              resultIcon: "check",
+              global,
+            });
+            self.initializeProps();
+          } else {
+            self.set("resultIcon", "times");
+          }
 
-        setTimeout(() => {
-          self.set('resultIcon', null)
-        }, 10000);
-      }).finally(() => {
-        self.set('savingGlobal', false);
-      });
+          setTimeout(() => {
+            self.set("resultIcon", null);
+          }, 10000);
+        })
+        .finally(() => {
+          self.set("savingGlobal", false);
+        });
     },
 
     destroyGlobal() {
       this.set("destroyingGlobal", true);
       let self = this;
 
-      LandingPageGlobal.destroy().then(result => {
-        if (result.success) {
-          self.setProperties({
-            resultIcon: 'check',
-            global: null,
-            scripts: null,
-            headerJSON: null,
-            footerJSON: null
-          });
-        } else {
-          self.set('resultIcon', 'times');
-        }
+      LandingPageGlobal.destroy()
+        .then((result) => {
+          if (result.success) {
+            self.setProperties({
+              resultIcon: "check",
+              global: null,
+              scripts: null,
+              headerJSON: null,
+              footerJSON: null,
+            });
+          } else {
+            self.set("resultIcon", "times");
+          }
 
-        setTimeout(() => {
-          self.set('resultIcon', null)
-        }, 10000);
-      }).finally(() => {
-        self.set('destroyingGlobal', false);
-      });
-    }
-  }
+          setTimeout(() => {
+            self.set("resultIcon", null);
+          }, 10000);
+        })
+        .finally(() => {
+          self.set("destroyingGlobal", false);
+        });
+    },
+  },
 });

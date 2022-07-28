@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class LandingPages::Updater
   include HasErrors
 
@@ -44,7 +45,7 @@ class LandingPages::Updater
     end
   end
 
-  def update_assets(data)    
+  def update_assets(data)
     data[:register].each do |name, path|
       full_path = @handler.real_path(path)
       next unless full_path.present?
@@ -58,7 +59,7 @@ class LandingPages::Updater
         asset.file = file
         asset.save
       end
-  
+
       if asset.errors.any?
         add_errors_from(asset)
       else
@@ -98,12 +99,12 @@ class LandingPages::Updater
         end
 
         if menu.errors.any?
-          add_errors_from(menu)          
+          add_errors_from(menu)
         else
           updated_menus.push(menu.name)
         end
       end
-    end 
+    end
 
     unless errors.any?
       @updated[:scripts] = updated_scripts

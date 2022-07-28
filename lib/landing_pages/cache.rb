@@ -27,7 +27,7 @@ class ::LandingPages::Cache
 
   def self.wrap(key, &block)
     c = new(key)
-  
+
     if cached = c.read
       cached
     else

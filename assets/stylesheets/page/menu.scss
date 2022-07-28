@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 body.landing-page {
   .menu {
@@ -7,12 +7,12 @@ body.landing-page {
     margin: 0;
     list-style: none;
     z-index: 200;
-    
+
     ul {
       list-style: none;
       padding: 0;
     }
-    
+
     > a:hover {
       color: $tertiary;
     }
@@ -20,43 +20,43 @@ body.landing-page {
 
   .primary-item {
     padding: 1.25em;
-    
+
     a {
       font-size: 16px;
       display: block;
     }
-    
+
     .primary-item-link {
       display: flex;
       align-items: center;
       line-height: 30px;
-      
+
       label {
         cursor: pointer;
         white-space: nowrap;
       }
-      
+
       span {
         display: none;
         align-items: center;
         margin-left: 3px;
-        
+
         &.down {
           display: flex;
         }
       }
     }
-    
+
     .primary-description {
       display: flex;
-      
+
       .more {
         display: inline-flex;
         align-items: center;
         vertical-align: middle;
       }
     }
-    
+
     .d-icon {
       width: 15px;
       height: 15px;
@@ -75,7 +75,7 @@ body.landing-page {
     top: 9em;
     z-index: 200;
     background-color: $secondary;
-    
+
     &:before {
       backface-visibility: hidden;
       background-color: white;
@@ -90,12 +90,12 @@ body.landing-page {
       width: 100%;
       height: 100%;
     }
-    
+
     li {
       backface-visibility: hidden;
       opacity: 0;
       position: relative;
-      
+
       &:last-of-type {
         padding-right: 0;
       }
@@ -111,28 +111,28 @@ body.landing-page {
         display: none;
       }
     }
-    
+
     .menu-dropdown {
       visibility: visible;
-      
+
       &:before {
         opacity: 1;
       }
-      
+
       li {
         opacity: 1;
       }
-      
+
       &.has-description {
         padding-top: 0;
       }
-      
+
       .primary-description {
         display: block;
         width: 100%;
         position: relative;
         padding-bottom: 3rem;
-        
+
         span:not(.more) {
           max-width: 700px;
           display: inline-block;
@@ -147,22 +147,22 @@ body.landing-page {
     grid-template-columns: repeat(3, 1fr);
     gap: 4rem;
     width: 100%;
-    
+
     .item {
       position: relative;
-      
+
       &.coming-soon a {
         cursor: default;
         pointer-events: none;
       }
-      
+
       &.coming-soon .content {
         color: rgba($primary, 0.5);
       }
-      
+
       &.coming-soon .image {
         position: relative;
-        
+
         &:after {
           content: " ";
           z-index: 10;
@@ -175,13 +175,13 @@ body.landing-page {
           background: rgba(255, 255, 255, 0.5);
         }
       }
-      
+
       .label {
         margin: 10px 0;
         white-space: nowrap;
         display: inline-block;
       }
-      
+
       .coming-soon {
         display: inline-block;
         margin-left: 10px;
@@ -195,21 +195,21 @@ body.landing-page {
     header.landing-header {
       padding: 10px 20px 10px 13px;
       box-sizing: border-box;
-      
+
       .contents {
         padding: 0;
       }
-      
+
       .mobile-toggle {
         display: flex;
-        
+
         .d-icon {
           width: 30px;
           height: 30px;
         }
       }
     }
-    
+
     .mobile-header .menu {
       position: fixed;
       overflow: scroll;
@@ -222,15 +222,15 @@ body.landing-page {
       background-color: white;
       flex-direction: column;
       align-items: flex-start;
-      
+
       .menu-dropdown {
         display: none;
       }
     }
-    
+
     &.menu-visible {
       overflow: hidden;
-    
+
       .mobile-header .menu {
         visibility: visible;
         overflow: scroll;
@@ -245,32 +245,36 @@ body.landing-page {
           a {
             font-size: 1.2rem;
           }
-          
+
           &:last-of-type {
             padding-bottom: 60px;
           }
-          
+
           .primary-description .more {
             margin: 7px 0;
           }
         }
-        
+
         .primary-item-link {
           margin-bottom: 30px;
-          
+
           label {
             display: inline-block;
-            background-image: linear-gradient(180deg, transparent 90%, $tertiary 0);
+            background-image: linear-gradient(
+              180deg,
+              transparent 90%,
+              $tertiary 0
+            );
             background-size: 100% 100%;
             background-repeat: no-repeat;
             text-decoration: none;
             font-size: 1.5rem;
             color: $primary;
-            transition: background-size .4s ease;
+            transition: background-size 0.4s ease;
             cursor: pointer;
           }
         }
-        
+
         .menu-dropdown {
           display: flex;
           visibility: visible;
@@ -278,29 +282,29 @@ body.landing-page {
           position: relative;
           top: initial;
           padding: 0;
-          
+
           .menu-item-list {
             display: flex;
             flex-wrap: wrap;
             gap: unset;
             margin: 15px 0;
-            
+
             li.item {
               width: 100%;
               backface-visibility: visible;
               opacity: 1;
               padding: 0;
               margin: 1.5em 0;
-              
+
               a .image {
                 float: left;
                 margin-right: 0.8rem;
                 background-position: initial;
               }
-              
+
               .content {
                 display: flex;
-                
+
                 .label {
                   margin-top: 0;
                 }
@@ -310,10 +314,10 @@ body.landing-page {
         }
       }
     }
-    
+
     .item > a {
       display: flex;
-      
+
       .label {
         margin: 5px 0;
       }

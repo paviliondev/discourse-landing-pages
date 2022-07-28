@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class LandingPages::PageSerializer < ::LandingPages::BasicPageSerializer
   attributes :parent_id,
              :category_id,
@@ -6,7 +7,7 @@ class LandingPages::PageSerializer < ::LandingPages::BasicPageSerializer
              :body,
              :remote,
              :menu
-  
+
   def remote
     object.remote.present?
   end

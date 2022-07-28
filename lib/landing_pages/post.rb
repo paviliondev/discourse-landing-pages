@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ::LandingPages::Post
   def self.html(post, remove_topic_image: true)
     fragment = Nokogiri::XML.fragment(post.cooked)

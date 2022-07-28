@@ -1,6 +1,6 @@
-@import 'variables';
+@import "variables";
 
-body.landing-page {  
+body.landing-page {
   footer {
     width: 100vw;
     max-width: 100%;
@@ -14,7 +14,7 @@ body.landing-page {
   .footer-left {
     padding: 60px;
     max-width: 35%;
-    
+
     img {
       width: 60%;
       margin-bottom: 30px;
@@ -25,37 +25,37 @@ body.landing-page {
     padding: 60px;
     max-width: 35%;
     border-left: 2px solid $secondary;
-    
+
     .menu {
       display: flex;
       align-items: flex-start;
       padding: 0;
-      
+
       ul {
         padding: 0;
-        
+
         li {
           margin-bottom: 1em;
         }
       }
-      
+
       .primary-item {
         min-width: 180px;
         box-sizing: border-box;
       }
-      
+
       a {
         color: $secondary;
       }
-      
+
       .primary-item-link {
         font-size: 1.3em;
         margin-bottom: 10px;
       }
-      
+
       .item.coming-soon {
         font-style: italic;
-        
+
         a {
           cursor: default;
         }

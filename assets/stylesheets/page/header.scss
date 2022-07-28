@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 body.landing-page {
   header.landing-header {
@@ -71,7 +71,7 @@ body.landing-page {
   }
 
   .primary-description h2 {
-    margin: 0 0 .5em 0;
+    margin: 0 0 0.5em 0;
   }
 
   @media only screen and (max-width: 480px) {

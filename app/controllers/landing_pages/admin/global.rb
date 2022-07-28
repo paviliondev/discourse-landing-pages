@@ -16,7 +16,7 @@ class LandingPages::GlobalsController < LandingPages::AdminController
       render json: success_json
     else
       render json: error_json
-    end  
+    end
   end
 
   protected

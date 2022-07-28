@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title><%= @page_title %></title>
     <%= yield :head %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <%- if theme_id.present? %>
       <meta name="discourse_theme_id" content="<%= theme_id %>">
     <%- end %>
@@ -20,8 +20,8 @@
 
     <%= csrf_meta_tag %>
 
-    <%= preload_script "landing-page-globals" %>
     <%= preload_script "landing-page-assets" %>
+    <%= preload_script "landing-page-globals" %>
     <%= preload_script "landing-page-services" %>
     <%= discourse_stylesheet_link_tag "landing_page", theme_id: nil %>
 
@@ -52,7 +52,7 @@
     <%- if theme_id.present? %>
       <%= theme_lookup("body_tag") %>
     <%- end %>
-    <%= javascript_include_tag "page/common" %>
-    <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop") %>
+    <%= javascript_include_tag "page/common", defer: "defer" %>
+    <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop"), defer: "defer" %>
   </body>
 </html>

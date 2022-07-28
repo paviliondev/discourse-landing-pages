@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module LandingHelper
   def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', profile_details: true, show_groups: [], show_location: false)
     return nil if user.blank?
@@ -24,7 +25,7 @@ module LandingHelper
           if user_groups.present?
             group_html = <<~HTML.html_safe
               <div class="user-groups">
-                #{user_groups.map { |g| "<span>#{g.full_name}</span>"}.join("")}
+                #{user_groups.map { |g| "<span>#{g.full_name}</span>" }.join("")}
               </div>
             HTML
           end
@@ -42,7 +43,7 @@ module LandingHelper
       end
 
       if include_avatar
-        avatar_html = "<img width='#{(avatar_size/2).to_s}' height='#{(avatar_size/2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>"
+        avatar_html = "<img width='#{(avatar_size / 2).to_s}' height='#{(avatar_size / 2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>"
       end
 
       <<~HTML.html_safe
@@ -64,7 +65,7 @@ module LandingHelper
   def user_list(group_name: nil, order: "DESC")
     if group_name
       group = Group.find_by(name: group_name)
-      
+
       if group && (
         (group.visibility_level == Group.visibility_levels[:public]) ||
         (@group && @group.id == group.id)

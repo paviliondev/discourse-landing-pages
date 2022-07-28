@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LandingPages::Importer  
+class LandingPages::Importer
   attr_reader :type,
               :bundle
 
@@ -41,7 +41,7 @@ class LandingPages::Importer
       begin
         @handler.import!
       rescue RemoteTheme::ImportError => e
-        add_error(e.message || I18n.t("landing_pages.error.import_failed"))    
+        add_error(e.message || I18n.t("landing_pages.error.import_failed"))
       end
     end
   end

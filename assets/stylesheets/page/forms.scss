@@ -1,11 +1,11 @@
-@import 'variables';
+@import "variables";
 
 body.landing-page {
   .form {
     display: flex;
     flex-direction: column;
 
-    input[type=text],
+    input[type="text"],
     textarea {
       margin-bottom: 10px;
       border: 1px solid rgba($primary, 0.3);
@@ -23,7 +23,7 @@ body.landing-page {
       display: block;
     }
 
-    input[type=checkbox] {
+    input[type="checkbox"] {
       transform: scale(1.2);
       cursor: pointer;
     }
@@ -43,7 +43,7 @@ body.landing-page {
     }
 
     &.submitted {
-      button[type=submit] {
+      button[type="submit"] {
         animation: fade-out 1s;
         display: none;
       }
@@ -86,7 +86,7 @@ body.landing-page {
       }
     }
   }
-  
+
   .subscription-form {
     .subscribe-checkbox {
       display: flex;
@@ -97,8 +97,8 @@ body.landing-page {
     }
 
     .subscribe-description {
-      margin: .3em 0 1em;
-      font-size: .9em;
+      margin: 0.3em 0 1em;
+      font-size: 0.9em;
       color: $primary-medium;
 
       p {

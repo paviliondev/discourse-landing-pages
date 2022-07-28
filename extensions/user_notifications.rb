@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module UserNotificationsLandingPagesExtension
   def landing_post(opts)
     @post&.is_first_post? && landing_page && landing_email_notification_type?

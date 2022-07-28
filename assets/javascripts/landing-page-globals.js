@@ -3,6 +3,6 @@ window.Ember = Object.create({
   computed: {},
   RSVP: {},
   String: {},
-  run: {}
+  run: {},
 });
 window.I18n = Object.create({});

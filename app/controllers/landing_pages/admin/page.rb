@@ -55,7 +55,7 @@ class LandingPages::PageController < LandingPages::AdminController
   def upload
     importer = LandingPages::Importer.new(:zip, bundle: params[:page])
     importer.perform!
-    
+
     if importer.report[:errors].any?
       render json: failed_json.merge(errors: importer.report[:errors])
     else

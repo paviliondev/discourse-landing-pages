@@ -11,14 +11,14 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
   def export_to_folder
     destination_folder = File.join(@temp_folder, @export_name)
     FileUtils.mkdir_p(destination_folder)
-    
+
     about = {}
-    
+
     %w(name path remote).each do |attr|
       value = @page.send(attr)
-      
+
       next unless value.present?
-      
+
       if attr === "theme_id"
         if theme = Theme.find_by(id: value)
           value = theme.name
@@ -26,7 +26,7 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
           value = nil
         end
       end
-      
+
       if attr === "group_ids"
         value = value.reduce do |result, group_id|
           if group = Group.find_by(id: group_id)
@@ -34,12 +34,12 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
           end
         end
       end
-      
+
       about[attr] = value if value.present?
     end
-    
+
     File.write(File.join(destination_folder, "page.json"), JSON.pretty_generate(about))
-    
+
     %w(body menu assets).each do |attr|
       if (value = @page.try(attr)).present?
         pathname = Pathname.new(File.join(destination_folder, filename(attr)))
@@ -53,14 +53,14 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
   end
 
   private
-  
+
   def filename(attr)
     name = attr
-    
+
     ext = {
       body: '.html.erb'
     }[attr.to_sym]
-    
+
     name += ext if ext
     name
   end

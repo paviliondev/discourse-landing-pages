@@ -1,22 +1,22 @@
 import EmberObject from "@ember/object";
-import { ajax } from 'discourse/lib/ajax';
+import { ajax } from "discourse/lib/ajax";
 import { url } from "discourse/lib/computed";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-const basePath = '/landing/page'
+const basePath = "/landing/page";
 
 const LandingPage = EmberObject.extend({
   exportUrl: url("id", `${basePath}/%@/export`),
-  
+
   savePage() {
     const creating = this.creating;
     let path = basePath;
-        
+
     if (!creating) {
       path += `/${this.id}`;
     }
-    
-    let page =  {
+
+    let page = {
       name: this.name,
       path: this.path,
       parent_id: this.parent_id,
@@ -24,29 +24,29 @@ const LandingPage = EmberObject.extend({
       theme_id: this.theme_id,
       group_ids: this.group_ids,
       body: this.body,
-      menu: this.menu
-    }
-    
+      menu: this.menu,
+    };
+
     return ajax(path, {
       type: creating ? "POST" : "PUT",
       data: {
-        page
-      }
+        page,
+      },
     });
   },
-  
+
   destroyPage() {
     return ajax(`${basePath}/${this.id}`, {
-      type: "DELETE"
+      type: "DELETE",
     }).catch(popupAjaxError);
-  }
+  },
 });
 
 LandingPage.reopenClass({
   all() {
     return ajax(basePath).catch(popupAjaxError);
   },
-  
+
   find(pageId) {
     return ajax(`${basePath}/${pageId}`).catch(popupAjaxError);
   },
@@ -56,15 +56,15 @@ LandingPage.reopenClass({
     page.setProperties(props);
     return page;
   },
-  
+
   import(data) {
     return ajax(`${basePath}/import`, {
       type: "POST",
       processData: false,
       contentType: false,
-      data
+      data,
     });
-  }
+  },
 });
 
 export default LandingPage;

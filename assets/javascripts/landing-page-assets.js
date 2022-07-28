@@ -1,4 +1,4 @@
-//= require set-prototype-polyfill
-//= require jquery
-//= require discourse-loader
+//= require vendor/set-prototype-polyfill
+//= require vendor/jquery
+//= require vendor/discourse-loader
 //= require discourse/app/lib/theme-settings-store

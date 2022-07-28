@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class LandingPages::InvalidAccess < StandardError; end
 class LandingPages::InvalidParameters < StandardError; end
 
@@ -44,7 +45,7 @@ class LandingPages::LandingController < ::ActionController::Base
       from: contact_params[:email],
       message: contact_params[:message]
     )
-      
+
     respond_to do |format|
       format.html
       format.js { head :ok }
@@ -62,14 +63,14 @@ class LandingPages::LandingController < ::ActionController::Base
       category_id = @category_user.category_id
 
       CategoryUser.set_notification_level_for_category(user, level, category_id)
-    end 
+    end
 
     respond_to do |format|
       format.html
       format.js { head :ok }
     end
   end
-  
+
   def topic_list
     topics = list_topics(topic_list_params[:opts], topic_list_params[:list_opts])
     topics_html = list_item_html(topics, topic_list_params[:item_opts])
@@ -124,7 +125,7 @@ class LandingPages::LandingController < ::ActionController::Base
     unless @page.group_ids.blank? ||
       @page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) ||
       (current_user && (current_user.groups.map(&:id) && @page.group_ids).length)
-      
+
       raise LandingPages::InvalidAccess.new
     end
   end
@@ -138,7 +139,7 @@ class LandingPages::LandingController < ::ActionController::Base
   def contact_params
     params.require(:email)
     params.require(:message)
-  
+
     result = params.permit(:email, :message)
 
     unless params[:email] =~ EmailValidator.email_regex
@@ -155,9 +156,9 @@ class LandingPages::LandingController < ::ActionController::Base
       :subscribed
     )
   end
-  
+
   def topic_list_params
-    params.require(:list_opts)    
+    params.require(:list_opts)
     permitted = params.permit(
       list_opts: [:category, :page, :per_page, :no_definitions, except_topic_ids: []],
       item_opts: [:classes, :excerpt_length, :include_avatar, :profile_details, :avatar_size],
@@ -167,10 +168,10 @@ class LandingPages::LandingController < ::ActionController::Base
     result = {}
     [:opts, :list_opts, :item_opts].each do |key|
       hash = permitted[key].to_h.symbolize_keys
-      hash.each do |key, val|
-        hash[key] = val.to_i if [:page, :per_page, :excerpt_length, :avatar_size].include? key
-        hash[key] = val === 'true' if [:no_definitions, :include_avatar, :profile_details].include? key
-        hash[key] = val.map(&:to_i) if [:except_topic_ids].include? key
+      hash.each do |k, v|
+        hash[k] = v.to_i if [:page, :per_page, :excerpt_length, :avatar_size].include? k
+        hash[k] = v === 'true' if [:no_definitions, :include_avatar, :profile_details].include? k
+        hash[k] = v.map(&:to_i) if [:except_topic_ids].include? k
       end
       result[key] = hash
     end
@@ -201,7 +202,7 @@ class LandingPages::LandingController < ::ActionController::Base
         notification_level: CategoryUser.notification_levels[:regular]
       )
     end
-    
+
     raise Discourse::InvalidParameters.new unless @category_user
   end
 

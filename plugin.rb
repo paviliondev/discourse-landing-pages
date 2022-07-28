@@ -2,7 +2,7 @@
 
 # name: discourse-landing-pages
 # about: Adds landing pages to Discourse
-# version: 0.1
+# version: 0.2.0
 # authors: Angus McLeod
 # url: https://github.com/paviliondev/discourse-landing-pages
 
@@ -11,13 +11,13 @@ register_asset "stylesheets/landing-pages.scss"
 register_asset "stylesheets/page/page.scss"
 
 if respond_to?(:register_svg_icon)
-  register_svg_icon "save" 
+  register_svg_icon "save"
   register_svg_icon "code-branch"
   register_svg_icon "code-commit"
 end
 
 add_admin_route "admin.landing_pages.title", "landing-pages"
-gem "jquery-rails", "4.4.0"
+gem "jquery-rails", "4.5.0"
 
 config = Rails.application.config
 plugin_asset_path = "#{Rails.root}/plugins/discourse-landing-pages/assets"
@@ -51,7 +51,7 @@ if Rails.env.production?
   }
 end
 
-after_initialize do 
+after_initialize do
   %w[
     ../lib/landing_pages/engine.rb
     ../lib/landing_pages/menu.rb

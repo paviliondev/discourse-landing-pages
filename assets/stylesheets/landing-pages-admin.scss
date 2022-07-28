@@ -85,7 +85,7 @@
       display: flex;
       align-items: center;
 
-      &> span {
+      & > span {
         font-size: 1.7em;
         margin-right: 20px;
       }
@@ -169,7 +169,7 @@
     width: 100%;
   }
 
-  .select-kit.multi-select {    
+  .select-kit.multi-select {
     .choices .choice {
       height: 24px;
 

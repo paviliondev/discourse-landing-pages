@@ -1,28 +1,28 @@
-(function() {
-  var themeSettings = {};
-  var Discourse = {};
+(function () {
+  let themeSettings = {};
+  let Discourse = {};
   window.Discourse = Discourse;
 
   Discourse.__container__ = {
-    lookup: function(name) {
+    lookup: function (name) {
       if (name === "service:theme-settings") {
         return {
-          registerSettings: function(themeId, settingsObject) {
+          registerSettings: function (themeId, settingsObject) {
             themeSettings[themeId] = settingsObject;
           },
 
-          getSetting: function(themeId, settingsKey) {
+          getSetting: function (themeId, settingsKey) {
             if (themeSettings[themeId]) {
               return themeSettings[themeId][settingsKey];
             }
             return null;
           },
 
-          getObjectForTheme: function(themeId) {
+          getObjectForTheme: function (themeId) {
             return themeSettings[themeId];
-          }
+          },
         };
       }
-    }
-  }
+    },
+  };
 })();

@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 body.landing-page {
   .topic-meta {
@@ -29,7 +29,7 @@ body.landing-page {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: .5em;
+        margin-right: 0.5em;
         width: 20px;
         height: 20px;
       }

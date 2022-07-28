@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ContentSecurityPolicyLandingPagesExtension
   def path_specific_extension(path_info)
     super.tap do |obj|
