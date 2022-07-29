@@ -22,25 +22,6 @@ extend_content_security_policy(
   script_src: ['https://ajax.googleapis.com']
 )
 
-if Rails.env.production?
-  config.assets.precompile += %w{
-    stylesheets/page/buttons.scss
-    stylesheets/page/footer.scss
-    stylesheets/page/forms.scss
-    stylesheets/page/header.scss
-    stylesheets/page/list.scss
-    stylesheets/page/menu.scss
-    stylesheets/page/modal.scss
-    stylesheets/page/page.scss
-    stylesheets/page/post.scss
-    stylesheets/page/search.scss
-    stylesheets/page/topic.scss
-    stylesheets/page/user.scss
-    stylesheets/page/utils.scss
-    stylesheets/page/variables.scss
-  }
-end
-
 after_initialize do
   %w[
     ../lib/landing_pages/engine.rb
