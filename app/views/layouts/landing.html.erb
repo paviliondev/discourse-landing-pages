@@ -20,18 +20,13 @@
 
     <%= csrf_meta_tag %>
 
-    <%= preload_script "landing-page-assets" %>
-    <%= preload_script "landing-page-globals" %>
-    <%= preload_script "landing-page-services" %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer="defer"></script>
     <%= discourse_stylesheet_link_tag "landing_page", theme_id: nil %>
 
     <%- if theme_id.present? %>
       <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_id: theme_id %>
-      <%= theme_js_lookup %>
       <%= theme_lookup("head_tag") %>
     <%- end %>
-
-    <%= preload_script "landing-page-loader" %>
   </head>
   <body class="landing-page <%= @classes %>">
     <% if @scripts %>
@@ -52,7 +47,7 @@
     <%- if theme_id.present? %>
       <%= theme_lookup("body_tag") %>
     <%- end %>
-    <%= javascript_include_tag "page/common", defer: "defer" %>
-    <%= javascript_include_tag (mobile_view? ? "page/mobile" : "page/desktop"), defer: "defer" %>
+    <%= javascript_include_tag "/plugins/discourse-landing-pages/javascripts/common.js", defer: "defer", type: "application/javascript" %>
+    <%= javascript_include_tag (mobile_view? ? "/plugins/discourse-landing-pages/javascripts/mobile" : "/plugins/discourse-landing-pages/javascripts/desktop.js"), defer: "defer", type: "application/javascript" %>
   </body>
 </html>

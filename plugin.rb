@@ -17,23 +17,13 @@ if respond_to?(:register_svg_icon)
 end
 
 add_admin_route "admin.landing_pages.title", "landing-pages"
-gem "jquery-rails", "4.5.0"
 
-config = Rails.application.config
-plugin_asset_path = "#{Rails.root}/plugins/discourse-landing-pages/assets"
-config.assets.paths << "#{plugin_asset_path}/javascripts"
-config.assets.paths << "#{plugin_asset_path}/stylesheets"
-config.paths.add "plugins/discourse-landing-pages/app/views/discourse"
+extend_content_security_policy(
+  script_src: ['https://ajax.googleapis.com']
+)
 
 if Rails.env.production?
   config.assets.precompile += %w{
-    landing-page-globals.js
-    landing-page-assets.js
-    landing-page-services.js
-    landing-page-loader.js
-    page/common.js
-    page/desktop.js
-    page/mobile.js
     stylesheets/page/buttons.scss
     stylesheets/page/footer.scss
     stylesheets/page/forms.scss

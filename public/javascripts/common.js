@@ -1,5 +1,3 @@
-// discourse-skip-module
-
 (function ($) {
   let $forms = $(".contact-form, .subscription-form");
 
