@@ -108,17 +108,28 @@ export default Component.extend({
     },
 
     exportPage() {
-      this.page.exportPage().catch((error) => {
-        this.set("resultMessage", {
-          type: "error",
-          icon: "icon",
-          text: extractError(error),
-        });
+      const page = this.get("page");
+      let self = this;
 
-        setTimeout(() => {
-          self.set("resultMessage", null);
-        }, 5000);
-      });
+      page
+        .exportPage()
+        .then((file) => {
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(file);
+          link.setAttribute("download", `discourse-${page.name.toLowerCase()}.zip`);
+          link.click();
+        })
+        .catch((error) => {
+          self.set("resultMessage", {
+            type: "error",
+            icon: "times",
+            text: extractError(error),
+          });
+
+          setTimeout(() => {
+            self.set("resultMessage", null);
+          }, 5000);
+        });
     },
   },
 });
