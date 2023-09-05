@@ -109,11 +109,9 @@ after_initialize do
     end
   end
 
-  add_to_serializer(:topic_view, :landing_page_url) do
-    object.topic.landing_page_url
-  end
-
-  add_to_serializer(:topic_view, :include_landing_page_url?) do
-    object.topic.landing_page_url.present?
-  end
+  add_to_serializer(
+    :topic_view,
+    :landing_page_url,
+    include_condition: -> { object.topic.landing_page_url.present? }
+  ) { object.topic.landing_page_url }
 end

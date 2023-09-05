@@ -24,7 +24,8 @@
     <%= discourse_stylesheet_link_tag "landing_page", theme_id: nil %>
 
     <%- if theme_id.present? %>
-      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_id: theme_id %>
+      <%= discourse_color_scheme_stylesheets %>
+      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile : :desktop), theme_id: theme_id %>
       <%= theme_lookup("head_tag") %>
     <%- end %>
   </head>
