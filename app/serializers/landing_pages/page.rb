@@ -6,6 +6,7 @@ class LandingPages::PageSerializer < ::LandingPages::BasicPageSerializer
              :group_ids,
              :body,
              :remote,
+             :inline,
              :menu
 
   def remote

@@ -51,6 +51,9 @@ en:
             label: "Menu"
             instructions: "Page menu"
             select: "Select menu"
+          inline:
+            label: "Enable inline layout"
+            instructions: "Displays the page in the default Discourse layout (including header, footer, etc)"
         
         remote:
           repository:

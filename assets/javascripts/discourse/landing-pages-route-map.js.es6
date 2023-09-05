@@ -1,6 +1,3 @@
-export default {
-  resource: "admin.adminPlugins",
-  map() {
-    this.route("landing-pages");
-  },
-};
+export default function () {
+  this.route("inline-page", { path: ":path" });
+}

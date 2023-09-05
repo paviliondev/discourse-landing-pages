@@ -74,6 +74,7 @@ class LandingPages::PageController < LandingPages::AdminController
         :category_id,
         :theme_id,
         :body,
+        :inline,
         :menu,
         group_ids: []
       ).to_h
