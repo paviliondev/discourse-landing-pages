@@ -59,7 +59,8 @@ class LandingPages::PageController < LandingPages::AdminController
     if importer.report[:errors].any?
       render json: failed_json.merge(errors: importer.report[:errors])
     else
-      render json: success_json.merge(page: serialize_page(page))
+      page = LandingPages::Page.find_by("name", importer.report[:imported][:pages][0])
+      render json: success_json.merge(page: serialize_page(page), pages: serialzed_pages)
     end
   end
 

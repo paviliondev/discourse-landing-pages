@@ -69,7 +69,7 @@ LandingPage.reopenClass({
   },
 
   import(data) {
-    return ajax(`${basePath}/import`, {
+    return ajax(`${basePath}/upload`, {
       type: "POST",
       processData: false,
       contentType: false,

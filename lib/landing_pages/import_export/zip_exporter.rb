@@ -14,33 +14,14 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
 
     about = {}
 
-    %w(name path remote).each do |attr|
+    LandingPages::Page.pages_attrs.each do |attr|
       value = @page.send(attr)
-
-      next unless value.present?
-
-      if attr === "theme_id"
-        if theme = Theme.find_by(id: value)
-          value = theme.name
-        else
-          value = nil
-        end
-      end
-
-      if attr === "group_ids"
-        value = value.reduce do |result, group_id|
-          if group = Group.find_by(id: group_id)
-            result.push(group.name)
-          end
-        end
-      end
-
       about[attr] = value if value.present?
     end
 
     File.write(File.join(destination_folder, "page.json"), JSON.pretty_generate(about))
 
-    %w(body menu assets).each do |attr|
+    LandingPages::Page.assets_attrs.each do |attr|
       if (value = @page.try(attr)).present?
         pathname = Pathname.new(File.join(destination_folder, filename(attr)))
         pathname.parent.mkpath
