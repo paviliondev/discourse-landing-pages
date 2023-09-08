@@ -2,7 +2,7 @@
 
 # name: discourse-landing-pages
 # about: Adds landing pages to Discourse
-# version: 0.2.0
+# version: 0.3.0
 # authors: Angus McLeod
 # url: https://github.com/paviliondev/discourse-landing-pages
 
