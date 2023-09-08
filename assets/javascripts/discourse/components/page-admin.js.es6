@@ -99,7 +99,10 @@ export default Component.extend({
         .destroyPage()
         .then((result) => {
           if (result.success) {
-            this.set("page", null);
+            this.setProperties({
+              page: null,
+              pages: result.pages,
+            });
           }
         })
         .finally(() => {
