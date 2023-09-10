@@ -15,7 +15,7 @@ en:
         page:
           label: "Pages"
           create: "Create"
-          select: "Select page"
+          select: "Select page…"
           export: "Export"
           remote: 
             label: "Repository"
@@ -29,13 +29,14 @@ en:
           theme:
             label: "Theme"
             instructions: "Theme with page assets"
-            select: "Select theme"
+            select: "Select theme…"
           groups:
             label: "Groups"
             instructions: "Limit access to group(s)"
           category:
             label: "Category"
             instructions: "Connect page to category (requires child pages)"
+            select: "Select category…"
           path:
             label: "Path"
             placeholder: "path"
@@ -50,13 +51,13 @@ en:
           menu:
             label: "Menu"
             instructions: "Page menu"
-            select: "Select menu"
+            select: "Select menu…"
         
         remote:
           repository:
             label: "Repository"
             description: "Update repository"
-            checking_status: "Checking status of the repository..."
+            checking_status: "Checking status of the repository…"
             not_fetched: "Please make your first pull from the repository"
             up_to_date: "Up to date with the repository"
             out_of_date: "Pull the new commits from the respository"

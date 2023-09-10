@@ -36,13 +36,13 @@ class LandingPages::Page
       self.class.class_eval { attr_accessor attr }
       value = data[attr]
 
-      if value != nil
-        value = value.dasherize if attr === "path"
-        value = value.to_i if (attr === "theme_id" && value.present?)
-        value = value.map(&:to_i) if (attr === "group_ids" && value.present?)
-
-        send("#{attr}=", value)
+      if value.present?
+        value = value.dasherize if "path" == attr
+        value = value.to_i if %w[category_id theme_id].include?(attr)
+        value = value.map(&:to_i) if "group_ids" == attr
       end
+
+      send("#{attr}=", value)
     end
   end
 
@@ -51,11 +51,7 @@ class LandingPages::Page
 
     if valid?
       data = {}
-
-      self.class.writable_attrs.each do |attr|
-        value = send(attr)
-        data[attr] = value if value.present?
-      end
+      self.class.writable_attrs.each { |attr| data[attr] = send(attr) }
 
       PluginStore.set(LandingPages::PLUGIN_NAME, id, data)
 
@@ -66,16 +62,16 @@ class LandingPages::Page
   end
 
   def after_save
-    if self.category_id
+    if category_id
       cache = LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY)
       category_id_map = cache.read || {}
-      category_id_map[self.category_id.to_i] = self.id
+      category_id_map[category_id] = id
       cache.write(category_id_map)
     end
   end
 
   def destroy
-    after_destroy if PluginStore.remove(LandingPages::PLUGIN_NAME, self.id)
+    after_destroy if PluginStore.remove(LandingPages::PLUGIN_NAME, id)
   end
 
   def after_destroy

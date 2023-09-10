@@ -29,9 +29,8 @@ const LandingPage = EmberObject.extend({
 
     return ajax(path, {
       type: creating ? "POST" : "PUT",
-      data: {
-        page,
-      },
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(page),
     });
   },
 
