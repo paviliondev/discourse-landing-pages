@@ -33,7 +33,7 @@
       {{i18n "admin.landing_pages.global.scripts.label"}}
     </label>
 
-    {{value-list values=global.scripts inputType="array"}}
+    {{value-list values=scripts inputType="array"}}
 
     <div class="control-instructions">
       {{{i18n "admin.landing_pages.global.scripts.description"}}}
@@ -49,7 +49,13 @@
       {{{i18n "admin.landing_pages.global.header.description"}}}
     </div>
 
-    {{textarea value=headerJSON}}
+    <JsonEditor @content={{jsonHeader}} />
+    {{#if jsonHeaderError}}
+      <span class="validation-error">
+        {{d-icon "times"}}
+        {{i18n "admin.landing_pages.global.header.error" error=jsonHeaderError}}
+      </span>
+    {{/if}}
   </div>
 
   <div class="control-group global-editor">
@@ -61,6 +67,12 @@
       {{{i18n "admin.landing_pages.global.footer.description"}}}
     </div>
 
-    {{textarea value=footerJSON}}
+    <JsonEditor @content={{jsonFooter}} />
+    {{#if jsonFooterError}}
+      <span class="validation-error">
+        {{d-icon "times"}}
+        {{i18n "admin.landing_pages.global.footer.error" error=jsonFooterError}}
+      </span>
+    {{/if}}
   </div>
 </div>

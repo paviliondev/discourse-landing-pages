@@ -1,9 +1,9 @@
 import Component from "@ember/component";
+import { action } from "@ember/object";
 import { or } from "@ember/object/computed";
 import LandingPageGlobal from "../models/landing-page-global";
 
 export default Component.extend({
-  classNames: "global-admin",
   updatingGlobal: or("destroyingGlobal", "savingGlobal"),
 
   didReceiveAttrs() {
@@ -11,92 +11,85 @@ export default Component.extend({
   },
 
   initializeProps() {
-    const props = {
-      scripts: [],
-    };
-    const global = this.global;
-
-    if (global) {
-      if (global.scripts) {
-        props.scripts = global.scripts;
-      }
-
-      if (global.header) {
-        props.headerJSON = JSON.stringify(global.header, undefined, 4);
-      }
-
-      if (global.footer) {
-        props.footerJSON = JSON.stringify(global.footer, undefined, 4);
-      }
-    }
-
-    this.setProperties(props);
+    this.setProperties({
+      scripts: this.global?.scripts,
+      jsonHeader: JSON.stringify(this.global?.header || undefined, null, 4),
+      jsonFooter: JSON.stringify(this.global?.footer || undefined, null, 4),
+    });
   },
 
-  actions: {
-    saveGlobal() {
-      this.set("savingGlobal", true);
+  @action
+  saveGlobal() {
+    this.setProperties({
+      savingGlobal: true,
+      jsonHeaderError: null,
+      jsonFooterError: null,
+    });
 
-      const scripts = this.scripts;
-      const headerJSON = this.headerJSON;
-      const footerJSON = this.footerJSON;
-      const header = headerJSON ? JSON.parse(headerJSON) : null;
-      const footer = footerJSON ? JSON.parse(footerJSON) : null;
-      const global = {
-        scripts,
+    let header;
+    try {
+      header = JSON.parse(this.jsonHeader || "null");
+    } catch (e) {
+      this.set("jsonHeaderError", e.message);
+    }
+
+    let footer;
+    try {
+      footer = JSON.parse(this.jsonFooter || "null");
+    } catch (e) {
+      this.set("jsonFooterError", e.message);
+    }
+
+    if (this.jsonHeaderError || this.jsonFooterError) {
+      this.setProperties({
+        savingGlobal: false,
+        resultIcon: "times",
+      });
+      setTimeout(() => this.set("resultIcon", null), 10000);
+      return;
+    }
+
+    const data = {
+      global: {
+        scripts: this.scripts,
         header,
         footer,
-      };
+      },
+    };
 
-      const data = { global };
-      let self = this;
+    LandingPageGlobal.save(data)
+      .then((result) => {
+        if (result.success) {
+          this.setProperties({
+            resultIcon: "check",
+            global: data.global,
+          });
+          this.initializeProps();
+        } else {
+          this.set("resultIcon", "times");
+        }
+        setTimeout(() => this.set("resultIcon", null), 10000);
+      })
+      .finally(() => this.set("savingGlobal", false));
+  },
 
-      LandingPageGlobal.save(data)
-        .then((result) => {
-          if (result.success) {
-            self.setProperties({
-              resultIcon: "check",
-              global,
-            });
-            self.initializeProps();
-          } else {
-            self.set("resultIcon", "times");
-          }
+  @action
+  destroyGlobal() {
+    this.set("destroyingGlobal", true);
 
-          setTimeout(() => {
-            self.set("resultIcon", null);
-          }, 10000);
-        })
-        .finally(() => {
-          self.set("savingGlobal", false);
-        });
-    },
-
-    destroyGlobal() {
-      this.set("destroyingGlobal", true);
-      let self = this;
-
-      LandingPageGlobal.destroy()
-        .then((result) => {
-          if (result.success) {
-            self.setProperties({
-              resultIcon: "check",
-              global: null,
-              scripts: null,
-              headerJSON: null,
-              footerJSON: null,
-            });
-          } else {
-            self.set("resultIcon", "times");
-          }
-
-          setTimeout(() => {
-            self.set("resultIcon", null);
-          }, 10000);
-        })
-        .finally(() => {
-          self.set("destroyingGlobal", false);
-        });
-    },
+    LandingPageGlobal.destroy()
+      .then((result) => {
+        if (result.success) {
+          this.setProperties({
+            resultIcon: "check",
+            global: {},
+          });
+          this.initializeProps();
+        } else {
+          this.set("resultIcon", "times");
+        }
+        setTimeout(() => this.set("resultIcon", null), 10000);
+      })
+      .finally(() => this.set("destroyingGlobal", false));
   },
 });
