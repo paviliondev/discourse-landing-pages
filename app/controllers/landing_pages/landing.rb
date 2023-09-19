@@ -19,17 +19,12 @@ class LandingPages::LandingController < ::ActionController::Base
   before_action :load_theme, only: [:show]
   before_action :ensure_can_change_subscription, only: [:subscription]
   before_action :find_category_user, only: [:subscription]
-  skip_before_action :check_xhr
 
   helper_method :list_item_html,
                 :list_topics
 
   def show
     if @page.present?
-      if @page.inline
-        check_xhr
-      end
-
       @page_title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
       @theme_id = @page.theme_id

@@ -13,7 +13,7 @@ class LandingPages::Page
   end
 
   def self.pages_attrs
-    %w(name path parent_id remote email theme_id group_ids category_id inline).freeze
+    %w(name path parent_id remote email theme_id group_ids category_id).freeze
   end
 
   def self.assets_attrs
@@ -40,7 +40,6 @@ class LandingPages::Page
         value = value.dasherize if attr === 'path'
         value = value.to_i if (attr === 'theme_id' && value.present?)
         value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
-        value = ActiveModel::Type::Boolean.new.cast(value) if attr == 'inline'
 
         send("#{attr}=", value)
       end
