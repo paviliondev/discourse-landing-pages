@@ -62,9 +62,7 @@ describe LandingPages::Updater do
     @updater.update_assets(raw_assets)
 
     assets = LandingPages::Asset.all
-    expect(assets.length).to eq(2)
-    expect(assets.first.name).to eq(raw_assets['register'].keys.first)
-    expect(assets.second.name).to eq(raw_assets['register'].keys.second)
+    expect(raw_assets['register'].keys).to contain_exactly(assets.first.name, assets.second.name)
   end
 
   it "updates pages" do

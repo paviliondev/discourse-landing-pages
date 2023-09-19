@@ -1,0 +1,22 @@
+<DModal
+  class="upload-selector import-pages"
+  @title={{i18n "admin.landing_pages.import.title"}}
+  @closeModal={{@closeModal}}
+>
+  <:body>
+    <div class="inputs">
+      <input onchange={{action "uploadFile"}} type="file" id="file-input" accept=".zip,application/zip"><br>
+      <span class="description">{{i18n "admin.landing_pages.import.file_tip"}}</span>
+    </div>
+  </:body>
+
+  <:footer>
+    <DButton
+      @action={{this.importPage}}
+      @disabled={{this.importDisabled}}
+      class="btn btn-primary"
+      @label="admin.landing_pages.import.button"
+    />
+    <DModalCancel @close={{@closeModal}} />
+  </:footer>
+</DModal>

@@ -40,6 +40,16 @@ const LandingPage = EmberObject.extend({
       type: "DELETE",
     }).catch(popupAjaxError);
   },
+
+  exportPage() {
+    return ajax(this.exportUrl, {
+      type: "GET",
+      dataType: "binary",
+      xhrFields: {
+        responseType: "blob",
+      },
+    });
+  },
 });
 
 LandingPage.reopenClass({
@@ -58,7 +68,7 @@ LandingPage.reopenClass({
   },
 
   import(data) {
-    return ajax(`${basePath}/import`, {
+    return ajax(`${basePath}/upload`, {
       type: "POST",
       processData: false,
       contentType: false,

@@ -35,7 +35,7 @@ class LandingPages::Importer
       )
     end
 
-    if @handler.blank? || !@handler.connected
+    if @handler.blank? || type == :git && !@handler.connected
       add_error(I18n.t("landing_pages.error.import_handler"))
     else
       begin

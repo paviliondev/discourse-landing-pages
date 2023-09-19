@@ -1,0 +1,11 @@
+{
+  "name": "discourse-landing-pages",
+  "version": "0.2.1",
+  "repository": "git@github.com:paviliondev/discourse-landing-pages.git",
+  "author": "Pavilion",
+  "license": "GPL-2.0-only",
+  "devDependencies": {
+    "eslint-config-discourse": "^3.4.0",
+    "semver": "^7.3.5"
+  }
+}

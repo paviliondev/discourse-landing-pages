@@ -62,7 +62,7 @@ describe LandingPages::Importer do
           header: true,
           menus: ["my_menu"],
           assets: ["asset_1", "asset_2"],
-          pages: ["My Second Page", "My Page"]
+          pages: ["My Page", "My Second Page"]
         },
         errors: []
       }

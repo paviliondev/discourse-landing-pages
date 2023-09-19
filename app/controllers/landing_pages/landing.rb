@@ -27,6 +27,7 @@ class LandingPages::LandingController < ::ActionController::Base
     if @page.present?
       @page_title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
+      @theme_id = @page.theme_id
 
       if @global.present?
         @scripts = @global.scripts if @global.scripts.present?

@@ -1,5 +1,7 @@
 import LandingPage from "../models/landing-page";
+import ImportPages from "../components/modal/import-pages";
 import Controller from "@ember/controller";
+import { inject as service } from "@ember/service";
 import discourseComputed from "discourse-common/utils/decorators";
 import { gt, not, notEmpty, or } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
@@ -13,6 +15,8 @@ const statusIcons = {
 };
 
 export default Controller.extend({
+  modal: service(),
+
   remoteDisconnected: not("remote.connected"),
   pullDisabled: or("pullingFromRemote", "remoteDisconnected"),
   fetchingCommits: false,
@@ -135,14 +139,17 @@ export default Controller.extend({
     },
 
     importPages() {
-      const controller = showModal("import-pages");
-      controller.set("afterImport", (result) => {
-        this.setProperties({
-          page: LandingPage.create(result.page),
-          currentPage: JSON.parse(JSON.stringify(result.page)),
-          pages: result.pages,
+      this.modal.show(ImportPages)
+        .then((result) => {
+          if (result?.page) {
+            const page = LandingPage.create(result.page);
+            this.setProperties({
+              page: page,
+              currentPage: JSON.parse(JSON.stringify(page)),
+              pages: result.pages,
+            });
+          }
         });
-      });
     },
 
     updateRemote() {

@@ -12,16 +12,16 @@ class LandingPages::Page
     %w(name body).freeze
   end
 
-  def self.discourse_attrs
-    %w(theme_id group_ids category_id).freeze
+  def self.pages_attrs
+    %w(name path parent_id remote email theme_id group_ids category_id).freeze
   end
 
-  def self.pages_attrs
-    %w(path parent_id remote menu assets email).freeze
+  def self.assets_attrs
+    %w(body menu assets).freeze
   end
 
   def self.writable_attrs
-    (required_attrs + discourse_attrs + pages_attrs).freeze
+    (pages_attrs + assets_attrs).freeze
   end
 
   def initialize(page_id, data = {})
@@ -160,7 +160,7 @@ class LandingPages::Page
     writable_attrs.each do |attr|
       if opts[attr].present?
         if attr === "theme_id"
-          next unless Theme.where(id: opts[attr].to_i).exists?
+          next unless Theme.where(id: opts[attr]).exists?
         end
 
         if attr === "parent_id"
@@ -168,12 +168,11 @@ class LandingPages::Page
         end
 
         if attr === "category_id"
-          next unless Category.where(id: opts[attr].to_i).exists?
+          next unless Category.where(id: opts[attr]).exists?
         end
 
         if attr === "group_ids"
-          group_ids = opts[attr].map(&:to_i)
-          opts[attr] = Group.where(id: group_ids).pluck(:id)
+          opts[attr] = Group.where(id: opts[attr]).pluck(:id)
         end
 
         data[attr] = opts[attr] if opts[attr].present?

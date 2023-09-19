@@ -5,8 +5,8 @@
     <title><%= @page_title %></title>
     <%= yield :head %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <%- if theme_id.present? %>
-      <meta name="discourse_theme_id" content="<%= theme_id %>">
+    <%- if @theme_id.present? %>
+      <meta name="discourse_theme_id" content="<%= @theme_id %>">
     <%- end %>
     <meta name="theme-color" content="#<%= ColorScheme.hex_for_name('header_background', scheme_id) %>">
 
@@ -23,8 +23,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer="defer"></script>
     <%= discourse_stylesheet_link_tag "landing_page", theme_id: nil %>
 
-    <%- if theme_id.present? %>
-      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_id: theme_id %>
+    <%- if @theme_id.present? %>
+      <%= discourse_color_scheme_stylesheets %>
+      <%- if @theme_id == 1 %>
+        <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile : :desktop) %>
+      <%- end %>
+      <%= discourse_stylesheet_link_tag (mobile_view? ? :mobile_theme : :desktop_theme), theme_id: @theme_id %>
       <%= theme_lookup("head_tag") %>
     <%- end %>
   </head>
@@ -34,7 +38,7 @@
         <script src="<%= script %>"></script>
       <% end %>
     <% end %>
-    <%- if theme_id.present? %>
+    <%- if @theme_id.present? %>
       <%= theme_lookup("header") %>
     <%- end %>
     <% if @header %>
@@ -44,7 +48,7 @@
     <% if @footer %>
       <%= render partial: "footer", locals: @footer %>
     <% end %>
-    <%- if theme_id.present? %>
+    <%- if @theme_id.present? %>
       <%= theme_lookup("body_tag") %>
     <%- end %>
     <%= javascript_include_tag "/plugins/discourse-landing-pages/javascripts/common.js", defer: "defer", type: "application/javascript" %>

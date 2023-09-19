@@ -56,9 +56,10 @@
       {{i18n "admin.landing_pages.page.name.label"}}
     </label>
 
-    {{input
-      value=page.name
-      class="page-name"}}
+    <Input
+      @value={{page.name}}
+      class="page-name"
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.name.instructions"}}
@@ -70,11 +71,12 @@
       {{i18n "admin.landing_pages.page.path.label"}}
     </label>
 
-    {{input
-      value=(readonly pagePath)
-      disabled=hasParent
-      input=(action "onChangePath" value="target.value")
-      class="page-path"}}
+    <Input
+      @value={{readonly pagePath}}
+      disabled={{hasParent}}
+      onInput={{action "onChangePath" value="target.value"}}
+      class="page-path"
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.path.instructions"}}
@@ -189,7 +191,8 @@
     {{i18n "admin.landing_pages.page.body.instructions"}}
   </div>
 
-  {{ace-editor
-    content=page.body
-    mode="html_ruby"}}
+  <AceEditor
+    @content={{page.body}}
+    @mode="html"
+  />
 </div>
