@@ -2,7 +2,7 @@
 class LandingPages::InvalidAccess < StandardError; end
 class LandingPages::InvalidParameters < StandardError; end
 
-class LandingPages::LandingController < ApplicationController
+class LandingPages::LandingController < ::ActionController::Base
   VIEW_PATH ||= Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views')
 
   prepend_view_path(VIEW_PATH)
@@ -32,6 +32,7 @@ class LandingPages::LandingController < ApplicationController
 
       @page_title = SiteSetting.title + " | #{@page.name}"
       @classes = @page.name.parameterize
+      @theme_id = @page.theme_id
 
       if @global.present?
         @scripts = @global.scripts if @global.scripts.present?

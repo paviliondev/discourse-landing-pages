@@ -1,7 +1,7 @@
 import LandingPage from "../models/landing-page";
 import ImportPages from "../components/modal/import-pages";
 import Controller from "@ember/controller";
-import { getOwner } from "discourse-common/lib/get-owner";
+import { inject as service } from "@ember/service";
 import discourseComputed from "discourse-common/utils/decorators";
 import { gt, not, notEmpty, or } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
@@ -15,7 +15,7 @@ const statusIcons = {
 };
 
 export default Controller.extend({
-  modal: getOwner(this).lookup("service:modal"),
+  modal: service(),
 
   remoteDisconnected: not("remote.connected"),
   pullDisabled: or("pullingFromRemote", "remoteDisconnected"),
@@ -141,7 +141,7 @@ export default Controller.extend({
     importPages() {
       this.modal.show(ImportPages)
         .then((result) => {
-          if (result) {
+          if (result?.page) {
             const page = LandingPage.create(result.page);
             this.setProperties({
               page: page,

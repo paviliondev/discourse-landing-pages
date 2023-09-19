@@ -58,8 +58,8 @@
 
     <Input
       @value={{page.name}}
-      class="page-name">
-    </Input>
+      class="page-name"
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.name.instructions"}}
@@ -75,8 +75,8 @@
       @value={{readonly pagePath}}
       disabled={{hasParent}}
       onInput={{action "onChangePath" value="target.value"}}
-      class="page-path">
-    </Input>
+      class="page-path"
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.path.instructions"}}
@@ -178,20 +178,6 @@
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.category.instructions"}}
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label class="control-label">
-      <Input
-        @checked={{page.inline}}
-        @type="checkbox">
-      </Input>
-      {{i18n "admin.landing_pages.page.inline.label"}}
-    </label>
-
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.inline.instructions"}}
     </div>
   </div>
 </div>
