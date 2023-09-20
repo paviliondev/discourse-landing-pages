@@ -94,10 +94,10 @@ zu:
           enabled: Enabled
           scripts:
             label: Scripts
-            description: "Add scripts to all pages. <a href='https://thepavilion.io/t/4098#scripts' target='_blank'>See further</a>."
+            description: "Add scripts to all pages."
           header:
             label: Header
-            description: "Add a header to all pages by defining header attributes JSON. <a href='https://thepavilion.io/t/4098#header' target='_blank'>See further</a>."
+            description: "Add a header to all pages by defining header attributes JSON."
           footer:
             label: Footer
-            description: "Add a footer to all pages by defining footer attributes JSON. <a href='https://thepavilion.io/t/4098#footer' target='_blank'>See further</a>."
+            description: "Add a footer to all pages by defining footer attributes JSON."

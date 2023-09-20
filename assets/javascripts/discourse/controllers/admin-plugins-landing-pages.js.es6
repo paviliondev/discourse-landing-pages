@@ -109,8 +109,8 @@ export default Controller.extend({
 
   @discourseComputed("showGlobal")
   documentationUrl(showGlobal) {
-    const rootUrl = "https://thepavilion.io/t";
-    return showGlobal ? `${rootUrl}/4098` : `${rootUrl}/4094`;
+    const rootUrl = "https://coop.pavilion.tech";
+    return showGlobal ? `${rootUrl}` : `${rootUrl}`;
   },
 
   actions: {
