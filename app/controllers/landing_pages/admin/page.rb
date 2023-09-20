@@ -4,15 +4,15 @@ class LandingPages::PageController < LandingPages::AdminController
   skip_before_action :check_xhr, only: [:export]
 
   before_action :refresh_remote, only: [:index]
-  before_action :check_page_exists, only: [:show, :update, :destroy, :export]
-  before_action :find_page, only: [:show, :update, :export]
+  before_action :check_page_exists, only: %i[show update destroy export]
+  before_action :find_page, only: %i[show update export]
 
   def index
     render_json_dump(
       pages: serialzed_pages,
       menus: serialize_menus,
       remote: serialized_remote,
-      global: serialized_global
+      global: serialized_global,
     )
   end
 
@@ -44,10 +44,10 @@ class LandingPages::PageController < LandingPages::AdminController
     exporter = LandingPages::ZipExporter.new(@page)
     file_path = exporter.package_filename
 
-    headers['Content-Length'] = File.size(file_path).to_s
+    headers["Content-Length"] = File.size(file_path).to_s
     send_data File.read(file_path),
-      filename: File.basename(file_path),
-      content_type: "application/zip"
+              filename: File.basename(file_path),
+              content_type: "application/zip"
   ensure
     exporter.cleanup!
   end
@@ -67,17 +67,10 @@ class LandingPages::PageController < LandingPages::AdminController
   private
 
   def page_params
-    params.require(:page)
-      .permit(
-        :name,
-        :path,
-        :parent_id,
-        :category_id,
-        :theme_id,
-        :body,
-        :menu,
-        group_ids: []
-      ).to_h
+    params
+      .require(:page)
+      .permit(:name, :path, :parent_id, :category_id, :theme_id, :body, :menu, group_ids: [])
+      .to_h
   end
 
   def refresh_remote

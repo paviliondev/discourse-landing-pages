@@ -1,23 +1,19 @@
 # frozen_string_literal: true
-require_relative '../plugin_helper'
+require_relative "../plugin_helper"
 
 describe LandingPages::Page do
-  fab!(:theme) { Fabricate(:theme, name: 'Landing Theme') }
-  fab!(:group) { Fabricate(:group, name: 'page_group') }
+  fab!(:theme) { Fabricate(:theme, name: "Landing Theme") }
+  fab!(:group) { Fabricate(:group, name: "page_group") }
 
-  let(:raw_page) {
+  let(:raw_page) do
     JSON.parse(
-      File.open(
-        "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/page.json"
-      ).read
+      File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/page.json").read,
     )
-  }
+  end
 
-  let(:raw_body) {
-    File.open(
-      "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/body.html.erb"
-    ).read
-  }
+  let(:raw_body) do
+    File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/body.html.erb").read
+  end
 
   before do
     @params = raw_page
@@ -26,7 +22,7 @@ describe LandingPages::Page do
 
   it "creates a page" do
     LandingPages::Page.create(@params)
-    page = LandingPages::Page.find_by('name', raw_page['name'])
+    page = LandingPages::Page.find_by("name", raw_page["name"])
 
     expect(page.name).to eq("My Page")
     expect(page.path).to eq("my-page")
@@ -39,7 +35,7 @@ describe LandingPages::Page do
     page = LandingPages::Page.create(@params)
 
     expect(page.errors.full_messages.first).to eq(
-      I18n.t("landing_pages.error.attr_required", attr: required_attr)
+      I18n.t("landing_pages.error.attr_required", attr: required_attr),
     )
   end
 
@@ -48,7 +44,7 @@ describe LandingPages::Page do
     @params[:groups] = [group.name]
     LandingPages::Page.find_discourse_objects(@params)
     LandingPages::Page.create(@params)
-    page = LandingPages::Page.find_by('name', raw_page['name'])
+    page = LandingPages::Page.find_by("name", raw_page["name"])
 
     expect(page.theme_id).to eq(theme.id)
     expect(page.group_ids).to eq([group.id])
@@ -60,19 +56,19 @@ describe LandingPages::Page do
     @params[:theme] = theme.name
     LandingPages::Page.find_discourse_objects(@params)
     LandingPages::Page.create(@params)
-    page = LandingPages::Page.find_by('name', raw_page['name'])
+    page = LandingPages::Page.find_by("name", raw_page["name"])
 
     expect(page.theme_id).to eq(nil)
   end
 
   it "creates a page with pages attributes" do
-    @params[:remote] = 'https://github.com/paviliondev/pages-repo.git'
+    @params[:remote] = "https://github.com/paviliondev/pages-repo.git"
     @params[:assets] = ["animation"]
 
     LandingPages::Page.create(@params)
-    page = LandingPages::Page.find_by('name', raw_page['name'])
+    page = LandingPages::Page.find_by("name", raw_page["name"])
 
-    expect(page.remote).to eq('https://github.com/paviliondev/pages-repo.git')
+    expect(page.remote).to eq("https://github.com/paviliondev/pages-repo.git")
     expect(page.assets).to eq(["animation"])
   end
 
@@ -81,7 +77,7 @@ describe LandingPages::Page do
     page = LandingPages::Page.create(@params)
 
     expect(page.errors.full_messages.first).to eq(
-      I18n.t("landing_pages.error.attr_exists", attr: 'path')
+      I18n.t("landing_pages.error.attr_exists", attr: "path"),
     )
   end
 
@@ -105,13 +101,13 @@ describe LandingPages::Page do
     LandingPages::Page.create(@params)
 
     second_page_params = @params.dup
-    second_page_params['name'] = 'My second page'
-    second_page_params['path'] = 'my-second-page'
+    second_page_params["name"] = "My second page"
+    second_page_params["path"] = "my-second-page"
     LandingPages::Page.create(second_page_params)
 
     all_pages = LandingPages::Page.all
     expect(all_pages.length).to eq(2)
-    expect(all_pages.select { |p| p.path == 'my-page' }.length).to eq(1)
-    expect(all_pages.select { |p| p.path == 'my-second-page' }.length).to eq(1)
+    expect(all_pages.select { |p| p.path == "my-page" }.length).to eq(1)
+    expect(all_pages.select { |p| p.path == "my-second-page" }.length).to eq(1)
   end
 end

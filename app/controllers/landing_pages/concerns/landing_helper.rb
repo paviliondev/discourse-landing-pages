@@ -1,49 +1,55 @@
 # frozen_string_literal: true
 module LandingHelper
-  def user_profile(user, include_avatar: true, add_bio: false, avatar_size: 90, top_extra: '', bottom_extra: '', profile_details: true, show_groups: [], show_location: false)
+  def user_profile(
+    user,
+    include_avatar: true,
+    add_bio: false,
+    avatar_size: 90,
+    top_extra: "",
+    bottom_extra: "",
+    profile_details: true,
+    show_groups: [],
+    show_location: false
+  )
     return nil if user.blank?
 
     user = User.find_by(username: username) if user.blank?
 
     if user
-      bio_html = ''
-      location_html = ''
-      group_html = ''
-      avatar_html = ''
-      profile_details_html = ''
+      bio_html = ""
+      location_html = ""
+      group_html = ""
+      avatar_html = ""
+      profile_details_html = ""
 
       if profile_details
-        if show_location && user.user_profile.location
-          location_html = <<~HTML.html_safe
-            <div class="user-location">#{SvgSprite.raw_svg('map-marker-alt')}<span>#{user.user_profile.location}</span></div>
+        location_html = <<~HTML.html_safe if show_location && user.user_profile.location
+            <div class="user-location">#{SvgSprite.raw_svg("map-marker-alt")}<span>#{user.user_profile.location}</span></div>
           HTML
-        end
 
         if show_groups
           user_groups = user.groups.where(name: show_groups)
 
-          if user_groups.present?
-            group_html = <<~HTML.html_safe
+          group_html = <<~HTML.html_safe if user_groups.present?
               <div class="user-groups">
                 #{user_groups.map { |g| "<span>#{g.full_name}</span>" }.join("")}
               </div>
             HTML
-          end
         end
 
-        profile_details_html = "<div class='user-profile-details'><div class='user-name'>#{user.readable_name}</div>#{group_html}#{location_html}</div>"
+        profile_details_html =
+          "<div class='user-profile-details'><div class='user-name'>#{user.readable_name}</div>#{group_html}#{location_html}</div>"
       end
 
-      if add_bio
-        bio_html = <<~HTML.html_safe
+      bio_html = <<~HTML.html_safe if add_bio
           <div class="user-bio">
             <a href="/u/#{user.username}">#{user.user_profile.bio_excerpt(375)}</a>
           </div>
         HTML
-      end
 
       if include_avatar
-        avatar_html = "<img width='#{(avatar_size / 2).to_s}' height='#{(avatar_size / 2).to_s}' src='#{user.avatar_template.gsub('{size}', avatar_size.to_s)}' class='avatar'>"
+        avatar_html =
+          "<img width='#{(avatar_size / 2).to_s}' height='#{(avatar_size / 2).to_s}' src='#{user.avatar_template.gsub("{size}", avatar_size.to_s)}' class='avatar'>"
       end
 
       <<~HTML.html_safe
@@ -53,10 +59,10 @@ module LandingHelper
               #{avatar_html}
               #{profile_details_html}
             </a>
-            <div class="top-extra">#{top_extra.present? ? top_extra : ''}</div>
+            <div class="top-extra">#{top_extra.present? ? top_extra : ""}</div>
           </div>
           #{bio_html}
-          #{bottom_extra.present? ? bottom_extra : ''}
+          #{bottom_extra.present? ? bottom_extra : ""}
         </div>
       HTML
     end
@@ -66,10 +72,11 @@ module LandingHelper
     if group_name
       group = Group.find_by(name: group_name)
 
-      if group && (
-        (group.visibility_level == Group.visibility_levels[:public]) ||
-        (@group && @group.id == group.id)
-      )
+      if group &&
+           (
+             (group.visibility_level == Group.visibility_levels[:public]) ||
+               (@group && @group.id == group.id)
+           )
         users = group.users
         users = users.order(ActiveRecord::Base.sanitize_sql_array([*order])) if order
         return users.to_ary
@@ -83,9 +90,7 @@ module LandingHelper
     list_opts[:per_page] = 30 unless list_opts[:per_page].present?
     topics = list_topics(opts, list_opts)
 
-    if opts[:instance_var]
-      instance_variable_set("@#{opts[:instance_var]}", topics)
-    end
+    instance_variable_set("@#{opts[:instance_var]}", topics) if opts[:instance_var]
 
     if opts[:render_list]
       list_end = topics.count < list_opts[:per_page]
@@ -113,17 +118,15 @@ module LandingHelper
 
   def set_category_user(category_slug, user: current_user)
     if category = Category.find_by(slug: category_slug)
-      category_user = CategoryUser.find_by(
-        category_id: category.id,
-        user_id: user.id
-      )
+      category_user = CategoryUser.find_by(category_id: category.id, user_id: user.id)
 
       if !category_user
-        category_user = CategoryUser.create!(
-          user: user,
-          category_id: category.id,
-          notification_level: CategoryUser.notification_levels[:regular]
-        )
+        category_user =
+          CategoryUser.create!(
+            user: user,
+            category_id: category.id,
+            notification_level: CategoryUser.notification_levels[:regular],
+          )
       end
 
       instance_variable_set("@category_user", category_user)
@@ -134,7 +137,7 @@ module LandingHelper
 
   def get_topic_view(id_or_slug, opts: {}, instance_var: nil, set_page_title: false)
     return nil unless id_or_slug.present?
-    topic = Topic.where('id = ? or slug = ?', id_or_slug.to_i, id_or_slug.to_s)
+    topic = Topic.where("id = ? or slug = ?", id_or_slug.to_i, id_or_slug.to_s)
 
     if topic.exists?
       topic = topic.first

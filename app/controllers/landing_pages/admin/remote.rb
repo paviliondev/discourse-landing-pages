@@ -5,9 +5,8 @@ class LandingPages::RemotesController < LandingPages::AdminController
     remote = LandingPages::Remote.update(remote_params)
 
     if remote.valid?
-      render json: success_json.merge(
-        remote: LandingPages::RemoteSerializer.new(remote, root: false)
-      )
+      render json:
+               success_json.merge(remote: LandingPages::RemoteSerializer.new(remote, root: false))
     else
       render_json_error(remote)
     end
@@ -29,7 +28,7 @@ class LandingPages::RemotesController < LandingPages::AdminController
       report: importer.report,
       menus: serialize_menus,
       pages: serialzed_pages,
-      global: serialized_global
+      global: serialized_global,
     )
   end
 
@@ -49,9 +48,7 @@ class LandingPages::RemotesController < LandingPages::AdminController
     if remote.connected
       remote.reset
 
-      render json: {
-        commits_behind: remote.commits_behind
-      }
+      render json: { commits_behind: remote.commits_behind }
     else
       render json: failed_json
     end
@@ -60,12 +57,6 @@ class LandingPages::RemotesController < LandingPages::AdminController
   private
 
   def remote_params
-    params.require(:remote)
-      .permit(
-        :url,
-        :branch,
-        :public_key,
-        :private_key
-      )
+    params.require(:remote).permit(:url, :branch, :public_key, :private_key)
   end
 end

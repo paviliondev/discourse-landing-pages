@@ -22,11 +22,6 @@ class LandingPages::GlobalsController < LandingPages::AdminController
   protected
 
   def global_params
-    params.require(:global)
-      .permit(
-        scripts: [],
-        header: {},
-        footer: {}
-      )
+    params.require(:global).permit(scripts: [], header: {}, footer: {})
   end
 end

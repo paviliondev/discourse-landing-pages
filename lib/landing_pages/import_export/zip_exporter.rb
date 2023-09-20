@@ -4,7 +4,7 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
   def initialize(page)
     @page = page
     @temp_folder = "#{Pathname.new(Dir.tmpdir).realpath}/landing_page_#{SecureRandom.hex}"
-    @export_name = @page.name.downcase.gsub(/[^0-9a-z.\-]/, '-')
+    @export_name = @page.name.downcase.gsub(/[^0-9a-z.\-]/, "-")
     @export_name = "discourse-#{@export_name}" unless @export_name.starts_with?("discourse")
   end
 
@@ -38,9 +38,7 @@ class LandingPages::ZipExporter < ThemeStore::ZipExporter
   def filename(attr)
     name = attr
 
-    ext = {
-      body: '.html.erb'
-    }[attr.to_sym]
+    ext = { body: ".html.erb" }[attr.to_sym]
 
     name += ext if ext
     name

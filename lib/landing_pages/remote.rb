@@ -4,10 +4,10 @@ class LandingPages::Remote
   include ActiveModel::Serialization
   include HasErrors
 
-  KEY ||= 'remote'
+  KEY ||= "remote"
 
   def self.writable_attrs
-    %w(url public_key private_key branch commit).freeze
+    %w[url public_key private_key branch commit].freeze
   end
 
   def initialize(opts)
@@ -37,33 +37,27 @@ class LandingPages::Remote
   end
 
   def validate
-    unless valid_url?
-      add_error(I18n.t("landing_pages.error.remote_invalid_url"))
-    end
+    add_error(I18n.t("landing_pages.error.remote_invalid_url")) unless valid_url?
   end
 
   def valid_url?
-    url =~ URI::regexp
+    url =~ URI.regexp
   end
 
   def connected
     return false unless valid_url?
 
-    LandingPages::GitImporter.new(url,
-      private_key: private_key,
-      branch: branch
-    ).connected
+    LandingPages::GitImporter.new(url, private_key: private_key, branch: branch).connected
   end
 
   def commits_behind
-    @commits_behind ||= begin
-      importer = LandingPages::Importer.new(:git)
-      importer.import!
+    @commits_behind ||=
+      begin
+        importer = LandingPages::Importer.new(:git)
+        importer.import!
 
-      if importer.report[:errors].blank?
-        importer.handler.commits_since(commit).last.to_i
+        importer.handler.commits_since(commit).last.to_i if importer.report[:errors].blank?
       end
-    end
   end
 
   def reset
@@ -97,9 +91,9 @@ class LandingPages::Remote
 
       if remote_pages.exists?
         remote_pages.each do |record|
-          value = JSON.parse(record['value'])
+          value = JSON.parse(record["value"])
           value.delete("remote")
-          record['value'] = value.to_json
+          record["value"] = value.to_json
           record.save
         end
       end

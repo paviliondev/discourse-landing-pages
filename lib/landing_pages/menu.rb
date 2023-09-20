@@ -8,11 +8,10 @@ class LandingPages::Menu
 
   attr_reader :id
 
-  attr_accessor :name,
-                :items
+  attr_accessor :name, :items
 
   def self.writable_attrs
-    %w(name items).freeze
+    %w[name items].freeze
   end
 
   def initialize(menu_id, data = {})
@@ -28,8 +27,8 @@ class LandingPages::Menu
       value = data[attr]
 
       if value.present?
-        value = value.parameterize.underscore if attr === 'name'
-        value = value if attr === 'items'
+        value = value.parameterize.underscore if attr === "name"
+        value = value if attr === "items"
 
         send("#{attr}=", value)
       end
@@ -54,10 +53,8 @@ class LandingPages::Menu
   end
 
   def validate
-    %w(name items).each do |attr|
-      if send(attr).blank?
-        add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
-      end
+    %w[name items].each do |attr|
+      add_error(I18n.t("landing_pages.error.attr_required", attr: attr)) if send(attr).blank?
     end
   end
 
@@ -105,9 +102,10 @@ class LandingPages::Menu
   end
 
   def self.all
-    PluginStoreRow.where(menu_list_query).to_a.map do |row|
-      new(row['key'], JSON.parse(row['value']))
-    end
+    PluginStoreRow
+      .where(menu_list_query)
+      .to_a
+      .map { |row| new(row["key"], JSON.parse(row["value"])) }
   end
 
   def self.menu_query(attr, value)

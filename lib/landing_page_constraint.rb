@@ -2,6 +2,6 @@
 
 class LandingPageConstraint
   def matches?(request)
-    LandingPages::Page.exists?(request.path_parameters[:path], attr: 'path')
+    LandingPages::Page.exists?(request.path_parameters[:path], attr: "path")
   end
 end

@@ -8,9 +8,10 @@ class LandingEmailRenderer < ActionView::Base
 
   def self.render(*args)
     LOCK.synchronize do
-      @instance ||= LandingEmailRenderer.with_empty_template_cache.with_view_paths(
-        Rails.configuration.paths["plugins/discourse-landing-pages/app/views/discourse"]
-      )
+      @instance ||=
+        LandingEmailRenderer.with_empty_template_cache.with_view_paths(
+          Rails.configuration.paths["plugins/discourse-landing-pages/app/views/discourse"],
+        )
       @instance.render(*args)
     end
   end

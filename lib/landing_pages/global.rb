@@ -7,7 +7,7 @@ class LandingPages::Global
   KEY ||= "global"
 
   def self.writable_attrs
-    %w(scripts footer header).freeze
+    %w[scripts footer header].freeze
   end
 
   def initialize(data = {})

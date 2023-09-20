@@ -9,15 +9,15 @@ class LandingPages::Page
   attr_reader :id
 
   def self.required_attrs
-    %w(name body).freeze
+    %w[name body].freeze
   end
 
   def self.pages_attrs
-    %w(name path parent_id remote email theme_id group_ids category_id).freeze
+    %w[name path parent_id remote email theme_id group_ids category_id].freeze
   end
 
   def self.assets_attrs
-    %w(body menu assets).freeze
+    %w[body menu assets].freeze
   end
 
   def self.writable_attrs
@@ -37,9 +37,9 @@ class LandingPages::Page
       value = data[attr]
 
       if value != nil
-        value = value.dasherize if attr === 'path'
-        value = value.to_i if (attr === 'theme_id' && value.present?)
-        value = value.map(&:to_i) if (attr === 'group_ids' && value.present?)
+        value = value.dasherize if attr === "path"
+        value = value.to_i if (attr === "theme_id" && value.present?)
+        value = value.map(&:to_i) if (attr === "group_ids" && value.present?)
 
         send("#{attr}=", value)
       end
@@ -75,9 +75,7 @@ class LandingPages::Page
   end
 
   def destroy
-    if PluginStore.remove(LandingPages::PLUGIN_NAME, self.id)
-      after_destroy
-    end
+    after_destroy if PluginStore.remove(LandingPages::PLUGIN_NAME, self.id)
   end
 
   def after_destroy
@@ -86,21 +84,19 @@ class LandingPages::Page
 
   def validate
     self.class.required_attrs.each do |attr|
-      if send(attr).blank?
-        add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
-      end
+      add_error(I18n.t("landing_pages.error.attr_required", attr: attr)) if send(attr).blank?
     end
 
-    if self.class.exists?(name, attr: 'name', exclude_id: id)
-      add_error(I18n.t("landing_pages.error.attr_exists", attr: 'name'))
+    if self.class.exists?(name, attr: "name", exclude_id: id)
+      add_error(I18n.t("landing_pages.error.attr_exists", attr: "name"))
     end
 
     if !parent_id && path.blank?
-      add_error(I18n.t("landing_pages.error.attr_required", attr: 'path'))
+      add_error(I18n.t("landing_pages.error.attr_required", attr: "path"))
     end
 
     if !parent_id && path.present? && self.class.path_exists?(path, id)
-      add_error(I18n.t("landing_pages.error.attr_exists", attr: 'path'))
+      add_error(I18n.t("landing_pages.error.attr_exists", attr: "path"))
     end
   end
 
@@ -109,11 +105,7 @@ class LandingPages::Page
   end
 
   def parent
-    if parent_id.present?
-      self.class.find(parent_id)
-    else
-      nil
-    end
+    parent_id.present? ? self.class.find(parent_id) : nil
   end
 
   def self.find(page_id)
@@ -171,9 +163,7 @@ class LandingPages::Page
           next unless Category.where(id: opts[attr]).exists?
         end
 
-        if attr === "group_ids"
-          opts[attr] = Group.where(id: opts[attr]).pluck(:id)
-        end
+        opts[attr] = Group.where(id: opts[attr]).pluck(:id) if attr === "group_ids"
 
         data[attr] = opts[attr] if opts[attr].present?
       end
@@ -185,9 +175,10 @@ class LandingPages::Page
   end
 
   def self.all
-    PluginStoreRow.where(page_list_query).to_a.map do |row|
-      new(row['key'], JSON.parse(row['value']))
-    end
+    PluginStoreRow
+      .where(page_list_query)
+      .to_a
+      .map { |row| new(row["key"], JSON.parse(row["value"])) }
   end
 
   def self.page_list_query
@@ -199,7 +190,8 @@ class LandingPages::Page
   end
 
   def self.find_child_page(path)
-    query = "#{page_list_query} AND value::json->>'parent_id' IN (SELECT key FROM plugin_store_rows WHERE #{page_query('path')})"
+    query =
+      "#{page_list_query} AND value::json->>'parent_id' IN (SELECT key FROM plugin_store_rows WHERE #{page_query("path")})"
     records = PluginStoreRow.where(query, path)
 
     if records.exists?
@@ -211,14 +203,16 @@ class LandingPages::Page
   end
 
   def self.path_exists?(path, page_id)
-    self.exists?(path, attr: 'path', exclude_id: page_id) ||
-      self.application_paths.include?(path)
+    self.exists?(path, attr: "path", exclude_id: page_id) || self.application_paths.include?(path)
   end
 
   def self.application_paths
-    Rails.application.routes.routes.map do |r|
-      r.path.spec.to_s.split('/').reject(&:empty?).first
-    end.uniq
+    Rails
+      .application
+      .routes
+      .routes
+      .map { |r| r.path.spec.to_s.split("/").reject(&:empty?).first }
+      .uniq
   end
 
   def self.find_discourse_objects(opts)
