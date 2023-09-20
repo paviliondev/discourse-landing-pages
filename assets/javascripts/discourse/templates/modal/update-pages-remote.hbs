@@ -1,4 +1,6 @@
-{{#d-modal-body class="update-pages-remote" title="admin.landing_pages.remote.title"}}
+{{#d-modal-body
+  class="update-pages-remote" title="admin.landing_pages.remote.title"
+}}
   <div class="repo">
     <div class="label">{{i18n "admin.landing_pages.remote.url"}}</div>
     {{input value=model.remote.url placeholder=urlPlaceholder}}
@@ -15,7 +17,7 @@
       {{i18n "admin.landing_pages.remote.private"}}
     </label>
   </div>
-  
+
   {{#if showPublicKey}}
     <div class="public-key">
       <div class="label">{{i18n "admin.customize.theme.public_key"}}</div>
@@ -29,14 +31,16 @@
     action=(action "update")
     disabled=updateDisabled
     class="btn btn-primary"
-    label="admin.landing_pages.remote.update"}}
-  
+    label="admin.landing_pages.remote.update"
+  }}
+
   {{d-button
     action="test"
     class="btn btn-test"
     disabled=testDisabled
-    label="admin.landing_pages.remote.test"}}
-    
+    label="admin.landing_pages.remote.test"
+  }}
+
   {{#if testing}}
     {{loading-spinner size="small"}}
   {{else}}
@@ -44,6 +48,6 @@
       {{d-icon testIcon}}
     {{/if}}
   {{/if}}
-  
+
   {{d-modal-cancel close=(route-action "closeModal")}}
 </div>
