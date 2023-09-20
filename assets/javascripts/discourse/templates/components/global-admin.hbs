@@ -1,6 +1,6 @@
 <div class="page-header">
   <div class="page-name">
-    <span>{{i18n 'admin.landing_pages.global.label'}}</span>
+    <span>{{i18n "admin.landing_pages.global.label"}}</span>
   </div>
 
   <div class="buttons">
@@ -8,22 +8,22 @@
       {{d-icon resultIcon}}
     {{/if}}
 
-    {{conditional-loading-spinner
-      condition=updatingGlobal
-      size="small"}}
+    {{conditional-loading-spinner condition=updatingGlobal size="small"}}
 
     {{d-button
       action=(action "destroyGlobal")
       label="admin.landing_pages.destroy"
       disabled=updatingGlobal
-      icon="times"}}
+      icon="times"
+    }}
 
     {{d-button
       action=(action "saveGlobal")
       label="admin.landing_pages.save"
       class="btn-primary"
       disabled=updatingGlobal
-      icon="save"}}
+      icon="save"
+    }}
   </div>
 </div>
 
@@ -33,9 +33,7 @@
       {{i18n "admin.landing_pages.global.scripts.label"}}
     </label>
 
-    {{value-list
-      values=global.scripts
-      inputType="array"}}
+    {{value-list values=global.scripts inputType="array"}}
 
     <div class="control-instructions">
       {{{i18n "admin.landing_pages.global.scripts.description"}}}

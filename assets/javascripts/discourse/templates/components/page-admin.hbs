@@ -4,7 +4,7 @@
       {{#if page.name}}
         {{page.name}}
       {{else}}
-        {{i18n 'admin.landing_pages.page.name.label'}}
+        {{i18n "admin.landing_pages.page.name.label"}}
       {{/if}}
     </span>
   </div>
@@ -25,13 +25,15 @@
         label="admin.landing_pages.page.export"
         href=page.exportUrl
         disabled=updatingPage
-        icon="upload"}}
+        icon="upload"
+      }}
 
       {{d-button
         action=(action "destroyPage")
         label="admin.landing_pages.destroy"
         disabled=updatingPage
-        icon="times"}}
+        icon="times"
+      }}
     {{/unless}}
 
     {{d-button
@@ -39,7 +41,8 @@
       label="admin.landing_pages.save"
       class="btn-primary"
       disabled=updatingPage
-      icon="save"}}
+      icon="save"
+    }}
   </div>
 
   <div class="page-url">
@@ -56,10 +59,7 @@
       {{i18n "admin.landing_pages.page.name.label"}}
     </label>
 
-    <Input
-      @value={{page.name}}
-      class="page-name"
-    />
+    <Input @value={{page.name}} class="page-name" />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.name.instructions"}}
@@ -93,9 +93,8 @@
       content=pages
       onChange=(action "onChangeParent")
       class="page-select page-parent"
-      options=(hash
-        none='admin.landing_pages.page.select'
-      )}}
+      options=(hash none="admin.landing_pages.page.select")
+    }}
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.parent.instructions"}}
@@ -114,9 +113,8 @@
       nameProperty="name"
       onChange=(action (mut page.menu))
       class="menu-select"
-      options=(hash
-        none='admin.landing_pages.page.menu.select'
-      )}}
+      options=(hash none="admin.landing_pages.page.menu.select")
+    }}
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.menu.instructions"}}
@@ -135,9 +133,8 @@
       value=page.theme_id
       onChange=(action (mut page.theme_id))
       class="theme-select"
-      options=(hash
-        none='admin.landing_pages.page.theme.select'
-      )}}
+      options=(hash none="admin.landing_pages.page.theme.select")
+    }}
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.theme.instructions"}}
@@ -154,7 +151,8 @@
       content=groups
       value=page.group_ids
       labelProperty="name"
-      onChange=(action (mut page.group_ids))}}
+      onChange=(action (mut page.group_ids))
+    }}
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.groups.instructions"}}
@@ -171,9 +169,7 @@
       value=page.category_id
       allowUncategorized=false
       onChange=(action (mut page.category_id))
-      options=(hash
-        disabled=hasParent
-      )
+      options=(hash disabled=hasParent)
     }}
 
     <div class="control-instructions">
@@ -191,8 +187,5 @@
     {{i18n "admin.landing_pages.page.body.instructions"}}
   </div>
 
-  <AceEditor
-    @content={{page.body}}
-    @mode="html"
-  />
+  <AceEditor @content={{page.body}} @mode="html" />
 </div>

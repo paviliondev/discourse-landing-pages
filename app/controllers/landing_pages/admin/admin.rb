@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 class LandingPages::AdminController < ::Admin::AdminController
-
   private
 
   def check_page_exists
-    unless LandingPages::Page.exists?(params[:id])
-      raise Discourse::InvalidParameters.new(:id)
-    end
+    raise Discourse::InvalidParameters.new(:id) unless LandingPages::Page.exists?(params[:id])
   end
 
   def find_page
@@ -17,7 +14,7 @@ class LandingPages::AdminController < ::Admin::AdminController
     ActiveModel::ArraySerializer.new(
       LandingPages::Page.all,
       each_serializer: LandingPages::BasicPageSerializer,
-      root: false
+      root: false,
     )
   end
 
@@ -29,7 +26,7 @@ class LandingPages::AdminController < ::Admin::AdminController
     ActiveModel::ArraySerializer.new(
       LandingPages::Menu.all,
       each_serializer: LandingPages::MenuSerializer,
-      root: false
+      root: false,
     )
   end
 
@@ -43,9 +40,7 @@ class LandingPages::AdminController < ::Admin::AdminController
 
   def render_page(page, include_pages: false)
     if page.valid?
-      json = {
-        page: serialize_page(page)
-      }
+      json = { page: serialize_page(page) }
       json[:pages] = serialzed_pages if include_pages
       render_json_dump(json)
     else

@@ -18,9 +18,7 @@ end
 
 add_admin_route "admin.landing_pages.title", "landing-pages"
 
-extend_content_security_policy(
-  script_src: ['https://ajax.googleapis.com']
-)
+extend_content_security_policy(script_src: ["https://ajax.googleapis.com"])
 
 after_initialize do
   %w[
@@ -58,9 +56,7 @@ after_initialize do
     ../extensions/upload_creator.rb
     ../extensions/user_notifications.rb
     ../extensions/user_email_job.rb
-  ].each do |path|
-    load File.expand_path(path, __FILE__)
-  end
+  ].each { |path| load File.expand_path(path, __FILE__) }
 
   add_to_class(:site, :landing_paths) { ::LandingPages.paths }
   add_to_serializer(:site, :landing_paths) { object.landing_paths }
@@ -74,9 +70,13 @@ after_initialize do
 
   TopicQuery.add_custom_filter(:definitions_only) do |topics, query|
     if query.options[:category_id] && query.options[:definitions_only]
-      topics = topics.where("
+      topics =
+        topics.where(
+          "
         topics.id in (SELECT topic_id FROM categories WHERE categories.id in (?))
-      ", Category.subcategory_ids(query.options[:category_id]))
+      ",
+          Category.subcategory_ids(query.options[:category_id]),
+        )
     end
 
     topics
@@ -91,18 +91,18 @@ after_initialize do
   end
 
   full_path = "#{Rails.root}/plugins/discourse-landing-pages/assets/stylesheets/page/page.scss"
-  Stylesheet::Importer.plugin_assets['landing_page'] = Set[full_path]
+  Stylesheet::Importer.plugin_assets["landing_page"] = Set[full_path]
 
   add_to_class(:category, :landing_page_id) do
-    (LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY).read || {})
-      .transform_keys(&:to_i)[self.id]
+    (LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY).read || {}).transform_keys(&:to_i)[
+      self.id
+    ]
   end
 
   add_to_class(:topic, :landing_page_url) do
     return nil if !category
 
-    if category.landing_page_id &&
-        page = LandingPages::Page.find(category.landing_page_id)
+    if category.landing_page_id && page = LandingPages::Page.find(category.landing_page_id)
       page.path + "/#{slug}"
     else
       nil
@@ -112,6 +112,6 @@ after_initialize do
   add_to_serializer(
     :topic_view,
     :landing_page_url,
-    include_condition: -> { object.topic.landing_page_url.present? }
+    include_condition: -> { object.topic.landing_page_url.present? },
   ) { object.topic.landing_page_url }
 end

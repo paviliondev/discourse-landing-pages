@@ -9,10 +9,7 @@ module UserNotificationsLandingPagesExtension
   end
 
   def landing_email_notification_type?
-    %w(
-     watching
-     watching_first_post
-    ).include?(@notification_type)
+    %w[watching watching_first_post].include?(@notification_type)
   end
 
   protected def send_notification_email(opts)
@@ -31,13 +28,8 @@ module UserNotificationsLandingPagesExtension
   def landing_email_html(opts)
     return landing_page.email if landing_page.email.present?
 
-    unstyled = LandingEmailRenderer.render(
-      template: 'email/landing',
-      format: :html,
-      locals: {
-        post: @post
-      }
-    )
+    unstyled =
+      LandingEmailRenderer.render(template: "email/landing", format: :html, locals: { post: @post })
     style = Email::Styles.new(unstyled, opts)
 
     style.format_basic

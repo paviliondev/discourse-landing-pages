@@ -4,7 +4,7 @@ module ContentSecurityPolicyLandingPagesExtension
     super.tap do |obj|
       obj[:script_src] ||= []
       obj[:script_src] = [*obj[:script_src]].concat(
-        LandingPages::Global.scripts
+        LandingPages::Global.scripts,
       ) if LandingPages::Global.scripts.present?
     end
   end

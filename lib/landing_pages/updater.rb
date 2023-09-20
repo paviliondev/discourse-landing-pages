@@ -8,14 +8,7 @@ class LandingPages::Updater
   def initialize(type, handler)
     @type = type
     @handler = handler
-    @updated = {
-      scripts: [],
-      footer: false,
-      header: false,
-      menus: [],
-      assets: [],
-      pages: []
-    }
+    @updated = { scripts: [], footer: false, header: false, menus: [], assets: [], pages: [] }
   end
 
   def update_page(data)
@@ -38,11 +31,7 @@ class LandingPages::Updater
       page.save
     end
 
-    if page.errors.any?
-      add_errors_from(page)
-    else
-      @updated[:pages].push(page.name)
-    end
+    page.errors.any? ? add_errors_from(page) : @updated[:pages].push(page.name)
   end
 
   def update_assets(data)
@@ -60,11 +49,7 @@ class LandingPages::Updater
         asset.save
       end
 
-      if asset.errors.any?
-        add_errors_from(asset)
-      else
-        @updated[:assets].push(asset.name)
-      end
+      asset.errors.any? ? add_errors_from(asset) : @updated[:assets].push(asset.name)
     end
   end
 
@@ -85,10 +70,7 @@ class LandingPages::Updater
 
     if data[:menus].present?
       data[:menus].each do |menu_data|
-        menu_data = {
-          name: menu_data["name"],
-          items: menu_data["items"]
-        }
+        menu_data = { name: menu_data["name"], items: menu_data["items"] }
         menu = LandingPages::Menu.find_by("name", menu_data[:name])
 
         if menu.blank?
@@ -98,15 +80,11 @@ class LandingPages::Updater
           menu.save
         end
 
-        if menu.errors.any?
-          add_errors_from(menu)
-        else
-          updated_menus.push(menu.name)
-        end
+        menu.errors.any? ? add_errors_from(menu) : updated_menus.push(menu.name)
       end
     end
 
-    unless errors.any?
+    if errors.none?
       @updated[:scripts] = updated_scripts
       @updated[:menus] = updated_menus
       @updated[:header] = updated_header

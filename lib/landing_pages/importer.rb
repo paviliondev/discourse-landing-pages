@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 class LandingPages::Importer
-  attr_reader :type,
-              :bundle
+  attr_reader :type, :bundle
 
-  attr_accessor :handler,
-                :remote,
-                :report
+  attr_accessor :handler, :remote, :report
 
   def initialize(type, bundle: nil)
     @type = type
@@ -21,18 +18,21 @@ class LandingPages::Importer
 
   def import!
     if type == :zip && bundle.present?
-      @handler = LandingPages::ZipImporter.new(
-        bundle.tempfile.path,
-        bundle.original_filename,
-        temp_folder: temp_folder
-      )
+      @handler =
+        LandingPages::ZipImporter.new(
+          bundle.tempfile.path,
+          bundle.original_filename,
+          temp_folder: temp_folder,
+        )
     elsif type == :git
       @remote = LandingPages::Remote.get
-      @handler = LandingPages::GitImporter.new(@remote.url,
-        private_key: @remote.private_key,
-        branch: @remote.branch,
-        temp_folder: temp_folder
-      )
+      @handler =
+        LandingPages::GitImporter.new(
+          @remote.url,
+          private_key: @remote.private_key,
+          branch: @remote.branch,
+          temp_folder: temp_folder,
+        )
     end
 
     if @handler.blank? || type == :git && !@handler.connected
@@ -47,30 +47,26 @@ class LandingPages::Importer
   end
 
   def pages_data
-    @handler.all_files.reduce([]) do |result, path|
-      if path.include?("page.json")
-        data = read_json(path)
-        data[:body] = @handler[path.rpartition("/").first + "/body.html.erb"]
+    @handler
+      .all_files
+      .reduce([]) do |result, path|
+        if path.include?("page.json")
+          data = read_json(path)
+          data[:body] = @handler[path.rpartition("/").first + "/body.html.erb"]
 
-        if result.select { |d| d[:name] === data[:name] }.first.blank?
-          result.push(data)
+          result.push(data) if result.select { |d| d[:name] === data[:name] }.first.blank?
         end
-      end
 
-      result
-    end.partition do |page|
-      !page.key?('parent')
-    end.flatten
+        result
+      end
+      .partition { |page| !page.key?("parent") }
+      .flatten
   end
 
   def get_data_from_file(file)
     file = @handler.all_files.select { |path| path.include?("#{file}.json") }.first
 
-    if file.present?
-      read_json(file)
-    else
-      nil
-    end
+    file.present? ? read_json(file) : nil
   end
 
   def temp_folder

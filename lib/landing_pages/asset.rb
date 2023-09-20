@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'addressable/uri'
+require "net/http"
+require "addressable/uri"
 
 class LandingPages::Asset
   include HasErrors
@@ -9,17 +9,16 @@ class LandingPages::Asset
 
   KEY ||= "asset"
 
-  attr_reader :id,
-              :upload
+  attr_reader :id, :upload
 
   attr_accessor :file
 
   def self.required_attrs
-    %w(name file).freeze
+    %w[name file].freeze
   end
 
   def self.writable_attrs
-    %w(name upload_id).freeze
+    %w[name upload_id].freeze
   end
 
   def initialize(asset_id, data = {})
@@ -35,7 +34,7 @@ class LandingPages::Asset
       value = data[attr]
 
       if value.present?
-        value = value.parameterize.underscore if attr === 'name'
+        value = value.parameterize.underscore if attr === "name"
         send("#{attr}=", value)
       end
     end
@@ -47,7 +46,7 @@ class LandingPages::Asset
         @upload = upload
       else
         @upload_id = nil
-        add_error(I18n.t("landing_pages.error.attr_required", attr: 'upload_id'))
+        add_error(I18n.t("landing_pages.error.attr_required", attr: "upload_id"))
       end
     end
   end
@@ -72,9 +71,7 @@ class LandingPages::Asset
 
   def validate
     self.class.required_attrs.each do |attr|
-      if send(attr).blank?
-        add_error(I18n.t("landing_pages.error.attr_required", attr: attr))
-      end
+      add_error(I18n.t("landing_pages.error.attr_required", attr: attr)) if send(attr).blank?
     end
   end
 
@@ -113,13 +110,14 @@ class LandingPages::Asset
     ## Fallback attempt
     if upload.blank?
       user = Discourse.system_user
-      upload = UploadCreator.new(file, File.basename(file.path), for_landing_page: true).create_for(user.id)
+      upload =
+        UploadCreator.new(file, File.basename(file.path), for_landing_page: true).create_for(
+          user.id,
+        )
       @upload_id = upload.id
     end
 
-    if upload.blank?
-      add_error(I18n.t("landing_pages.error.attr_required", attr: 'upload_id'))
-    end
+    add_error(I18n.t("landing_pages.error.attr_required", attr: "upload_id")) if upload.blank?
   end
 
   def self.find(asset_id)
@@ -161,9 +159,7 @@ class LandingPages::Asset
   end
 
   def self.all
-    PluginStoreRow.where(list_query).to_a.map do |row|
-      new(row['key'], JSON.parse(row['value']))
-    end
+    PluginStoreRow.where(list_query).to_a.map { |row| new(row["key"], JSON.parse(row["value"])) }
   end
 
   def self.query(attr, value)

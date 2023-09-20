@@ -2,7 +2,7 @@
 
 module ::LandingPages
   class Engine < ::Rails::Engine
-    engine_name 'landing_pages'
+    engine_name "landing_pages"
     isolate_namespace LandingPages
   end
 
@@ -11,8 +11,6 @@ module ::LandingPages
   CATEGORY_IDS_KEY ||= "category_ids"
 
   def self.paths
-    LandingPages::Cache.wrap(PATHS_KEY) do
-      LandingPages::Page.all.map(&:path)
-    end
+    LandingPages::Cache.wrap(PATHS_KEY) { LandingPages::Page.all.map(&:path) }
   end
 end

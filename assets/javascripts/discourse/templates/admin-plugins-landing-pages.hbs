@@ -3,24 +3,27 @@
     {{page-list
       value=page.id
       content=pages
-      onChange=(action 'changePage')
+      onChange=(action "changePage")
       class="page-select"
-      options=(hash
-        none='admin.landing_pages.page.select'
-      )}}
+      options=(hash none="admin.landing_pages.page.select")
+    }}
     {{d-button
       action=(action "createPage")
       label="admin.landing_pages.page.create"
       class="page-create"
-      icon="plus"}}
+      icon="plus"
+    }}
   </div>
-    
+
   <div class="buttons">
     {{#if pullingFromRemote}}
       {{loading-spinner size="small"}}
     {{else}}
       {{#if showCommitsBehind}}
-        {{i18n 'admin.landing_pages.remote.repository.x_commits_behind' count=commitsBehind}}
+        {{i18n
+          "admin.landing_pages.remote.repository.x_commits_behind"
+          count=commitsBehind
+        }}
       {{/if}}
     {{/if}}
 
@@ -29,25 +32,29 @@
       label="admin.landing_pages.remote.pull.label"
       title="admin.landing_pages.remote.pull.description"
       icon="arrow-down"
-      disabled=pullDisabled}}
-    
+      disabled=pullDisabled
+    }}
+
     {{d-button
       action=(action "updateRemote")
       title="admin.landing_pages.remote.repository.description"
       label="admin.landing_pages.remote.repository.label"
-      icon="book"}}
-      
+      icon="book"
+    }}
+
     {{d-button
       action=(action "importPages")
       label="admin.landing_pages.import.button"
       title="admin.landing_pages.import.description"
-      icon="download"}}
+      icon="download"
+    }}
 
     {{d-button
       action=(action "toggleShowGlobal")
       label="admin.landing_pages.global.label"
       title="admin.landing_pages.global.description"
-      icon="globe"}}
+      icon="globe"
+    }}
   </div>
 </div>
 
@@ -64,10 +71,10 @@
   {{/if}}
 
   <div class="message-block">
-    {{d-icon 'question-circle'}}
-        
+    {{d-icon "question-circle"}}
+
     <a href={{documentationUrl}} target="_blank">
-      {{i18n 'admin.landing_pages.documentation'}}
+      {{i18n "admin.landing_pages.documentation"}}
     </a>
   </div>
 </div>
@@ -83,10 +90,10 @@
       themes=themes
       groups=groups
       menus=menus
-      updatePages=(action "updatePages")}}
+      updatePages=(action "updatePages")
+    }}
   {{/if}}
   {{#if showGlobal}}
-    {{global-admin
-      global=global}}
+    {{global-admin global=global}}
   {{/if}}
 {{/if}}

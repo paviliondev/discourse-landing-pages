@@ -5,7 +5,6 @@ import { action } from "@ember/object";
 import bootbox from "bootbox";
 
 export default Component.extend({
-
   @action
   uploadFile() {
     this.set("pageFile", $("#file-input")[0].files[0]);

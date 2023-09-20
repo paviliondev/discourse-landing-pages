@@ -5,8 +5,15 @@
 >
   <:body>
     <div class="inputs">
-      <input onchange={{action "uploadFile"}} type="file" id="file-input" accept=".zip,application/zip"><br>
-      <span class="description">{{i18n "admin.landing_pages.import.file_tip"}}</span>
+      <input
+        onchange={{action "uploadFile"}}
+        type="file"
+        id="file-input"
+        accept=".zip,application/zip"
+      /><br />
+      <span class="description">{{i18n
+          "admin.landing_pages.import.file_tip"
+        }}</span>
     </div>
   </:body>
 

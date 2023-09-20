@@ -119,7 +119,10 @@ export default Component.extend({
         .then((file) => {
           const link = document.createElement("a");
           link.href = URL.createObjectURL(file);
-          link.setAttribute("download", `discourse-${page.name.toLowerCase()}.zip`);
+          link.setAttribute(
+            "download",
+            `discourse-${page.name.toLowerCase()}.zip`
+          );
           link.click();
         })
         .catch((error) => {

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
-require_relative '../plugin_helper'
+require_relative "../plugin_helper"
 
 describe LandingPages::Menu do
-  let(:raw_global) {
-    JSON.parse(File.open(
-      "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/pages.json"
-    ).read)
-  }
+  let(:raw_global) do
+    JSON.parse(
+      File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/pages.json").read,
+    )
+  end
 
   it "creates a menu" do
     raw_menu = raw_global["menus"].first
@@ -18,11 +18,11 @@ describe LandingPages::Menu do
 
   it "does not create a menu if required attributes are missing" do
     raw_menu = raw_global["menus"].first
-    raw_menu['name'] = nil
+    raw_menu["name"] = nil
     menu = LandingPages::Menu.create(raw_menu)
 
     expect(menu.errors.full_messages.first).to eq(
-      I18n.t("landing_pages.error.attr_required", attr: 'name')
+      I18n.t("landing_pages.error.attr_required", attr: "name"),
     )
   end
 

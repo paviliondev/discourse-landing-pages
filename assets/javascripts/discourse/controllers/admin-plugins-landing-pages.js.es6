@@ -139,17 +139,16 @@ export default Controller.extend({
     },
 
     importPages() {
-      this.modal.show(ImportPages)
-        .then((result) => {
-          if (result?.page) {
-            const page = LandingPage.create(result.page);
-            this.setProperties({
-              page: page,
-              currentPage: JSON.parse(JSON.stringify(page)),
-              pages: result.pages,
-            });
-          }
-        });
+      this.modal.show(ImportPages).then((result) => {
+        if (result?.page) {
+          const page = LandingPage.create(result.page);
+          this.setProperties({
+            page,
+            currentPage: JSON.parse(JSON.stringify(page)),
+            pages: result.pages,
+          });
+        }
+      });
     },
 
     updateRemote() {

@@ -1,9 +1,11 @@
 # frozen_string_literal: true
-class LandingPages::InvalidAccess < StandardError; end
-class LandingPages::InvalidParameters < StandardError; end
+class LandingPages::InvalidAccess < StandardError
+end
+class LandingPages::InvalidParameters < StandardError
+end
 
 class LandingPages::LandingController < ::ActionController::Base
-  VIEW_PATH ||= Rails.root.join('plugins', 'discourse-landing-pages', 'app', 'views')
+  VIEW_PATH ||= Rails.root.join("plugins", "discourse-landing-pages", "app", "views")
 
   prepend_view_path(VIEW_PATH)
   helper ::EmojiHelper
@@ -12,7 +14,7 @@ class LandingPages::LandingController < ::ActionController::Base
   include CurrentUser
 
   before_action :find_global, only: [:show]
-  before_action :find_page, only: [:show, :topic_list]
+  before_action :find_page, only: %i[show topic_list]
   before_action :check_access, only: [:show]
   before_action :find_menu, only: [:show]
   before_action :find_assets, only: [:show]
@@ -20,8 +22,7 @@ class LandingPages::LandingController < ::ActionController::Base
   before_action :ensure_can_change_subscription, only: [:subscription]
   before_action :find_category_user, only: [:subscription]
 
-  helper_method :list_item_html,
-                :list_topics
+  helper_method :list_item_html, :list_topics
 
   def show
     if @page.present?
@@ -42,9 +43,10 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def contact
-    Jobs.enqueue(:send_contact_email,
+    Jobs.enqueue(
+      :send_contact_email,
       from: contact_params[:email],
-      message: contact_params[:message]
+      message: contact_params[:message],
     )
 
     respond_to do |format|
@@ -54,7 +56,8 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def subscription
-    subscribed = @category_user.notification_level >= CategoryUser.notification_levels[:watching_first_post]
+    subscribed =
+      @category_user.notification_level >= CategoryUser.notification_levels[:watching_first_post]
     new_subscribed = ActiveModel::Type::Boolean.new.cast(subscription_params[:subscribed])
 
     if new_subscribed != subscribed
@@ -83,7 +86,7 @@ class LandingPages::LandingController < ::ActionController::Base
     @group = Group.find(@page.group_ids.first)
     @page_title = I18n.t("page_forbidden.title")
     @classes = "forbidden"
-    render status: 403, layout: 'landing', formats: [:html], template: '/exceptions/not_found'
+    render status: 403, layout: "landing", formats: [:html], template: "/exceptions/not_found"
   end
 
   private
@@ -101,15 +104,11 @@ class LandingPages::LandingController < ::ActionController::Base
       @page = LandingPages::Page.find(params[:page_id])
     end
 
-    unless @page.present?
-      raise LandingPages::InvalidParameters.new
-    end
+    raise LandingPages::InvalidParameters.new unless @page.present?
   end
 
   def find_menu
-    if @page.menu.present?
-      @menu = LandingPages::Menu.find_by("name", @page.menu)
-    end
+    @menu = LandingPages::Menu.find_by("name", @page.menu) if @page.menu.present?
   end
 
   def find_assets
@@ -123,10 +122,8 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def check_access
-    unless @page.group_ids.blank? ||
-      @page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) ||
-      (current_user && (current_user.groups.map(&:id) && @page.group_ids).length)
-
+    if @page.group_ids && !@page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) &&
+         (!current_user || (current_user.groups.map(&:id) & @page.group_ids).empty?)
       raise LandingPages::InvalidAccess.new
     end
   end
@@ -152,26 +149,25 @@ class LandingPages::LandingController < ::ActionController::Base
 
   def subscription_params
     params.require(:category_id)
-    params.permit(
-      :category_id,
-      :subscribed
-    )
+    params.permit(:category_id, :subscribed)
   end
 
   def topic_list_params
     params.require(:list_opts)
-    permitted = params.permit(
-      list_opts: [:category, :page, :per_page, :no_definitions, except_topic_ids: []],
-      item_opts: [:classes, :excerpt_length, :include_avatar, :profile_details, :avatar_size],
-      opts: {}
-    )
+    permitted =
+      params.permit(
+        list_opts: [:category, :page, :per_page, :no_definitions, except_topic_ids: []],
+        item_opts: %i[classes excerpt_length include_avatar profile_details avatar_size],
+        opts: {
+        },
+      )
 
     result = {}
-    [:opts, :list_opts, :item_opts].each do |key|
+    %i[opts list_opts item_opts].each do |key|
       hash = permitted[key].to_h.symbolize_keys
       hash.each do |k, v|
-        hash[k] = v.to_i if [:page, :per_page, :excerpt_length, :avatar_size].include? k
-        hash[k] = v === 'true' if [:no_definitions, :include_avatar, :profile_details].include? k
+        hash[k] = v.to_i if %i[page per_page excerpt_length avatar_size].include? k
+        hash[k] = v === "true" if %i[no_definitions include_avatar profile_details].include? k
         hash[k] = v.map(&:to_i) if [:except_topic_ids].include? k
       end
       result[key] = hash
@@ -191,17 +187,16 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def find_category_user
-    @category_user = CategoryUser.find_by(
-      category_id: subscription_params[:category_id],
-      user_id: current_user.id
-    )
+    @category_user =
+      CategoryUser.find_by(category_id: subscription_params[:category_id], user_id: current_user.id)
 
     if !@category_user
-      @category_user = CategoryUser.create!(
-        category_id: subscription_params[:category_id],
-        user_id: current_user.id,
-        notification_level: CategoryUser.notification_levels[:regular]
-      )
+      @category_user =
+        CategoryUser.create!(
+          category_id: subscription_params[:category_id],
+          user_id: current_user.id,
+          notification_level: CategoryUser.notification_levels[:regular],
+        )
     end
 
     raise Discourse::InvalidParameters.new unless @category_user
@@ -210,13 +205,11 @@ class LandingPages::LandingController < ::ActionController::Base
   def list_item_html(topics, item_opts)
     html = ""
     topics.each do |topic|
-      html += render_to_string(
-        partial: 'topic_list_item',
-        locals: {
-          topic: topic,
-          topic_url: "#{@page.path}/#{topic.slug}"
-        }.merge(item_opts)
-      )
+      html +=
+        render_to_string(
+          partial: "topic_list_item",
+          locals: { topic: topic, topic_url: "#{@page.path}/#{topic.slug}" }.merge(item_opts),
+        )
     end
     html
   end
@@ -224,13 +217,9 @@ class LandingPages::LandingController < ::ActionController::Base
   def list_topics(opts, list_opts)
     query = TopicQuery.new(current_user, list_opts)
 
-    if opts[:group_name]
-      group = Group.find_by(name: opts[:group_name])
-    end
+    group = Group.find_by(name: opts[:group_name]) if opts[:group_name]
 
-    if opts[:username]
-      user = User.find_by(username: opts[:username])
-    end
+    user = User.find_by(username: opts[:username]) if opts[:username]
 
     if user
       list = query.list_topics_by(user)

@@ -1,24 +1,22 @@
 # frozen_string_literal: true
-require_relative '../plugin_helper'
+require_relative "../plugin_helper"
 
 describe LandingPages::Remote do
-  let(:raw_remote) {
-    JSON.parse(File.open(
-      "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/remote.json"
-    ).read)
-  }
+  let(:raw_remote) do
+    JSON.parse(
+      File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/remote.json").read,
+    )
+  end
 
-  let(:raw_page) {
-    JSON.parse(File.open(
-      "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/page.json"
-    ).read)
-  }
+  let(:raw_page) do
+    JSON.parse(
+      File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/page.json").read,
+    )
+  end
 
-  let(:raw_body) {
-    File.open(
-      "#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/body.html.erb"
-    ).read
-  }
+  let(:raw_body) do
+    File.open("#{Rails.root}/plugins/discourse-landing-pages/spec/fixtures/body.html.erb").read
+  end
 
   before do
     commit_hash = "69acc9abf1026c038ae99a0c91f4e15afa454333"
@@ -26,13 +24,16 @@ describe LandingPages::Remote do
 
     LandingPages::GitImporter.any_instance.stubs(:import!).returns(true)
     LandingPages::GitImporter.any_instance.stubs(:connected).returns(true)
-    LandingPages::GitImporter.any_instance.stubs(:commits_since).returns([commit_hash, commits_behind])
+    LandingPages::GitImporter
+      .any_instance
+      .stubs(:commits_since)
+      .returns([commit_hash, commits_behind])
 
     @remote = LandingPages::Remote.update(raw_remote)
   end
 
   it "updates the remote" do
-    expect(LandingPages::Remote.get.url).to eq(raw_remote['url'])
+    expect(LandingPages::Remote.get.url).to eq(raw_remote["url"])
   end
 
   it "destroys the remote" do
@@ -41,16 +42,16 @@ describe LandingPages::Remote do
   end
 
   it "removes remote from pages imported from a destroyed remote" do
-    raw_page['remote'] = 'https://github.com/paviliondev/pages-repo.git'
-    raw_page['body'] = raw_body
+    raw_page["remote"] = "https://github.com/paviliondev/pages-repo.git"
+    raw_page["body"] = raw_body
 
     page = LandingPages::Page.create(raw_page)
-    expect(page.remote).to eq('https://github.com/paviliondev/pages-repo.git')
+    expect(page.remote).to eq("https://github.com/paviliondev/pages-repo.git")
 
     LandingPages::Remote.destroy
     expect(LandingPages::Remote.exists?).to eq(false)
 
-    page = LandingPages::Page.find_by('name', raw_page['name'])
+    page = LandingPages::Page.find_by("name", raw_page["name"])
     expect(page.remote).to eq(nil)
   end
 
