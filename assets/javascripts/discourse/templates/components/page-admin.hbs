@@ -168,7 +168,11 @@
       @class="category-select"
       @value={{page.category_id}}
       @onChange={{action (mut page.category_id)}}
-      @options={{hash clearable=true disabled=hasParent none="admin.landing_pages.page.category.select"}}
+      @options={{hash
+        clearable=true
+        disabled=hasParent
+        none="admin.landing_pages.page.category.select"
+      }}
     />
 
     <div class="control-instructions">
