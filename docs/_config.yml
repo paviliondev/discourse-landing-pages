@@ -1,0 +1,16 @@
+title: Landing Pages 🛩️
+description: Plugin that enables the creation of standalone landing pages for a Discourse instance
+baseurl: /discourse-landing-pages
+theme: just-the-docs
+
+url: https://paviliondev.github.io
+
+aux_links:
+  Github Repository: https://github.com/paviliondev/discourse-landing-pages
+
+gh_edit_link: true
+gh_edit_link_text: Edit this page on GitHub.
+gh_edit_repository: https://github.com/paviliondev/discourse-landing-pages
+gh_edit_branch: main
+gh_edit_source: docs
+gh_edit_view_mode: tree
