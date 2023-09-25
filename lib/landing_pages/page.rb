@@ -62,16 +62,16 @@ class LandingPages::Page
   end
 
   def after_save
-    if self.category_id
+    if category_id
       cache = LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY)
       category_id_map = cache.read || {}
-      category_id_map[self.category_id.to_i] = self.id
+      category_id_map[category_id] = id
       cache.write(category_id_map)
     end
   end
 
   def destroy
-    after_destroy if PluginStore.remove(LandingPages::PLUGIN_NAME, self.id)
+    after_destroy if PluginStore.remove(LandingPages::PLUGIN_NAME, id)
   end
 
   def after_destroy
