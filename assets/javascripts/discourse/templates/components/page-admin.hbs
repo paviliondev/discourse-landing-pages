@@ -164,13 +164,12 @@
       {{i18n "admin.landing_pages.page.category.label"}}
     </label>
 
-    {{category-chooser
-      class="category-select"
-      value=page.category_id
-      allowUncategorized=false
-      onChange=(action (mut page.category_id))
-      options=(hash disabled=hasParent)
-    }}
+    <CategoryChooser
+      @class="category-select"
+      @value={{page.category_id}}
+      @onChange={{action (mut page.category_id)}}
+      @options={{hash clearable=true disabled=hasParent}}
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.category.instructions"}}
