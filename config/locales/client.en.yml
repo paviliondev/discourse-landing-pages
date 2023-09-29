@@ -72,6 +72,7 @@ en:
           test: "Test Connection"
           private: "Repository is private"
           update: "Update"
+          reset: "Reset"
           
         import:
           title: "Import Pages"

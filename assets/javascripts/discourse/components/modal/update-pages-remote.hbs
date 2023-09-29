@@ -1,0 +1,64 @@
+<DModal
+  class="update-pages-remote"
+  @title={{i18n "admin.landing_pages.remote.title"}}
+  @closeModal={{@closeModal}}
+>
+  <:body>
+    <div class="repo">
+      <div class="label">{{i18n "admin.landing_pages.remote.url"}}</div>
+      <Input @value={{buffered.url}} placeholder={{urlPlaceholder}} />
+    </div>
+
+    <div class="branch">
+      <div class="label">{{i18n "admin.customize.theme.remote_branch"}}</div>
+      <Input @value={{buffered.branch}} placeholder="main" />
+    </div>
+
+    <div class="check-private">
+      <label>
+        <Input @type="checkbox" @checked={{buffered.private}} />
+        {{i18n "admin.landing_pages.remote.private"}}
+      </label>
+    </div>
+
+    {{#if showPublicKey}}
+      <div class="public-key">
+        <div class="label">{{i18n "admin.customize.theme.public_key"}}</div>
+        <Textarea readonly={{true}} @value={{buffered.public_key}} />
+      </div>
+    {{/if}}
+  </:body>
+
+  <:footer>
+    <DButton
+      @action={{action "update"}}
+      @disabled={{updateDisabled}}
+      class="btn btn-primary"
+      @label="admin.landing_pages.remote.update"
+    />
+
+    <DButton
+      @action={{action "reset"}}
+      @disabled={{resetDisabled}}
+      class="btn btn-danger"
+      @label="admin.landing_pages.remote.reset"
+    />
+
+    <DButton
+      @action={{action "test"}}
+      @disabled={{testDisabled}}
+      class="btn btn-test"
+      @label="admin.landing_pages.remote.test"
+    />
+
+    {{#if loading}}
+      {{loading-spinner size="small"}}
+    {{else}}
+      {{#if testIcon}}
+        {{d-icon testIcon (hash class=tested)}}
+      {{/if}}
+    {{/if}}
+
+    <DModalCancel @close={{@closeModal}} />
+  </:footer>
+</DModal>

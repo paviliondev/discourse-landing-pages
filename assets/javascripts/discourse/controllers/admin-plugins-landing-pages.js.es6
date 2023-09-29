@@ -1,11 +1,11 @@
 import LandingPage from "../models/landing-page";
 import ImportPages from "../components/modal/import-pages";
+import UpdatePagesRemote from "../components/modal/update-pages-remote";
 import Controller from "@ember/controller";
 import { inject as service } from "@ember/service";
 import discourseComputed from "discourse-common/utils/decorators";
 import { gt, not, notEmpty, or } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
-import showModal from "discourse/lib/show-modal";
 import { ajax } from "discourse/lib/ajax";
 import I18n from "I18n";
 
@@ -152,18 +152,16 @@ export default Controller.extend({
     },
 
     updateRemote() {
-      const controller = showModal("update-pages-remote", {
-        model: {
-          remote: this.remote,
-          buffered: JSON.parse(JSON.stringify(this.remote)),
-        },
-      });
-      controller.set("afterUpdate", (result) => {
-        this.setProperties({
-          remote: result.remote,
-          pagesNotFetched: true,
+      this.modal
+        .show(UpdatePagesRemote, { model: { remote: this.remote } })
+        .then((result) => {
+          if (result?.remote) {
+            this.setProperties({
+              remote: result.remote,
+              pagesNotFetched: true,
+            });
+          }
         });
-      });
     },
 
     pullFromRemote() {

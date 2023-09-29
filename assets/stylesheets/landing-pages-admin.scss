@@ -217,7 +217,7 @@
   }
 }
 
-.update-pages-remote-modal {
+.update-pages-remote {
   .modal-inner-container {
     min-width: 450px;
   }
@@ -233,29 +233,17 @@
 
     > .d-icon {
       margin-left: 5px;
-    }
 
-    &.success {
-      .d-icon {
+      &.success {
         color: $success;
       }
 
-      a {
-        color: $secondary;
-      }
-    }
-
-    &.failed {
-      .d-icon {
+      &.error {
         color: $danger;
       }
-
-      a {
-        color: $secondary;
-      }
     }
 
-    a.d-modal-cancel {
+    .d-modal-cancel {
       margin-left: auto;
     }
   }
