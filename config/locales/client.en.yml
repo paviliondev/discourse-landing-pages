@@ -105,6 +105,8 @@ en:
           header:
             label: Header
             description: "Add a header to all pages by defining header attributes JSON."
+            error: "Error found while updating the header: «%{error}»"
           footer:
             label: Footer
             description: "Add a footer to all pages by defining footer attributes JSON."
+            error: "Error found while updating the footer: «%{error}»"
