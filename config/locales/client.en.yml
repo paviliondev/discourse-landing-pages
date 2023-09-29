@@ -2,7 +2,7 @@ en:
   js:
     topic:
       landing_page:
-        link: Landing Page
+        link: "Landing Page"
 
   admin_js:
     admin:
@@ -19,10 +19,10 @@ en:
           export: "Export"
           remote: 
             label: "Repository"
-            description: "This page is pulled from the repository. Changes will be lost on the next pull."
+            description: "This page is pulled from the repository (changes will be lost on the next pull)"
           local:
             label: "Local"
-            description: "This page is saved locally."
+            description: "This page is saved locally"
           name:
             label: "Name"
             instructions: "Used in page title"
@@ -44,7 +44,6 @@ en:
           parent:
             label: "Parent"
             instructions: "Parent page, format parent-path/:param"
-            param_placeholder: "param"
           body:
             label: "Body"
             instructions: "Page body html.erb"
@@ -60,14 +59,14 @@ en:
             checking_status: "Checking status of the repository…"
             not_fetched: "Please make your first pull from the repository"
             up_to_date: "Up to date with the repository"
-            out_of_date: "Pull the new commits from the respository"
+            out_of_date: "Pull the new commits from the repository"
             x_commits_behind:
               one: "{{count}} commit behind"
               other: "{{count}} commits behind"
           pull:
             label: "Pull"
             description: "Pull page(s) from remote"
-          title: Pages Repository
+          title: "Pages Repository"
           url: "Repository url"
           test: "Test Connection"
           private: "Repository is private"
@@ -81,8 +80,8 @@ en:
           description: "Import page(s) from file"
         
         imported:
-          footer: Imported footer
-          header: Imported header
+          footer: "Imported footer"
+          header: "Imported header"
           x_scripts:
             one: "Imported {{count}} script"
             other: "Imported {{count}} scripts"
@@ -97,17 +96,16 @@ en:
             other: "Imported {{count}} pages"
 
         global:
-          label: Global
-          description: Content to be applied to every page.
-          enabled: Enabled
+          label: "Global"
+          description: "Content to be applied to every page"
           scripts:
-            label: Scripts
-            description: "Add scripts to all pages."
+            label: "Scripts"
+            description: "Add scripts to all pages"
           header:
-            label: Header
-            description: "Add a header to all pages by defining header attributes JSON."
+            label: "Header"
+            description: "Add a header to all pages by defining its JSON attributes"
             error: "Error found while updating the header: «%{error}»"
           footer:
-            label: Footer
-            description: "Add a footer to all pages by defining footer attributes JSON."
+            label: "Footer"
+            description: "Add a footer to all pages by defining its JSON attributes"
             error: "Error found while updating the footer: «%{error}»"
