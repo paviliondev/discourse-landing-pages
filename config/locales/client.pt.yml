@@ -2,102 +2,110 @@ pt:
   js:
     topic:
       landing_page:
-        link: Landing Page
+        link: "Página inicial"
+
   admin_js:
     admin:
       landing_pages:
-        title: "Landing Pages"
-        documentation: "Learn more in the documentation"
-        save: "Save"
-        destroy: "Delete"
+        title: "Páginas de Destaque"
+        documentation: "Mais informações na documentação"
+        save: "Salvar"
+        destroy: "Excluir"
+
         page:
-          label: "Pages"
-          create: "Create"
-          select: "Select page"
-          export: "Export"
+          label: "Páginas"
+          create: "Criar"
+          select: "Selecionar página"
+          export: "Exportar"
           remote:
-            label: "Repository"
-            description: "This page is pulled from the repository. Changes will be lost on the next pull."
+            label: "Repositório"
+            description: "Esta página é puxada para o repositório (as alterações serão perdidas na próxima pull)"
           local:
-            label: "Local"
-            description: "This page is saved locally."
+            label: "Localização"
+            description: "Esta página é salva localmente"
           name:
-            label: "Name"
-            instructions: "Used in page title"
+            label: "Nome"
+            instructions: "Utilizado no título da página"
           theme:
-            label: "Theme"
-            instructions: "Theme with page assets"
-            select: "Select theme"
+            label: "Tema"
+            instructions: "Tema com arquivos de página"
+            select: "Selecione um tema"
           groups:
-            label: "Groups"
-            instructions: "Limit access to group(s)"
+            label: "Grupos"
+            instructions: "Limitar acesso ao grupo(s)"
           category:
-            label: "Category"
-            instructions: "Connect page to category (requires child pages)"
+            label: "Categoria"
+            instructions: "Conectar a página à categoria (requer páginas filhas)"
+            select: "Selecionar categoria"
           path:
-            label: "Path"
-            placeholder: "path"
-            instructions: "Page path, e.g. forum.com/page-path"
+            label: "Caminho"
+            placeholder: "caminho"
+            instructions: "Caminho da página, por exemplo, forum.com/page-path"
           parent:
-            label: "Parent"
-            instructions: "Parent page, format parent-path/:param"
-            param_placeholder: "param"
+            label: "Antecessor"
+            instructions: "Página principal, formato de caminho-pai/:param"
           body:
-            label: "Body"
-            instructions: "Page body html.erb"
+            label: "Conteúdo"
+            instructions: "Corpo da página html.erb"
           menu:
             label: "Menu"
-            instructions: "Page menu"
-            select: "Select menu"
+            instructions: "Menu de página"
+            select: "Selecionar menu"
+
         remote:
           repository:
-            label: "Repository"
-            description: "Update repository"
-            checking_status: "Checking status of the repository..."
-            not_fetched: "Please make your first pull from the repository"
-            up_to_date: "Up to date with the repository"
-            out_of_date: "Pull the new commits from the respository"
+            label: "Repositório"
+            description: "Atualizar repositório"
+            checking_status: "Verificando o status do repositório…"
+            not_fetched: "Por favor, faça seu primeiro pull do repositório"
+            up_to_date: "Atualizado a data ao repositório"
+            out_of_date: "Puxe os novos commits do respositório"
             x_commits_behind:
-              one: "{{count}} commit behind"
-              other: "{{count}} commits behind"
+              one: "{{count}} commit atrás"
+              other: "{{count}} commits atrás"
           pull:
             label: "Pull"
-            description: "Pull page(s) from remote"
-          title: Pages Repository
-          url: "Repository url"
-          test: "Test Connection"
-          private: "Repository is private"
-          update: "Update"
+            description: "Puxar a(s) página(s) a partir do remoto"
+          title: "Repositório de páginas"
+          url: "URL do repositório"
+          test: "Testar Conexão"
+          private: "Repositório é privado"
+          update: "Atualizar"
+          reset: "Reiniciar"
+
         import:
-          title: "Import Pages"
-          file_tip: ".zip file containing page"
-          button: "Import"
-          description: "Import page(s) from file"
+          title: "Importar páginas"
+          file_tip: "Arquivo.zip contendo página"
+          button: "Importar"
+          description: "Importar página(s) de um arquivo"
+
         imported:
-          footer: Imported footer
-          header: Imported header
+          footer: "Rodapé importado"
+          header: "Cabeçalho importado"
           x_scripts:
-            one: "Imported {{count}} script"
-            other: "Imported {{count}} scripts"
+            one: "{{count}} script importado"
+            other: "{{count}} scripts importados"
           x_menus:
-            one: "Imported {{count}} menu"
-            other: "Imported {{count}} menus"
+            one: "{{count}} menu importado"
+            other: "{{count}} menus importados"
           x_assets:
-            one: "Imported {{count}} asset"
-            other: "Imported {{count}} assets"
+            one: "{{count}} asset importado"
+            other: "{{count}} assets importados"
           x_pages:
-            one: "Imported {{count}} page"
-            other: "Imported {{count}} pages"
+            one: "{{count}} página importada"
+            other: "{{count}} páginas importadas"
+
         global:
-          label: Global
-          description: Content to be applied to every page.
-          enabled: Enabled
+          label: "Global"
+          description: "Conteúdo a ser aplicado a cada página"
           scripts:
-            label: Scripts
-            description: "Add scripts to all pages."
+            label: "Scripts"
+            description: "Adicione scripts a todas as páginas. <a href='https://thepavilion.io/t/4098#scripts' target='_blank'>Veja mais</a>."
           header:
-            label: Header
-            description: "Add a header to all pages by defining header attributes JSON."
+            label: "Cabeçalho"
+            description: "Adicione um cabeçalho a todas as páginas definindo os atributos JSON"
+            error: "Erro ao tentar atualizar o cabeçalho: «%{error}»"
           footer:
-            label: Footer
-            description: "Add a footer to all pages by defining footer attributes JSON."
+            label: "Rodapé"
+            description: "Adicione um rodapé a todas as páginas definindo os atributos JSON"
+            error: "Erro ao tentar atualizar o rodapé: «%{error}»"

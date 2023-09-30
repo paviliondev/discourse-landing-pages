@@ -2,102 +2,110 @@ gl:
   js:
     topic:
       landing_page:
-        link: Landing Page
+        link: "Páxina de aterraxe"
+
   admin_js:
     admin:
       landing_pages:
-        title: "Landing Pages"
-        documentation: "Learn more in the documentation"
-        save: "Save"
-        destroy: "Delete"
+        title: "Páxinas de aterraxe"
+        documentation: "Obtén máis información na documentación oficial"
+        save: "Gardar"
+        destroy: "Eliminar"
+
         page:
-          label: "Pages"
-          create: "Create"
-          select: "Select page"
-          export: "Export"
+          label: "Páxinas"
+          create: "Crear"
+          select: "Selecciona unha página…"
+          export: "Exportar"
           remote:
-            label: "Repository"
-            description: "This page is pulled from the repository. Changes will be lost on the next pull."
+            label: "Repositorio"
+            description: "Esta páxina provén do repositorio (tódolos cambios perderanse tras sincronizar)"
           local:
             label: "Local"
-            description: "This page is saved locally."
+            description: "Esta páxina está almacenada localmente"
           name:
-            label: "Name"
-            instructions: "Used in page title"
+            label: "Nome"
+            instructions: "Úsase no título da páxina"
           theme:
-            label: "Theme"
-            instructions: "Theme with page assets"
-            select: "Select theme"
+            label: "Tema"
+            instructions: "Aplica os estilos do tema á página"
+            select: "Selecciona un tema…"
           groups:
-            label: "Groups"
-            instructions: "Limit access to group(s)"
+            label: "Grupos"
+            instructions: "Limita o acceso á páxina a este/s grupo/s"
           category:
-            label: "Category"
-            instructions: "Connect page to category (requires child pages)"
+            label: "Categoría"
+            instructions: "Enlaza a página a esta categoría"
+            select: "Selecciona unha categoría…"
           path:
-            label: "Path"
-            placeholder: "path"
-            instructions: "Page path, e.g. forum.com/page-path"
+            label: "Ruta"
+            placeholder: "ruta"
+            instructions: "Xera a ruta da páxina (formato /:ruta)"
           parent:
-            label: "Parent"
-            instructions: "Parent page, format parent-path/:param"
-            param_placeholder: "param"
+            label: "Pai"
+            instructions: "Prefixo para a ruta da páxina (formato /:ruta-pai/:ruta)"
           body:
-            label: "Body"
-            instructions: "Page body html.erb"
+            label: "Corpo"
+            instructions: "Contido da páxina en HTML"
           menu:
-            label: "Menu"
-            instructions: "Page menu"
-            select: "Select menu"
+            label: "Menú"
+            instructions: "Enlaces de navegación para a páxina"
+            select: "Selecciona un menú…"
+
         remote:
           repository:
-            label: "Repository"
-            description: "Update repository"
-            checking_status: "Checking status of the repository..."
-            not_fetched: "Please make your first pull from the repository"
-            up_to_date: "Up to date with the repository"
-            out_of_date: "Pull the new commits from the respository"
+            label: "Repositorio"
+            description: "Actualizar contido remoto"
+            checking_status: "Comprobando o estado do repositorio…"
+            not_fetched: "O repositorio aínda non se sincronizou"
+            up_to_date: "Non hai novos cambios dispoñíbeis"
+            out_of_date: "Sincroniza os novos cambios dispoñíbeis"
             x_commits_behind:
-              one: "{{count}} commit behind"
-              other: "{{count}} commits behind"
+              one: "{{count}} commit de diferenza"
+              other: "{{count}} commits de diferenza"
           pull:
-            label: "Pull"
-            description: "Pull page(s) from remote"
-          title: Pages Repository
-          url: "Repository url"
-          test: "Test Connection"
-          private: "Repository is private"
-          update: "Update"
+            label: "Sincronizar"
+            description: "Sincronizar a/s páxina/s dende o repositorio"
+          title: "Repositorio remoto"
+          url: "URL do respositorio"
+          test: "Comprobar URL"
+          private: "O repositorio é privado"
+          update: "Conectar"
+          reset: "Reiniciar"
+
         import:
-          title: "Import Pages"
-          file_tip: ".zip file containing page"
-          button: "Import"
-          description: "Import page(s) from file"
+          title: "Importar páxinas"
+          file_tip: "Arquivo .zip co contido da/s páxina/s"
+          button: "Importar"
+          description: "Importar páxina/s dende un arquivo comprimido"
+
         imported:
-          footer: Imported footer
-          header: Imported header
+          footer: "Importouse o pé de páxina"
+          header: "Importouse a cabeceira"
           x_scripts:
-            one: "Imported {{count}} script"
-            other: "Imported {{count}} scripts"
+            one: "Importouse un script"
+            other: "Importáronse {{count}} scripts"
           x_menus:
-            one: "Imported {{count}} menu"
-            other: "Imported {{count}} menus"
+            one: "Importouse un menú"
+            other: "Importáronse {{count}} menús"
           x_assets:
-            one: "Imported {{count}} asset"
-            other: "Imported {{count}} assets"
+            one: "Importouse un recurso"
+            other: "Importáronse {{count}} recursos"
           x_pages:
-            one: "Imported {{count}} page"
-            other: "Imported {{count}} pages"
+            one: "Importouse unha páxina"
+            other: "Importáronse {{count}} páxinas"
+
         global:
-          label: Global
-          description: Content to be applied to every page.
-          enabled: Enabled
+          label: "Global"
+          description: "Este contido aplicarase a tódalas páxinas"
           scripts:
-            label: Scripts
-            description: "Add scripts to all pages."
+            label: "Scripts"
+            description: "Engade un ou varios scripts globais"
           header:
-            label: Header
-            description: "Add a header to all pages by defining header attributes JSON."
+            label: "Cabeceira"
+            description: "Engade unha cabeceira global definindo os seus atributos JSON"
+            error: "Erro ao tentar actualizar a cabeceira: «%{error}»"
           footer:
-            label: Footer
-            description: "Add a footer to all pages by defining footer attributes JSON."
+            label: "Pé de páxina"
+            description: "Engade un pé de páxina global definindo os seus atributos JSON"
+            error: "Erro ao tentar actualizar o pé de páxina: «%{error}»"
