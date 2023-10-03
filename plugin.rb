@@ -2,8 +2,8 @@
 
 # name: discourse-landing-pages
 # about: Adds landing pages to Discourse
-# version: 0.2.1
-# authors: Angus McLeod
+# version: 0.3.0
+# authors: Angus McLeod, Pablo Cabido
 # url: https://github.com/paviliondev/discourse-landing-pages
 
 register_asset "stylesheets/landing-pages-admin.scss"
