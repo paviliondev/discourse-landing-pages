@@ -122,7 +122,7 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def check_access
-    if @page.group_ids && !@page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) &&
+    if @page.group_ids.present? && !@page.group_ids.include?(Group::AUTO_GROUPS[:everyone]) &&
          (!current_user || (current_user.groups.map(&:id) & @page.group_ids).empty?)
       raise LandingPages::InvalidAccess.new
     end
