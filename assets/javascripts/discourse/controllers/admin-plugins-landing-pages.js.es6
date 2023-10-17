@@ -24,6 +24,7 @@ export default Controller.extend({
   hasCommitsBehind: gt("commitsBehind", 0),
   hasMessages: notEmpty("messages.items"),
   showCommitsBehind: false,
+  showPages: true,
 
   @discourseComputed("staticMessage", "resultMessages")
   messages(staticMessage, resultMessages) {
@@ -246,8 +247,16 @@ export default Controller.extend({
       this.set("pages", pages);
     },
 
+    toggleShowPages() {
+      this.setProperties({
+        showPages: true,
+        showGlobal: false,
+      });
+    },
+
     toggleShowGlobal() {
       this.setProperties({
+        showPages: false,
         showGlobal: true,
         page: null,
         currentPage: null,

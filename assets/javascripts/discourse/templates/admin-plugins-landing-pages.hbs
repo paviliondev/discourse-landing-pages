@@ -1,64 +1,56 @@
 <div class="page-controls">
-  <div class="page-list-container">
-    {{page-list
-      value=page.id
-      content=pages
-      onChange=(action "changePage")
-      class="page-select"
-      options=(hash none="admin.landing_pages.page.select")
-    }}
-    {{d-button
-      action=(action "createPage")
-      label="admin.landing_pages.page.create"
-      class="page-create"
-      icon="plus"
-    }}
+  <div class="buttons">
+    <DButton
+      @action={{action "toggleShowPages"}}
+      @label="admin.landing_pages.page.label"
+      @title="admin.landing_pages.page.description"
+      @icon="file"
+      class="pages"
+    />
+
+    <DButton
+      @action={{action "toggleShowGlobal"}}
+      @label="admin.landing_pages.global.label"
+      @title="admin.landing_pages.global.description"
+      @icon="globe"
+      class="global"
+    />
   </div>
 
   <div class="buttons">
     {{#if pullingFromRemote}}
       {{loading-spinner size="small"}}
-    {{else}}
-      {{#if showCommitsBehind}}
-        {{i18n
-          "admin.landing_pages.remote.repository.x_commits_behind"
-          count=commitsBehind
-        }}
-      {{/if}}
+    {{else if showCommitsBehind}}
+      {{i18n
+        "admin.landing_pages.remote.repository.x_commits_behind"
+        count=commitsBehind
+      }}
     {{/if}}
 
-    {{d-button
-      action=(action "pullFromRemote")
-      label="admin.landing_pages.remote.pull.label"
-      title="admin.landing_pages.remote.pull.description"
-      icon="arrow-down"
+    <DButton
+      @action={{action "pullFromRemote"}}
+      @label="admin.landing_pages.remote.pull.label"
+      @title="admin.landing_pages.remote.pull.description"
+      @icon="arrow-down"
       class="pull"
-      disabled=pullDisabled
-    }}
+      @disabled={{pullDisabled}}
+    />
 
-    {{d-button
-      action=(action "updateRemote")
-      title="admin.landing_pages.remote.repository.description"
-      label="admin.landing_pages.remote.repository.label"
-      icon="book"
+    <DButton
+      @action={{action "updateRemote"}}
+      @title="admin.landing_pages.remote.repository.description"
+      @label="admin.landing_pages.remote.repository.label"
+      @icon="book"
       class="remote"
-    }}
+    />
 
-    {{d-button
-      action=(action "importPages")
-      label="admin.landing_pages.import.button"
-      title="admin.landing_pages.import.description"
-      icon="download"
+    <DButton
+      @action={{action "importPages"}}
+      @label="admin.landing_pages.import.button"
+      @title="admin.landing_pages.import.description"
+      @icon="download"
       class="import"
-    }}
-
-    {{d-button
-      action=(action "toggleShowGlobal")
-      label="admin.landing_pages.global.label"
-      title="admin.landing_pages.global.description"
-      icon="globe"
-      class="global"
-    }}
+    />
   </div>
 </div>
 
@@ -83,21 +75,37 @@
   </div>
 </div>
 
-{{#if loading}}
-  {{loading-spinner}}
-{{else}}
+{{#if showGlobal}}
+  <GlobalAdmin @global={{global}} />
+{{else if showPages}}
+  <div class="page-controls">
+    <div class="page-list-container">
+      <ComboBox
+        @value={{page.id}}
+        @content={{pages}}
+        @onChange={{action "changePage"}}
+        class="page-select"
+        @options={{hash none="admin.landing_pages.page.select"}}
+      />
+
+      <DButton
+        @action={{action "createPage"}}
+        @label="admin.landing_pages.page.create"
+        class="page-create"
+        @icon="plus"
+      />
+    </div>
+  </div>
+
   {{#if page}}
-    {{page-admin
-      page=page
-      pages=pages
-      currentPage=currentPage
-      themes=themes
-      groups=groups
-      menus=menus
-      updatePages=(action "updatePages")
-    }}
-  {{/if}}
-  {{#if showGlobal}}
-    {{global-admin global=global}}
+    <PageAdmin
+      @page={{page}}
+      @pages={{pages}}
+      @currentPage={{currentPage}}
+      @themes={{themes}}
+      @groups={{groups}}
+      @menus={{menus}}
+      @updatePages={{action "updatePages"}}
+    />
   {{/if}}
 {{/if}}
