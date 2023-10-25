@@ -1,6 +1,6 @@
 <section class="topic-byline">
   <div class="author">
-    <%= user_profile(local_assigns[:topic].user, local_assigns[:user_profile_opts]) %>
+    <%= user_profile(local_assigns[:topic].user, **local_assigns[:user_profile_opts]) %>
   </div>
   <div class="bull">•</div>
   <div class="date" title="<%= short_date(local_assigns[:topic].created_at) %>">
