@@ -11,7 +11,7 @@
           </h2>
         </div>
         <section class="topic-excerpt">
-          <%= "#{local_assigns[:topic].excerpt.split[0...local_assigns[:topic_excerpt_length]].join(' ')} …" %>
+          <%== local_assigns[:topic].excerpt %>
         </section>
       </a>
       <div class="topic-meta">

@@ -13,8 +13,6 @@ module LandingHelper
   )
     return nil if user.blank?
 
-    user = User.find_by(username: username) if user.blank?
-
     if user
       bio_html = ""
       location_html = ""
