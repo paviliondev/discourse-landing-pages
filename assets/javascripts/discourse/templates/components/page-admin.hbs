@@ -20,29 +20,29 @@
     {{conditional-loading-spinner condition=updatingPage size="small"}}
 
     {{#unless page.creating}}
-      {{d-button
-        action=(action "exportPage")
-        label="admin.landing_pages.page.export"
-        href=page.exportUrl
-        disabled=updatingPage
-        icon="upload"
-      }}
+      <DButton
+        @action={{action "exportPage"}}
+        @label="admin.landing_pages.page.export"
+        @href={{page.exportUrl}}
+        @disabled={{updatingPage}}
+        @icon="upload"
+      />
 
-      {{d-button
-        action=(action "destroyPage")
-        label="admin.landing_pages.destroy"
-        disabled=updatingPage
-        icon="times"
-      }}
+      <DButton
+        @action={{action "destroyPage"}}
+        @label="admin.landing_pages.destroy"
+        @disabled={{updatingPage}}
+        @icon="times"
+      />
     {{/unless}}
 
-    {{d-button
-      action=(action "savePage")
-      label="admin.landing_pages.save"
+    <DButton
+      @action={{action "savePage"}}
+      @label="admin.landing_pages.save"
       class="btn-primary"
-      disabled=updatingPage
-      icon="save"
-    }}
+      @disabled={{updatingPage}}
+      @icon="save"
+    />
   </div>
 
   <div class="page-url">
@@ -88,13 +88,13 @@
       {{i18n "admin.landing_pages.page.parent.label"}}
     </label>
 
-    {{page-list
-      value=page.parent_id
-      content=pages
-      onChange=(action "onChangeParent")
+    <ComboBox
+      @value={{page.parent_id}}
+      @content={{pages}}
+      @onChange={{action "onChangeParent"}}
       class="page-select page-parent"
-      options=(hash none="admin.landing_pages.page.select")
-    }}
+      @options={{hash none="admin.landing_pages.page.select"}}
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.parent.instructions"}}
@@ -106,15 +106,15 @@
       {{i18n "admin.landing_pages.page.menu.label"}}
     </label>
 
-    {{combo-box
-      content=menus
-      value=page.menu
-      valueProperty="name"
-      nameProperty="name"
-      onChange=(action (mut page.menu))
+    <ComboBox
+      @content={{menus}}
+      @value={{page.menu}}
+      @valueProperty="name"
+      @nameProperty="name"
+      @onChange={{action (mut page.menu)}}
       class="menu-select"
-      options=(hash none="admin.landing_pages.page.menu.select")
-    }}
+      @options={{hash none="admin.landing_pages.page.menu.select"}}
+    />
 
     <div class="control-instructions">
       {{i18n "admin.landing_pages.page.menu.instructions"}}
