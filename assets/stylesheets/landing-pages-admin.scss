@@ -19,6 +19,7 @@
       align-items: center;
     }
 
+    .menu-select,
     .page-select {
       min-width: 300px;
       margin-right: 10px;
@@ -220,10 +221,12 @@
 }
 
 .update-pages-remote {
+  .d-modal__container,
   .modal-inner-container {
     min-width: 450px;
   }
 
+  .d-modal__footer,
   .modal-footer {
     display: flex;
     align-items: center;
