@@ -78,34 +78,11 @@
 {{#if showGlobal}}
   <GlobalAdmin @global={{global}} />
 {{else if showPages}}
-  <div class="page-controls">
-    <div class="page-list-container">
-      <ComboBox
-        @value={{page.id}}
-        @content={{pages}}
-        @onChange={{action "changePage"}}
-        class="page-select"
-        @options={{hash none="admin.landing_pages.page.select"}}
-      />
-
-      <DButton
-        @action={{action "createPage"}}
-        @label="admin.landing_pages.page.create"
-        class="page-create"
-        @icon="plus"
-      />
-    </div>
-  </div>
-
-  {{#if page}}
-    <PageAdmin
-      @page={{page}}
-      @pages={{pages}}
-      @currentPage={{currentPage}}
-      @themes={{themes}}
-      @groups={{groups}}
-      @menus={{menus}}
-      @updatePages={{action "updatePages"}}
-    />
-  {{/if}}
+  <PageAdmin
+    @pages={{pages}}
+    @themes={{themes}}
+    @groups={{groups}}
+    @menus={{menus}}
+    @updatePages={{action "updatePages"}}
+  />
 {{/if}}

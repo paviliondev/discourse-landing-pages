@@ -11,10 +11,11 @@ pt:
         documentation: "Mais informações na documentação"
         save: "Salvar"
         destroy: "Excluir"
+        create: "Criar"
 
         page:
           label: "Páginas"
-          create: "Criar"
+          description: "Gerenciar as páginas de destaque"
           select: "Selecionar página"
           export: "Exportar"
           remote:
