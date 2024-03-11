@@ -157,8 +157,6 @@ export default Controller.extend({
             pages,
             menus,
             global,
-            page: null,
-            showGlobal: false,
           });
 
           if (report.errors.length) {
@@ -188,9 +186,9 @@ export default Controller.extend({
               }
             });
 
-            this.set("resultMessages", {
-              type: "success",
-              messages,
+            this.setProperties({
+              resultMessages: { type: "success", messages },
+              pagesNotFetched: false,
             });
 
             this.send("commitsBehind");
