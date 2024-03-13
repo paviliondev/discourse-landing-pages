@@ -1,194 +1,215 @@
-<div class="page-header">
-  <div class="page-name">
-    <span>
-      {{#if page.name}}
-        {{page.name}}
-      {{else}}
-        {{i18n "admin.landing_pages.page.name.label"}}
-      {{/if}}
-    </span>
-  </div>
-
-  <div class="buttons">
-    {{#if resultMessage}}
-      <span class="{{resultMessage.type}}">
-        {{d-icon resultMessage.icon}}
-        {{{resultMessage.text}}}
-      </span>
-    {{/if}}
-
-    {{conditional-loading-spinner condition=updatingPage size="small"}}
-
-    {{#unless page.creating}}
-      <DButton
-        @action={{action "exportPage"}}
-        @label="admin.landing_pages.page.export"
-        @href={{page.exportUrl}}
-        @disabled={{updatingPage}}
-        @icon="upload"
-      />
-
-      <DButton
-        @action={{action "destroyPage"}}
-        @label="admin.landing_pages.destroy"
-        @disabled={{updatingPage}}
-        @icon="times"
-      />
-    {{/unless}}
-
-    <DButton
-      @action={{action "savePage"}}
-      @label="admin.landing_pages.save"
-      class="btn-primary"
-      @disabled={{updatingPage}}
-      @icon="save"
-    />
-  </div>
-
-  <div class="page-url">
-    <a href="{{pageUrl}}" target="_blank">
-      {{pageUrl}}
-      {{d-icon "external-link-alt"}}
-    </a>
-  </div>
-</div>
-
-<div class="page-details">
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.name.label"}}
-    </label>
-
-    <Input @value={{page.name}} class="page-name" />
-
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.name.instructions"}}
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.path.label"}}
-    </label>
-
-    <Input
-      @value={{readonly pagePath}}
-      disabled={{hasParent}}
-      onInput={{action "onChangePath" value="target.value"}}
-      class="page-path"
-    />
-
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.path.instructions"}}
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.parent.label"}}
-    </label>
-
+<div class="page-controls">
+  <div class="page-list-container">
     <ComboBox
-      @value={{page.parent_id}}
+      @value={{page.id}}
       @content={{pages}}
-      @onChange={{action "onChangeParent"}}
-      class="page-select page-parent"
+      @onChange={{action "changePage"}}
+      class="page-select"
       @options={{hash none="admin.landing_pages.page.select"}}
     />
 
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.parent.instructions"}}
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.menu.label"}}
-    </label>
-
-    <ComboBox
-      @content={{menus}}
-      @value={{page.menu}}
-      @valueProperty="name"
-      @nameProperty="name"
-      @onChange={{action (mut page.menu)}}
-      class="menu-select"
-      @options={{hash none="admin.landing_pages.page.menu.select"}}
+    <DButton
+      @action={{action "createPage"}}
+      @label="admin.landing_pages.create"
+      class="page-create"
+      @icon="plus"
     />
-
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.menu.instructions"}}
-    </div>
   </div>
 </div>
 
-<div class="page-assets">
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.theme.label"}}
-    </label>
+{{#if page}}
+  <div class="page-header">
+    <div class="page-name">
+      <span>
+        {{#if page.name}}
+          {{page.name}}
+        {{else}}
+          {{i18n "admin.landing_pages.page.name.label"}}
+        {{/if}}
+      </span>
+    </div>
 
-    <ComboBox
-      @content={{themes}}
-      @value={{page.theme_id}}
-      @onChange={{action (mut page.theme_id)}}
-      @class="theme-select"
-      @options={{hash none="admin.landing_pages.page.theme.select"}}
-    />
+    <div class="buttons">
+      {{#if resultMessage}}
+        <span class="{{resultMessage.style}}">
+          {{d-icon resultMessage.icon}}
+          {{{resultMessage.text}}}
+        </span>
+      {{/if}}
 
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.theme.instructions"}}
+      {{conditional-loading-spinner condition=updatingPage size="small"}}
+
+      {{#if page.id}}
+        <DButton
+          @action={{action "exportPage"}}
+          @label="admin.landing_pages.page.export"
+          @href={{page.exportUrl}}
+          @disabled={{updatingPage}}
+          @icon="upload"
+        />
+
+        <DButton
+          @action={{action "destroyPage"}}
+          @label="admin.landing_pages.destroy"
+          @disabled={{updatingPage}}
+          @icon="times"
+        />
+      {{/if}}
+
+      <DButton
+        @action={{action "savePage"}}
+        @label="admin.landing_pages.save"
+        class="btn-primary"
+        @disabled={{updatingPage}}
+        @icon="save"
+      />
+    </div>
+
+    <div class="page-url">
+      <a href="{{pageUrl}}" target="_blank">
+        {{pageUrl}}
+        {{d-icon "external-link-alt"}}
+      </a>
     </div>
   </div>
 
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.groups.label"}}
-    </label>
+  <div class="page-details">
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.name.label"}}
+      </label>
 
-    <GroupChooser
-      @class="group-select"
-      @content={{groups}}
-      @value={{page.group_ids}}
-      @labelProperty="name"
-      @onChange={{action (mut page.group_ids)}}
-    />
+      <Input @value={{page.name}} class="page-name" />
 
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.groups.instructions"}}
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.name.instructions"}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.path.label"}}
+      </label>
+
+      <Input
+        @value={{readonly pagePath}}
+        disabled={{hasParent}}
+        onInput={{action "onChangePath" value="target.value"}}
+        class="page-path"
+      />
+
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.path.instructions"}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.parent.label"}}
+      </label>
+
+      <ComboBox
+        @value={{page.parent_id}}
+        @content={{pages}}
+        @onChange={{action "onChangeParent"}}
+        class="page-select page-parent"
+        @options={{hash none="admin.landing_pages.page.select"}}
+      />
+
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.parent.instructions"}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.menu.label"}}
+      </label>
+
+      <ComboBox
+        @content={{menus}}
+        @value={{page.menu}}
+        @valueProperty="name"
+        @nameProperty="name"
+        @onChange={{action (mut page.menu)}}
+        class="menu-select"
+        @options={{hash none="admin.landing_pages.page.menu.select"}}
+      />
+
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.menu.instructions"}}
+      </div>
     </div>
   </div>
 
-  <div class="control-group">
-    <label class="control-label">
-      {{i18n "admin.landing_pages.page.category.label"}}
-    </label>
+  <div class="page-assets">
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.theme.label"}}
+      </label>
 
-    <CategoryChooser
-      @class="category-select"
-      @value={{page.category_id}}
-      @onChange={{action (mut page.category_id)}}
-      @options={{hash
-        clearable=true
-        disabled=hasParent
-        none="admin.landing_pages.page.category.select"
-      }}
-    />
+      <ComboBox
+        @content={{themes}}
+        @value={{page.theme_id}}
+        @onChange={{action (mut page.theme_id)}}
+        @class="theme-select"
+        @options={{hash none="admin.landing_pages.page.theme.select"}}
+      />
 
-    <div class="control-instructions">
-      {{i18n "admin.landing_pages.page.category.instructions"}}
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.theme.instructions"}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.groups.label"}}
+      </label>
+
+      <GroupChooser
+        @class="group-select"
+        @content={{groups}}
+        @value={{page.group_ids}}
+        @labelProperty="name"
+        @onChange={{action (mut page.group_ids)}}
+      />
+
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.groups.instructions"}}
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">
+        {{i18n "admin.landing_pages.page.category.label"}}
+      </label>
+
+      <CategoryChooser
+        @class="category-select"
+        @value={{page.category_id}}
+        @onChange={{action (mut page.category_id)}}
+        @options={{hash
+          clearable=true
+          disabled=hasParent
+          none="admin.landing_pages.page.category.select"
+        }}
+      />
+
+      <div class="control-instructions">
+        {{i18n "admin.landing_pages.page.category.instructions"}}
+      </div>
     </div>
   </div>
-</div>
 
-<div class="page-editor">
-  <label class="control-label">
-    {{i18n "admin.landing_pages.page.body.label"}}
-  </label>
+  <div class="page-editor">
+    <label class="control-label">
+      {{i18n "admin.landing_pages.page.body.label"}}
+    </label>
 
-  <div class="control-instructions">
-    {{i18n "admin.landing_pages.page.body.instructions"}}
+    <div class="control-instructions">
+      {{i18n "admin.landing_pages.page.body.instructions"}}
+    </div>
+
+    <AceEditor @content={{page.body}} @mode="html" />
   </div>
-
-  <AceEditor @content={{page.body}} @mode="html" />
-</div>
+{{/if}}

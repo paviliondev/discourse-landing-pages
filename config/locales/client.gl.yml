@@ -11,10 +11,11 @@ gl:
         documentation: "Obtén máis información na documentación oficial"
         save: "Gardar"
         destroy: "Eliminar"
+        create: "Crear"
 
         page:
           label: "Páxinas"
-          create: "Crear"
+          description: "Xestionar as páxinas de aterraxe"
           select: "Selecciona unha página…"
           export: "Exportar"
           remote:

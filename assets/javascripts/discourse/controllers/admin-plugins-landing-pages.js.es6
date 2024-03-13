@@ -1,4 +1,3 @@
-import LandingPage from "../models/landing-page";
 import ImportPages from "../components/modal/import-pages";
 import UpdatePagesRemote from "../components/modal/update-pages-remote";
 import Controller from "@ember/controller";
@@ -115,38 +114,17 @@ export default Controller.extend({
   },
 
   actions: {
-    changePage(pageId) {
-      if (pageId) {
-        LandingPage.find(pageId).then((result) => {
-          if (result.page) {
-            const page = LandingPage.create(result.page);
-            this.setProperties({
-              page,
-              currentPage: JSON.parse(JSON.stringify(page)),
-              showGlobal: false,
-            });
-          }
-        });
-      } else {
-        this.setProperties({
-          page: null,
-          currentPage: null,
-        });
-      }
-    },
-
-    createPage() {
-      this.set("page", LandingPage.create({ creating: true }));
-    },
-
     importPages() {
       this.modal.show(ImportPages).then((result) => {
         if (result?.page) {
-          const page = LandingPage.create(result.page);
           this.setProperties({
-            page,
-            currentPage: JSON.parse(JSON.stringify(page)),
             pages: result.pages,
+            resultMessages: {
+              type: "success",
+              messages: [
+                I18n.t("admin.landing_pages.imported.x_pages", { count: 1 }),
+              ],
+            },
           });
         }
       });
@@ -179,8 +157,6 @@ export default Controller.extend({
             pages,
             menus,
             global,
-            page: null,
-            showGlobal: false,
           });
 
           if (report.errors.length) {
@@ -210,9 +186,9 @@ export default Controller.extend({
               }
             });
 
-            this.set("resultMessages", {
-              type: "success",
-              messages,
+            this.setProperties({
+              resultMessages: { type: "success", messages },
+              pagesNotFetched: false,
             });
 
             this.send("commitsBehind");
@@ -258,8 +234,6 @@ export default Controller.extend({
       this.setProperties({
         showPages: false,
         showGlobal: true,
-        page: null,
-        currentPage: null,
       });
     },
   },

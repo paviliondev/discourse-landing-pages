@@ -8,13 +8,9 @@ const basePath = "/landing/page";
 const LandingPage = EmberObject.extend({
   exportUrl: url("id", `${basePath}/%@/export`),
 
-  savePage() {
-    const creating = this.creating;
-    let path = basePath;
-
-    if (!creating) {
-      path += `/${this.id}`;
-    }
+  save() {
+    const path = this.id ? `${basePath}/${this.id}` : basePath;
+    const method = this.id ? "PUT" : "POST";
 
     let page = {
       name: this.name,
@@ -28,19 +24,19 @@ const LandingPage = EmberObject.extend({
     };
 
     return ajax(path, {
-      type: creating ? "POST" : "PUT",
+      type: method,
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(page),
     });
   },
 
-  destroyPage() {
+  destroy() {
     return ajax(`${basePath}/${this.id}`, {
       type: "DELETE",
     }).catch(popupAjaxError);
   },
 
-  exportPage() {
+  export() {
     return ajax(this.exportUrl, {
       type: "GET",
       dataType: "binary",

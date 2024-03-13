@@ -11,10 +11,11 @@ en:
         documentation: "Learn more in the documentation"
         save: "Save"
         destroy: "Delete"
+        create: "Create"
 
         page:
           label: "Pages"
-          create: "Create"
+          description: "Manage all landing pages"
           select: "Select page…"
           export: "Export"
           remote: 
