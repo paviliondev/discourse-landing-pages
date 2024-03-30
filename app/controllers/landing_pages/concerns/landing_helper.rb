@@ -86,6 +86,7 @@ module LandingHelper
 
   def topic_list(opts: {}, list_opts: {}, item_opts: {})
     list_opts[:per_page] = 30 unless list_opts[:per_page].present?
+    list_opts[:category] = -1 unless list_opts[:category].present?
     topics = list_topics(opts, list_opts)
 
     instance_variable_set("@#{opts[:instance_var]}", topics) if opts[:instance_var]
@@ -114,8 +115,14 @@ module LandingHelper
     end
   end
 
-  def set_category_user(category_slug, user: current_user)
-    if category = Category.find_by(slug: category_slug)
+  def set_parent_page(parent_id)
+    if parent_page = LandingPages::Page.find(parent_id)
+      instance_variable_set("@parent_page", parent_page)
+    end
+  end
+
+  def set_category_user(category_id, user: current_user)
+    if user && category = Category.find_by(id: category_id)
       category_user = CategoryUser.find_by(category_id: category.id, user_id: user.id)
 
       if !category_user
@@ -129,8 +136,6 @@ module LandingHelper
 
       instance_variable_set("@category_user", category_user)
     end
-
-    nil
   end
 
   def get_topic_view(id_or_slug, opts: {}, instance_var: nil, set_page_title: false)
