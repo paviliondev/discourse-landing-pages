@@ -23,8 +23,10 @@ class LandingPages::GitImporter < ThemeStore::GitImporter
           { "GIT_SSH_COMMAND" => "ssh -i #{ssh_folder}/id_rsa -o StrictHostKeyChecking=no" },
           "git",
           "ls-remote",
-          url,
           "--exit-code",
+          "--heads",
+          @url,
+          "refs/heads/#{@branch}",
         )
     rescue RuntimeError => err
       response = 2
