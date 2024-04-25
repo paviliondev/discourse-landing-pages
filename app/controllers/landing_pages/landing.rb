@@ -36,7 +36,11 @@ class LandingPages::LandingController < ::ActionController::Base
         @footer = @global.footer if @global.footer.present?
       end
 
-      render inline: @page.body, layout: "landing"
+      if request.format == "json"
+        render json: { page: @page.body }
+      else
+        render inline: @page.body, layout: "landing"
+      end
     else
       redirect_to path("/")
     end
