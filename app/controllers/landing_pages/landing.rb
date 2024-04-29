@@ -42,7 +42,7 @@ class LandingPages::LandingController < ::ActionController::Base
         if !SiteSetting.landing_redirect_to_homepages || visit_from_crawler?
           render inline: @page.body, layout: "landing"
         else
-          redirect_to path("/#{SiteSetting.landing_redirect_to_homepages_root_path}/#{params[:path].split("/").last}")
+          redirect_to path("/#{SiteSetting.landing_redirect_to_homepages_root_path}/#{request.path.split("/").last}")
         end
       end
     else

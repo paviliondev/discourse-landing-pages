@@ -9,4 +9,4 @@ plugins:
     default: false
     type: boolean
   landing_redirect_to_homepages_root_path:
-    default: '/discourse-home-pages/page'
+    default: '/discourse-home-pages/landing-page'
