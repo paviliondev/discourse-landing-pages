@@ -50,6 +50,10 @@ class LandingPages::LandingController < ::ActionController::Base
     end
   end
 
+  def path(p)
+    "#{Discourse.base_url}#{p}"
+  end
+
   def visit_from_crawler?
       request.user_agent && (request.media_type.blank? || request.media_type.include?("html")) &&
         !%w[json rss].include?(params[:format]) &&
