@@ -39,11 +39,21 @@ class LandingPages::LandingController < ::ActionController::Base
       if request.format == "json"
         render json: { page: @page.body }
       else
-        render inline: @page.body, layout: "landing"
+        if !SiteSetting.landing_redirect_to_homepages || visit_from_crawler?
+          render inline: @page.body, layout: "landing"
+        else
+          redirect_to path("/#{SiteSetting.landing_redirect_to_homepages_root_path}/#{params[:path].split("/").last}")
+        end
       end
     else
       redirect_to path("/")
     end
+  end
+
+  def visit_from_crawler?
+      request.user_agent && (request.media_type.blank? || request.media_type.include?("html")) &&
+        !%w[json rss].include?(params[:format]) &&
+        CrawlerDetection.crawler?(request.user_agent, request.headers["HTTP_VIA"])
   end
 
   def contact
