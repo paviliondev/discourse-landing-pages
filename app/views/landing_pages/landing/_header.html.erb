@@ -26,10 +26,12 @@
     <div class="panel">
       <span class='header-buttons'>
         <% if mobile_view? %>
-          <a class="mobile-toggle">
-            <span class="menu-icon"><%= SvgSprite.raw_svg('bars') %></span>
-            <span class="hide-menu-icon"><%= SvgSprite.raw_svg('times') %></span>
-          </a>
+          <%- if @menu.present? %>
+            <a class="mobile-toggle">
+              <span class="menu-icon"><%= SvgSprite.raw_svg('bars') %></span>
+              <span class="hide-menu-icon"><%= SvgSprite.raw_svg('times') %></span>
+            </a>
+          <%- end %>
         <% else %>
           <%- if current_user %>
             <a href="<%= path "/"%>" class='btn btn-primary forum-button'>

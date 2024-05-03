@@ -7,7 +7,6 @@
     <%= short_date(local_assigns[:topic].created_at) %>
   </div>
   <% if local_assigns[:include_link] %>
-    <div class="bull">•</div>
     <a class="link" href="<%= local_assigns[:topic].url %>" target="_blank">
       <i><%= SvgSprite.raw_svg('far-comments') %></i>
       <span><%= t('landing_pages.topic_byline.link') %></span>

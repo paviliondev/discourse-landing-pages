@@ -9,7 +9,7 @@ gl:
       error: "¡Ups! Algo non foi bien, téntao de novo."
 
     subscription:
-      label: "Suscríbeche aos posts de %{site}."
+      label: "Suscríbeche aos posts de %{site}"
       description: "Recibirás un correo electrónico cando publiquemos un novo post"
       submit: "Enviar"
       success: "Subscripción actualizada"
