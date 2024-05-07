@@ -9,12 +9,12 @@ pt:
       error: "Ops, isso não funcionou. Dê uma nova jogada."
 
     subscription:
-      label: "Inscreva-se para as publicações de %{site}."
-      description: "Você receberá um e-mail quando criarmos um novo post."
+      label: "Inscreva-se para as publicações de %{site}"
+      description: "Você receberá um e-mail quando criarmos um novo post"
       submit: "Submeter"
       success: "Assinatura atualizada"
       error: "Ops, isso não funcionou. Tente outra vez."
-      read_more: "Leia Mais"
+      read_more: "Leia mais"
 
     error:
       attr_required: "%{attr} é necessário"
