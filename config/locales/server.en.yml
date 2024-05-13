@@ -37,4 +37,4 @@ en:
     landing_contact_email: "Email to send landing page contacts to."
     landing_authorized_extensions: "Authorized file extensions for landing pages."
     landing_redirect_to_homepages: "Redirect to landing pages to be consumed and presented by Home Pages Theme Component."
-    landing_redirect_to_homepages_root_path: "Root path for Home Pages Theme Component."
+    landing_redirect_to_homepages_root_path: "Root path for Landing Pages when presented via Home Pages Theme Component."
