@@ -10,11 +10,9 @@
 
   <input type="hidden" id="category_id" name="category_id" value="<%= local_assigns[:category_id] %>" />
 
-  <%= button_tag(type: "submit", class: "btn btn-primary") do %>
-    <label class="submit-label">
-      <%= local_assigns[:submit_text] || t('landing_pages.subscription.submit') %>
-    </label>
-  <% end %>
+  <button name="button" type="submit" class="btn btn-primary">
+    <%= local_assigns[:submit_text] || t('landing_pages.subscription.submit') %>
+  </button>
 
   <div class="message success-message">
     <%= local_assigns[:success_text] || t('landing_pages.subscription.success') %>

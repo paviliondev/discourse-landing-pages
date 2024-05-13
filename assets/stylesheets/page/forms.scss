@@ -21,6 +21,7 @@ body.landing-page {
     button {
       animation: fade-in 1s;
       display: block;
+      font-family: inherit;
     }
 
     input[type="checkbox"] {

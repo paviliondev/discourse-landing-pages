@@ -9,12 +9,12 @@ en:
       error: "Oops, that didn't work. Give it another shot."
 
     subscription:
-      label: "Subscribe to %{site}'s posts."
-      description: "You'll get an email when we make a new post."
+      label: "Subscribe to %{site}'s posts"
+      description: "You'll get an email when we make a new post"
       submit: "Submit"
-      success: "Subscription Updated"
+      success: "Subscription updated"
       error: "Oops, that didn't work. Give it another shot."
-      read_more: "Read More"
+      read_more: "Read more"
 
     error:
       attr_required: "%{attr} required"
@@ -25,7 +25,7 @@ en:
       import_json: "%{path} json is invalid: %{error}"
 
     topic_byline:
-      link: "Forum Topic"
+      link: "Forum topic"
     
   contact_mailer:
     title: "New Contact"

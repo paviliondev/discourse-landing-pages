@@ -9,7 +9,7 @@ es:
       error: "¡Ups! Algo no ha ido bien, inténtalo de nuevo."
 
     subscription:
-      label: "Suscríbete a los posts de %{site}."
+      label: "Suscríbete a los posts de %{site}"
       description: "Recibirás un correo electrónico cuando publiquemos un nuevo post"
       submit: "Enviar"
       success: "Suscripción actualizada"
