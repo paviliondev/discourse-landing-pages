@@ -2,9 +2,12 @@ import Component from "@ember/component";
 import LandingPage from "../../models/landing-page";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { action } from "@ember/object";
+import { service } from "@ember/service";
 import bootbox from "bootbox";
 
 export default Component.extend({
+  dialog: service(),
+
   @action
   uploadFile() {
     this.set("pageFile", $("#file-input")[0].files[0]);
@@ -22,7 +25,7 @@ export default Component.extend({
       })
       .catch(function (e) {
         if (typeof e === "string") {
-          bootbox.alert(e);
+          this.dialog.alert(e);
         } else {
           popupAjaxError(e);
         }
