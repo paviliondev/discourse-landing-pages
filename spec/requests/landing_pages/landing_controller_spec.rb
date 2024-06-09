@@ -42,7 +42,7 @@ describe LandingPages::LandingController do
     expect(response.parsed_body["body"]).to eq("body")
   end
 
-  it "shows the normal page if the user agent is a bot even if redirect to Home Page TC is set" do
+  it "shows the normal page if redirect to Home Page TC is set to false" do
     SiteSetting.landing_redirect_to_homepages = false
     get "/public"
     expect(response.status).to eq(200)
