@@ -28,4 +28,24 @@ describe LandingPages::LandingController do
     get "/private"
     expect(response.status).to eq(403)
   end
+
+  it "sends back a json representation of the page" do
+    get "/public.json"
+    expect(response.status).to eq(200)
+    expect(response.parsed_body["page"]["body"]).to eq("body")
+  end
+
+  it "shows the normal page if the user agent is a bot even if redirect to Home Page TC is set" do
+    SiteSetting.landing_redirect_to_homepages = true
+    get "/public", headers: { "HTTP_USER_AGENT" => "Googlebot" }
+    expect(response.status).to eq(200)
+    expect(response.parsed_body["body"]).to eq("body")
+  end
+
+  it "shows the normal page if the user agent is a bot even if redirect to Home Page TC is set" do
+    SiteSetting.landing_redirect_to_homepages = false
+    get "/public"
+    expect(response.status).to eq(200)
+    expect(response.parsed_body["body"]).to eq("body")
+  end
 end
