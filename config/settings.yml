@@ -5,3 +5,8 @@ plugins:
     default: "jpg|jpeg|png|woff|woff2|svg|eot|ttf|otf|gif|js|json"
     type: list
     list_type: compact
+  landing_redirect_to_homepages:
+    default: false
+    type: boolean
+  landing_redirect_to_homepages_root_path:
+    default: '/home-pages/sp'

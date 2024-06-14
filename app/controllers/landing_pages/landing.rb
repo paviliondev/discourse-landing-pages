@@ -36,10 +36,28 @@ class LandingPages::LandingController < ::ActionController::Base
         @footer = @global.footer if @global.footer.present?
       end
 
-      render inline: @page.body, layout: "landing"
+      if request.format == "json"
+        render json: { page: @page.body }
+      else
+        if !SiteSetting.landing_redirect_to_homepages || visit_from_crawler?
+          render inline: @page.body, layout: "landing"
+        else
+          redirect_to path("/#{SiteSetting.landing_redirect_to_homepages_root_path}/#{request.path.split("/").last}")
+        end
+      end
     else
       redirect_to path("/")
     end
+  end
+
+  def path(p)
+    "#{Discourse.base_url}#{p}"
+  end
+
+  def visit_from_crawler?
+      request.user_agent && (request.media_type.blank? || request.media_type.include?("html")) &&
+        !%w[json rss].include?(params[:format]) &&
+        CrawlerDetection.crawler?(request.user_agent, request.headers["HTTP_VIA"])
   end
 
   def contact
