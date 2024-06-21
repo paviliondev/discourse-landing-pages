@@ -2,7 +2,7 @@
 
 # name: discourse-landing-pages
 # about: Adds landing pages to Discourse
-# version: 0.3.1
+# version: 0.3.2
 # authors: Angus McLeod, Pablo Cabido
 # url: https://github.com/paviliondev/discourse-landing-pages
 
@@ -37,6 +37,7 @@ after_initialize do
     ../lib/landing_pages/cache.rb
     ../lib/landing_email_renderer.rb
     ../lib/landing_page_constraint.rb
+    ../lib/home_pages/engine.rb
     ../config/routes.rb
     ../app/controllers/landing_pages/concerns/landing_helper.rb
     ../app/serializers/landing_pages/basic_page.rb
@@ -49,6 +50,8 @@ after_initialize do
     ../app/controllers/landing_pages/admin/page.rb
     ../app/controllers/landing_pages/admin/remote.rb
     ../app/controllers/landing_pages/admin/global.rb
+    ../app/controllers/home_pages/dynamic_page.rb
+    ../app/controllers/home_pages/simple_page.rb
     ../app/jobs/send_contact_email.rb
     ../app/mailers/contact_mailer.rb
     ../extensions/content_security_policy.rb

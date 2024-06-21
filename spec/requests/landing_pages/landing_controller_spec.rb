@@ -35,6 +35,13 @@ describe LandingPages::LandingController do
     expect(response.parsed_body["page"]["body"]).to eq("body")
   end
 
+  it "shows the normal page if the user agent is a bot" do
+    SiteSetting.landing_redirect_to_homepages = false
+    get "/public", headers: { "HTTP_USER_AGENT" => "Googlebot" }
+    expect(response.status).to eq(200)
+    expect(response.parsed_body["body"]).to eq("body")
+  end
+
   it "shows the normal page if the user agent is a bot even if redirect to Home Page TC is set" do
     SiteSetting.landing_redirect_to_homepages = true
     get "/public", headers: { "HTTP_USER_AGENT" => "Googlebot" }
