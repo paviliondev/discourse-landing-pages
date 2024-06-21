@@ -3,7 +3,6 @@ import LandingPage from "../../models/landing-page";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
-import bootbox from "bootbox";
 
 export default Component.extend({
   dialog: service(),
