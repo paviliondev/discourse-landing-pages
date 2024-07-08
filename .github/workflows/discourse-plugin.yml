@@ -5,9 +5,10 @@ on:
     branches:
       - main
   pull_request:
-  schedule:
-    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   ci:
     uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
+    with:
+      core_ref: v3.2.3
