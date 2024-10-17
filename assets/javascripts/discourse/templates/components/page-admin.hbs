@@ -210,6 +210,10 @@
       {{i18n "admin.landing_pages.page.body.instructions"}}
     </div>
 
-    <AceEditor @content={{page.body}} @mode="html" />
+    <AceEditor
+      @content={{page.body}}
+      @onChange={{fn (mut page.body)}}
+      @mode="html"
+    />
   </div>
 {{/if}}
