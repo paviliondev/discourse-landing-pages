@@ -6,9 +6,9 @@ module ::LandingPages
     isolate_namespace LandingPages
   end
 
-  PLUGIN_NAME ||= "landing_pages"
-  PATHS_KEY ||= "paths"
-  CATEGORY_IDS_KEY ||= "category_ids"
+  PLUGIN_NAME = "landing_pages"
+  PATHS_KEY = "paths"
+  CATEGORY_IDS_KEY = "category_ids"
 
   def self.paths
     LandingPages::Cache.wrap(PATHS_KEY) { LandingPages::Page.all.map(&:path) }

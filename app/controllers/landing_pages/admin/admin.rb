@@ -1,5 +1,8 @@
 # frozen_string_literal: true
+
 class LandingPages::AdminController < ::Admin::AdminController
+  requires_plugin LandingPages::PLUGIN_NAME
+
   private
 
   def check_page_exists

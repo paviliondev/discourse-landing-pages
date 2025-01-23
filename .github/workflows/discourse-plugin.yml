@@ -11,4 +11,4 @@ jobs:
   ci:
     uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
     with:
-      core_ref: v3.2.3
+      core_ref: v3.3.0

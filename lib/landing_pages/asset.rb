@@ -7,11 +7,9 @@ class LandingPages::Asset
   include HasErrors
   include ActiveModel::Serialization
 
-  KEY ||= "asset"
+  KEY = "asset"
 
   attr_reader :id, :upload
-
-  attr_accessor :file
 
   def self.required_attrs
     %w[name file].freeze
@@ -20,6 +18,8 @@ class LandingPages::Asset
   def self.writable_attrs
     %w[name upload_id].freeze
   end
+
+  attr_accessor :file, *writable_attrs
 
   def initialize(asset_id, data = {})
     @id = asset_id
@@ -30,7 +30,6 @@ class LandingPages::Asset
     data = data.with_indifferent_access
 
     LandingPages::Asset.writable_attrs.each do |attr|
-      self.class.class_eval { attr_accessor attr }
       value = data[attr]
 
       if value.present?

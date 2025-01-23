@@ -37,7 +37,7 @@ class LandingPages::Updater
   def update_assets(data)
     data[:register].each do |name, path|
       full_path = @handler.real_path(path)
-      next unless full_path.present?
+      next if full_path.blank?
 
       asset = LandingPages::Asset.find_by("name", name)
       file = File.new(full_path)

@@ -1,4 +1,4 @@
-import AceEditor from "admin/components/ace-editor";
+import AceEditor from "discourse/components/ace-editor";
 
 export default class JsonEditor extends AceEditor {
   mode = "json";
@@ -8,7 +8,16 @@ export default class JsonEditor extends AceEditor {
     const pluginAcePath = "/plugins/discourse-landing-pages/javascripts/ace";
     loadedAce.config.set("modePath", pluginAcePath);
     loadedAce.config.set("workerPath", pluginAcePath);
-    loadedAce.config.set("wrap", true);
     super._overridePlaceholder(...arguments);
+  }
+
+  didRender() {
+    super.didRender(...arguments);
+    if (this._editor) {
+      this._editor.setOptions({
+        useWorker: true,
+        wrap: true,
+      });
+    }
   }
 }

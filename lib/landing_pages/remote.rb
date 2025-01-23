@@ -4,15 +4,16 @@ class LandingPages::Remote
   include ActiveModel::Serialization
   include HasErrors
 
-  KEY ||= "remote"
+  KEY = "remote"
 
   def self.writable_attrs
     %w[url public_key private_key branch commit].freeze
   end
 
+  attr_accessor *writable_attrs
+
   def initialize(opts)
     self.class.writable_attrs.each do |key|
-      self.class.class_eval { attr_accessor key }
       instance_variable_set("@#{key}", opts[key]) if opts[key].present?
     end
   end

@@ -1,11 +1,8 @@
 # frozen_string_literal: true
-class LandingPages::InvalidAccess < StandardError
-end
-class LandingPages::InvalidParameters < StandardError
-end
 
+# rubocop:todo Discourse/Plugins/CallRequiresPlugin
 class LandingPages::LandingController < ::ActionController::Base
-  VIEW_PATH ||= Rails.root.join("plugins", "discourse-landing-pages", "app", "views")
+  VIEW_PATH = Rails.root.join("plugins", "discourse-landing-pages", "app", "views")
 
   prepend_view_path(VIEW_PATH)
   helper ::EmojiHelper
@@ -103,7 +100,6 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   rescue_from LandingPages::InvalidAccess do |e|
-    @group = Group.find(@page.group_ids.first)
     @page_title = I18n.t("page_forbidden.title")
     @classes = "forbidden"
     render status: 403, layout: "landing", formats: [:html], template: "/exceptions/not_found"
@@ -124,7 +120,7 @@ class LandingPages::LandingController < ::ActionController::Base
       @page = LandingPages::Page.find(params[:page_id])
     end
 
-    raise LandingPages::InvalidParameters.new unless @page.present?
+    raise LandingPages::InvalidParameters.new if @page.blank?
   end
 
   def find_menu
@@ -203,7 +199,7 @@ class LandingPages::LandingController < ::ActionController::Base
   end
 
   def ensure_can_change_subscription
-    raise Discourse::NotLoggedIn.new unless current_user.present?
+    raise Discourse::NotLoggedIn.new if current_user.blank?
   end
 
   def find_category_user
