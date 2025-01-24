@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LandingPages::PageController < LandingPages::AdminController
+  requires_plugin LandingPages::PLUGIN_NAME
+
   skip_before_action :check_xhr, only: [:export]
 
   before_action :refresh_remote, only: [:index]

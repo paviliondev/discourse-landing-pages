@@ -39,7 +39,7 @@ acceptance("Global | JSON editor", function (needs) {
     await triggerEvent(".ace_gutter-layer .ace_error", "mousemove");
     await waitFor(".ace_tooltip");
 
-    assert.ok(query(".ace_tooltip").innerText === "Unexpected 'i'");
+    assert.ok(query(".ace_tooltip").innerText.trim() === "Unexpected 'i'");
   });
 
   test("Wraps a long line of JSON code", async function (assert) {

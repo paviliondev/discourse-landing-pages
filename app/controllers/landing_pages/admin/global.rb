@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LandingPages::GlobalsController < LandingPages::AdminController
+  requires_plugin LandingPages::PLUGIN_NAME
+
   def update
     global = LandingPages::Global.new(global_params.to_h)
 

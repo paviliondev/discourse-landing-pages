@@ -3,7 +3,7 @@
 class LandingPages::Importer
   attr_reader :type, :bundle
 
-  attr_accessor :handler, :remote, :report
+  attr_accessor :handler, :remote
 
   def initialize(type, bundle: nil)
     @type = type
@@ -129,7 +129,7 @@ class LandingPages::Importer
 
   def read_json(path)
     file = @handler[path]
-    return unless file.present?
+    return if file.blank?
 
     begin
       json = JSON.parse(file)

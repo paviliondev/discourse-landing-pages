@@ -4,15 +4,15 @@ class LandingPages::Menu
   include HasErrors
   include ActiveModel::Serialization
 
-  KEY ||= "menu"
+  KEY = "menu"
 
   attr_reader :id
-
-  attr_accessor :name, :items
 
   def self.writable_attrs
     %w[name items].freeze
   end
+
+  attr_accessor *writable_attrs
 
   def initialize(menu_id, data = {})
     @id = menu_id
@@ -23,12 +23,10 @@ class LandingPages::Menu
     data = data.with_indifferent_access
 
     self.class.writable_attrs.each do |attr|
-      self.class.class_eval { attr_accessor attr }
       value = data[attr]
 
       if value.present?
         value = value.parameterize.underscore if attr === "name"
-        value = value if attr === "items"
 
         send("#{attr}=", value)
       end

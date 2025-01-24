@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module LandingHelper
   def user_profile(
     user,
@@ -47,7 +48,7 @@ module LandingHelper
 
       if include_avatar
         avatar_html =
-          "<img width='#{(avatar_size / 2).to_s}' height='#{(avatar_size / 2).to_s}' src='#{user.avatar_template.gsub("{size}", avatar_size.to_s)}' class='avatar'>"
+          "<img width='#{(avatar_size / 2)}' height='#{(avatar_size / 2)}' src='#{user.avatar_template.gsub("{size}", avatar_size.to_s)}' class='avatar'>"
       end
 
       <<~HTML.html_safe
@@ -85,8 +86,8 @@ module LandingHelper
   end
 
   def topic_list(opts: {}, list_opts: {}, item_opts: {})
-    list_opts[:per_page] = 30 unless list_opts[:per_page].present?
-    list_opts[:category] = -1 unless list_opts[:category].present?
+    list_opts[:per_page] = 30 if list_opts[:per_page].blank?
+    list_opts[:category] = -1 if list_opts[:category].blank?
     topics = list_topics(opts, list_opts)
 
     instance_variable_set("@#{opts[:instance_var]}", topics) if opts[:instance_var]
@@ -139,7 +140,7 @@ module LandingHelper
   end
 
   def get_topic_view(id_or_slug, opts: {}, instance_var: nil, set_page_title: false)
-    return nil unless id_or_slug.present?
+    return nil if id_or_slug.blank?
     topic = Topic.where("id = ? or slug = ?", id_or_slug.to_i, id_or_slug.to_s)
 
     if topic.exists?

@@ -2,7 +2,7 @@
 
 # name: discourse-landing-pages
 # about: Adds landing pages to Discourse
-# version: 0.3.2
+# version: 0.4.0
 # authors: Angus McLeod, Pablo Cabido
 # url: https://github.com/paviliondev/discourse-landing-pages
 
@@ -23,6 +23,7 @@ extend_content_security_policy(script_src: ["https://ajax.googleapis.com"])
 after_initialize do
   %w[
     ../lib/landing_pages/engine.rb
+    ../lib/landing_pages/exceptions.rb
     ../lib/landing_pages/menu.rb
     ../lib/landing_pages/asset.rb
     ../lib/landing_pages/page.rb
@@ -56,7 +57,7 @@ after_initialize do
     ../extensions/upload_creator.rb
     ../extensions/user_notifications.rb
     ../extensions/user_email_job.rb
-  ].each { |path| load File.expand_path(path, __FILE__) }
+  ].each { |path| require_relative File.expand_path(path, __FILE__) }
 
   add_to_class(:site, :landing_paths) { ::LandingPages.paths }
   add_to_serializer(:site, :landing_paths) { object.landing_paths }

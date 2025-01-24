@@ -39,13 +39,13 @@ describe LandingPages::LandingController do
     SiteSetting.landing_redirect_to_homepages = true
     get "/public", headers: { "HTTP_USER_AGENT" => "Googlebot" }
     expect(response.status).to eq(200)
-    expect(response.parsed_body["body"]).to eq("body")
+    expect(response.parsed_body.at("body").content.strip).to eq("body")
   end
 
   it "shows the normal page if redirect to Home Page TC is set to false" do
     SiteSetting.landing_redirect_to_homepages = false
     get "/public"
     expect(response.status).to eq(200)
-    expect(response.parsed_body["body"]).to eq("body")
+    expect(response.parsed_body.at("body").content.strip).to eq("body")
   end
 end

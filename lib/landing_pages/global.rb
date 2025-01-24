@@ -4,11 +4,13 @@ class LandingPages::Global
   include HasErrors
   include ActiveModel::Serialization
 
-  KEY ||= "global"
+  KEY = "global"
 
   def self.writable_attrs
     %w[scripts footer header].freeze
   end
+
+  attr_accessor *writable_attrs
 
   def initialize(data = {})
     set(data)
@@ -17,10 +19,7 @@ class LandingPages::Global
   def set(data)
     data = data.with_indifferent_access
 
-    self.class.writable_attrs.each do |attr|
-      self.class.class_eval { attr_accessor attr }
-      send("#{attr}=", data[attr])
-    end
+    self.class.writable_attrs.each { |attr| send("#{attr}=", data[attr]) }
   end
 
   def save

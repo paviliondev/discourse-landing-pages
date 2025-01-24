@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LandingPages::RemotesController < LandingPages::AdminController
+  requires_plugin LandingPages::PLUGIN_NAME
+
   def update
     remote = LandingPages::Remote.update(remote_params)
 

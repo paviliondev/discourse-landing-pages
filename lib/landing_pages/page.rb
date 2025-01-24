@@ -4,7 +4,7 @@ class LandingPages::Page
   include HasErrors
   include ActiveModel::Serialization
 
-  KEY ||= "page"
+  KEY = "page"
 
   attr_reader :id
 
@@ -24,6 +24,8 @@ class LandingPages::Page
     (pages_attrs + assets_attrs).freeze
   end
 
+  attr_accessor *writable_attrs
+
   def initialize(page_id, data = {})
     @id = page_id
     set(data)
@@ -33,7 +35,6 @@ class LandingPages::Page
     data = data.with_indifferent_access
 
     self.class.writable_attrs.each do |attr|
-      self.class.class_eval { attr_accessor attr }
       value = data[attr]
 
       if value.present?
