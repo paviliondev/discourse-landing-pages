@@ -43,7 +43,7 @@ export default Component.extend({
     if (this.jsonHeaderError || this.jsonFooterError) {
       this.setProperties({
         savingGlobal: false,
-        resultIcon: "times",
+        resultIcon: "xmark",
       });
       setTimeout(() => this.set("resultIcon", null), 10000);
       return;
@@ -66,7 +66,7 @@ export default Component.extend({
           });
           this.initializeProps();
         } else {
-          this.set("resultIcon", "times");
+          this.set("resultIcon", "xmark");
         }
         setTimeout(() => this.set("resultIcon", null), 10000);
       })
@@ -86,7 +86,7 @@ export default Component.extend({
           });
           this.initializeProps();
         } else {
-          this.set("resultIcon", "times");
+          this.set("resultIcon", "xmark");
         }
         setTimeout(() => this.set("resultIcon", null), 10000);
       })

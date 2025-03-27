@@ -52,7 +52,7 @@
           @action={{action "destroyPage"}}
           @label="admin.landing_pages.destroy"
           @disabled={{updatingPage}}
-          @icon="times"
+          @icon="xmark"
         />
       {{/if}}
 
@@ -61,14 +61,14 @@
         @label="admin.landing_pages.save"
         class="btn-primary"
         @disabled={{updatingPage}}
-        @icon="save"
+        @icon="floppy-disk"
       />
     </div>
 
     <div class="page-url">
       <a href="{{pageUrl}}" target="_blank">
         {{pageUrl}}
-        {{d-icon "external-link-alt"}}
+        {{d-icon "up-right-from-square"}}
       </a>
     </div>
   </div>

@@ -14,7 +14,7 @@
       action=(action "destroyGlobal")
       label="admin.landing_pages.destroy"
       disabled=updatingGlobal
-      icon="times"
+      icon="xmark"
     }}
 
     {{d-button
@@ -22,7 +22,7 @@
       label="admin.landing_pages.save"
       class="btn-primary"
       disabled=updatingGlobal
-      icon="save"
+      icon="floppy-disk"
     }}
   </div>
 </div>
@@ -52,7 +52,7 @@
     <JsonEditor @content={{jsonHeader}} />
     {{#if jsonHeaderError}}
       <span class="validation-error">
-        {{d-icon "times"}}
+        {{d-icon "xmark"}}
         {{i18n "admin.landing_pages.global.header.error" error=jsonHeaderError}}
       </span>
     {{/if}}
@@ -70,7 +70,7 @@
     <JsonEditor @content={{jsonFooter}} />
     {{#if jsonFooterError}}
       <span class="validation-error">
-        {{d-icon "times"}}
+        {{d-icon "xmark"}}
         {{i18n "admin.landing_pages.global.footer.error" error=jsonFooterError}}
       </span>
     {{/if}}
