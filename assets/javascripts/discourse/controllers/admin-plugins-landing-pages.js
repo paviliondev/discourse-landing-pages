@@ -73,7 +73,7 @@ export default Controller.extend({
     showGlobal
   ) {
     let key;
-    let icon = "info-circle";
+    let icon = "circle-info";
 
     if (page) {
       if (page.remote) {

@@ -30,7 +30,7 @@ export default Component.extend({
   showErrorMessage(error) {
     this.set("resultMessage", {
       style: "error",
-      icon: "times",
+      icon: "xmark",
       text: extractError(error),
     });
     setTimeout(() => this.set("resultMessage", null), 5000);

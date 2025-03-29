@@ -11,7 +11,7 @@ register_asset "stylesheets/landing-pages.scss"
 register_asset "stylesheets/page/page.scss"
 
 if respond_to?(:register_svg_icon)
-  register_svg_icon "save"
+  register_svg_icon "floppy-disk"
   register_svg_icon "code-branch"
   register_svg_icon "code-commit"
 end
