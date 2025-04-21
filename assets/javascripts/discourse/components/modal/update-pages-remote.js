@@ -39,7 +39,7 @@ export default Component.extend(bufferedProperty("model.remote"), {
 
   @discourseComputed("tested")
   testIcon(tested) {
-    return tested === "success" ? "check" : tested === "error" ? "times" : null;
+    return tested === "success" ? "check" : tested === "error" ? "xmark" : null;
   },
 
   @observes("buffered.hasChanges")

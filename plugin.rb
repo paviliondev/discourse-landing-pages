@@ -92,7 +92,10 @@ after_initialize do
   end
 
   full_path = "#{Rails.root}/plugins/discourse-landing-pages/assets/stylesheets/page/page.scss"
-  Stylesheet::Importer.plugin_assets["landing_page"] = Set[full_path]
+  Stylesheet::Importer.plugin_assets["landing_page"] = {
+    plugin_path: self.path,
+    stylesheets: Set[full_path],
+  }
 
   add_to_class(:category, :landing_page_id) do
     (LandingPages::Cache.new(LandingPages::CATEGORY_IDS_KEY).read || {}).transform_keys(&:to_i)[

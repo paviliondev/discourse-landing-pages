@@ -4,16 +4,16 @@
   </div>
 
   <div class="buttons">
-    {{#if resultIcon}}
-      {{d-icon resultIcon}}
+    {{#if this.resultIcon}}
+      {{d-icon this.resultIcon}}
     {{/if}}
 
-    {{conditional-loading-spinner condition=updatingGlobal size="small"}}
+    {{conditional-loading-spinner condition=this.updatingGlobal size="small"}}
 
     {{d-button
       action=(action "destroyGlobal")
       label="admin.landing_pages.destroy"
-      disabled=updatingGlobal
+      disabled=this.updatingGlobal
       icon="xmark"
     }}
 
@@ -21,7 +21,7 @@
       action=(action "saveGlobal")
       label="admin.landing_pages.save"
       class="btn-primary"
-      disabled=updatingGlobal
+      disabled=this.updatingGlobal
       icon="floppy-disk"
     }}
   </div>
@@ -33,7 +33,7 @@
       {{i18n "admin.landing_pages.global.scripts.label"}}
     </label>
 
-    {{value-list values=scripts inputType="array"}}
+    {{value-list values=this.scripts inputType="array"}}
 
     <div class="control-instructions">
       {{{i18n "admin.landing_pages.global.scripts.description"}}}
@@ -49,11 +49,14 @@
       {{{i18n "admin.landing_pages.global.header.description"}}}
     </div>
 
-    <JsonEditor @content={{jsonHeader}} />
-    {{#if jsonHeaderError}}
+    <JsonEditor @content={{this.jsonHeader}} />
+    {{#if this.jsonHeaderError}}
       <span class="validation-error">
         {{d-icon "xmark"}}
-        {{i18n "admin.landing_pages.global.header.error" error=jsonHeaderError}}
+        {{i18n
+          "admin.landing_pages.global.header.error"
+          error=this.jsonHeaderError
+        }}
       </span>
     {{/if}}
   </div>
@@ -67,11 +70,14 @@
       {{{i18n "admin.landing_pages.global.footer.description"}}}
     </div>
 
-    <JsonEditor @content={{jsonFooter}} />
-    {{#if jsonFooterError}}
+    <JsonEditor @content={{this.jsonFooter}} />
+    {{#if this.jsonFooterError}}
       <span class="validation-error">
         {{d-icon "xmark"}}
-        {{i18n "admin.landing_pages.global.footer.error" error=jsonFooterError}}
+        {{i18n
+          "admin.landing_pages.global.footer.error"
+          error=this.jsonFooterError
+        }}
       </span>
     {{/if}}
   </div>

@@ -18,12 +18,12 @@
   </div>
 
   <div class="buttons">
-    {{#if pullingFromRemote}}
+    {{#if this.pullingFromRemote}}
       {{loading-spinner size="small"}}
-    {{else if showCommitsBehind}}
+    {{else if this.showCommitsBehind}}
       {{i18n
         "admin.landing_pages.remote.repository.x_commits_behind"
-        count=commitsBehind
+        count=this.commitsBehind
       }}
     {{/if}}
 
@@ -33,7 +33,7 @@
       @title="admin.landing_pages.remote.pull.description"
       @icon="arrow-down"
       class="pull"
-      @disabled={{pullDisabled}}
+      @disabled={{this.pullDisabled}}
     />
 
     <DButton
@@ -54,10 +54,10 @@
   </div>
 </div>
 
-<div class="page-message {{messages.status}}">
-  {{#if hasMessages}}
+<div class="page-message {{this.messages.status}}">
+  {{#if this.hasMessages}}
     <div class="messages">
-      {{#each messages.items as |item|}}
+      {{#each this.messages.items as |item|}}
         <div class="message-block">
           {{d-icon item.icon}}
           <span>{{item.text}}</span>
@@ -69,20 +69,20 @@
   <div class="message-block">
     {{d-icon "circle-question"}}
 
-    <a href={{documentationUrl}} target="_blank">
+    <a href={{this.documentationUrl}} target="_blank">
       {{i18n "admin.landing_pages.documentation"}}
     </a>
   </div>
 </div>
 
-{{#if showGlobal}}
-  <GlobalAdmin @global={{global}} />
-{{else if showPages}}
+{{#if this.showGlobal}}
+  <GlobalAdmin @global={{this.global}} />
+{{else if this.showPages}}
   <PageAdmin
-    @pages={{pages}}
-    @themes={{themes}}
-    @groups={{groups}}
-    @menus={{menus}}
+    @pages={{this.pages}}
+    @themes={{this.themes}}
+    @groups={{this.groups}}
+    @menus={{this.menus}}
     @updatePages={{action "updatePages"}}
   />
 {{/if}}
