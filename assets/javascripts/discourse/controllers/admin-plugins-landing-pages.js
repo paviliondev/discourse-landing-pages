@@ -7,6 +7,7 @@ import { gt, not, notEmpty, or } from "@ember/object/computed";
 import { extractError } from "discourse/lib/ajax-error";
 import { ajax } from "discourse/lib/ajax";
 import I18n from "I18n";
+import { action } from "@ember/object";
 
 const statusIcons = {
   error: "exclamation-triangle",
@@ -113,128 +114,131 @@ export default Controller.extend({
     return showGlobal ? `${rootUrl}` : `${rootUrl}`;
   },
 
-  actions: {
-    importPages() {
-      this.modal.show(ImportPages).then((result) => {
-        if (result?.page) {
+  @action
+  importPages() {
+    this.modal.show(ImportPages).then((result) => {
+      if (result?.page) {
+        this.setProperties({
+          pages: result.pages,
+          resultMessages: {
+            type: "success",
+            messages: [
+              I18n.t("admin.landing_pages.imported.x_pages", { count: 1 }),
+            ],
+          },
+        });
+      }
+    });
+  },
+
+  @action
+  updateRemote() {
+    this.modal
+      .show(UpdatePagesRemote, { model: { remote: this.remote } })
+      .then((result) => {
+        if (result?.remote) {
           this.setProperties({
-            pages: result.pages,
-            resultMessages: {
-              type: "success",
-              messages: [
-                I18n.t("admin.landing_pages.imported.x_pages", { count: 1 }),
-              ],
-            },
+            remote: result.remote,
+            pagesNotFetched: true,
           });
         }
       });
-    },
+  },
 
-    updateRemote() {
-      this.modal
-        .show(UpdatePagesRemote, { model: { remote: this.remote } })
-        .then((result) => {
-          if (result?.remote) {
-            this.setProperties({
-              remote: result.remote,
-              pagesNotFetched: true,
-            });
-          }
+  @action
+  pullFromRemote() {
+    this.set("pullingFromRemote", true);
+
+    ajax("/landing/remote/pages")
+      .then((result) => {
+        const pages = result.pages;
+        const menus = result.menus;
+        const global = result.global;
+        const report = result.report;
+
+        this.setProperties({
+          pages,
+          menus,
+          global,
         });
-    },
 
-    pullFromRemote() {
-      this.set("pullingFromRemote", true);
-
-      ajax("/landing/remote/pages")
-        .then((result) => {
-          const pages = result.pages;
-          const menus = result.menus;
-          const global = result.global;
-          const report = result.report;
-
-          this.setProperties({
-            pages,
-            menus,
-            global,
-          });
-
-          if (report.errors.length) {
-            this.set("resultMessages", {
-              type: "error",
-              messages: result.report.errors,
-            });
-          } else {
-            let imported = report.imported;
-            let messages = [];
-
-            ["scripts", "menus", "assets", "pages"].forEach((listType) => {
-              if (imported[listType].length) {
-                messages.push(
-                  I18n.t(`admin.landing_pages.imported.x_${listType}`, {
-                    count: imported[listType].length,
-                  })
-                );
-              }
-            });
-
-            ["footer", "header"].forEach((boolType) => {
-              if (imported[boolType]) {
-                messages.push(
-                  I18n.t(`admin.landing_pages.imported.${boolType}`)
-                );
-              }
-            });
-
-            this.setProperties({
-              resultMessages: { type: "success", messages },
-              pagesNotFetched: false,
-            });
-
-            this.send("commitsBehind");
-          }
-        })
-        .catch((error) => {
+        if (report.errors.length) {
           this.set("resultMessages", {
             type: "error",
-            messages: [extractError(error)],
+            messages: result.report.errors,
           });
-        })
-        .finally(() => {
-          this.set("pullingFromRemote", false);
+        } else {
+          let imported = report.imported;
+          let messages = [];
+
+          ["scripts", "menus", "assets", "pages"].forEach((listType) => {
+            if (imported[listType].length) {
+              messages.push(
+                I18n.t(`admin.landing_pages.imported.x_${listType}`, {
+                  count: imported[listType].length,
+                })
+              );
+            }
+          });
+
+          ["footer", "header"].forEach((boolType) => {
+            if (imported[boolType]) {
+              messages.push(I18n.t(`admin.landing_pages.imported.${boolType}`));
+            }
+          });
+
+          this.setProperties({
+            resultMessages: { type: "success", messages },
+            pagesNotFetched: false,
+          });
+
+          this.send("commitsBehind");
+        }
+      })
+      .catch((error) => {
+        this.set("resultMessages", {
+          type: "error",
+          messages: [extractError(error)],
         });
-    },
-
-    commitsBehind() {
-      this.set("fetchingCommits", true);
-
-      ajax("/landing/remote/commits-behind")
-        .then((result) => {
-          if (!result.failed) {
-            this.set("commitsBehind", result.commits_behind);
-          }
-        })
-        .finally(() => {
-          this.set("fetchingCommits", false);
-        });
-    },
-
-    updatePages(pages) {
-      this.set("pages", pages);
-    },
-
-    toggleShowPages() {
-      this.setProperties({
-        showPages: true,
-        showGlobal: false,
+      })
+      .finally(() => {
+        this.set("pullingFromRemote", false);
       });
-    },
+  },
 
-    toggleShowGlobal() {
-      this.setProperties({
-        showPages: false,
-        showGlobal: true,
+  @action
+  commitsBehind() {
+    this.set("fetchingCommits", true);
+
+    ajax("/landing/remote/commits-behind")
+      .then((result) => {
+        if (!result.failed) {
+          this.set("commitsBehind", result.commits_behind);
+        }
+      })
+      .finally(() => {
+        this.set("fetchingCommits", false);
       });
-    },
+  },
+
+  @action
+  updatePages(pages) {
+    this.set("pages", pages);
+  },
+
+  @action
+  toggleShowPages() {
+    this.setProperties({
+      showPages: true,
+      showGlobal: false,
+    });
+  },
+
+  @action
+  toggleShowGlobal() {
+    this.setProperties({
+      showPages: false,
+      showGlobal: true,
+    });
   },
 });
