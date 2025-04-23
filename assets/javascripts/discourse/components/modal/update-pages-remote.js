@@ -2,11 +2,11 @@ import Component from "@ember/component";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import discourseComputed, { observes } from "discourse-common/utils/decorators";
-import { bufferedProperty } from "discourse/mixins/buffered-content";
+import BufferedProxy from "ember-buffered-proxy/proxy";
 import { and, or } from "@ember/object/computed";
 import { action } from "@ember/object";
 
-export default Component.extend(bufferedProperty("model.remote"), {
+export default Component.extend({
   keyGenUrl: "/admin/themes/generate_key_pair",
   remoteUrl: "/landing/remote",
   httpsPlaceholder: "https://github.com/org/repo",
@@ -16,6 +16,13 @@ export default Component.extend(bufferedProperty("model.remote"), {
   updating: false,
   resetting: false,
   loading: or("testing", "updating", "resetting"),
+
+  @discourseComputed("model.remote")
+  buffered(remote) {
+    return BufferedProxy.create({
+      content: remote,
+    });
+  },
 
   @discourseComputed("tested", "loading")
   updateDisabled(tested, loading) {
@@ -69,7 +76,7 @@ export default Component.extend(bufferedProperty("model.remote"), {
   },
 
   buildData() {
-    this.commitBuffer();
+    this.buffered.applyChanges();
     const remote = this.model.remote;
     return {
       remote: {
