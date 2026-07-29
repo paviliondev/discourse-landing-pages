@@ -1,3 +1,4 @@
+/* eslint-disable qunit/no-loose-assertions, qunit/no-ok-equality, simple-import-sort/imports */
 import {
   acceptance,
   exists,
