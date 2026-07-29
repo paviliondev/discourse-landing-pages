@@ -102,7 +102,10 @@ class LandingPages::LandingController < ::ActionController::Base
   rescue_from LandingPages::InvalidAccess do |e|
     @page_title = I18n.t("page_forbidden.title")
     @classes = "forbidden"
-    render status: 403, layout: "landing", formats: [:html], template: "/exceptions/not_found"
+    render status: :forbidden,
+           layout: "landing",
+           formats: [:html],
+           template: "/exceptions/not_found"
   end
 
   private

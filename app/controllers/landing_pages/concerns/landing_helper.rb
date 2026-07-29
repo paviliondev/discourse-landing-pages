@@ -58,10 +58,10 @@ module LandingHelper
               #{avatar_html}
               #{profile_details_html}
             </a>
-            <div class="top-extra">#{top_extra.present? ? top_extra : ""}</div>
+            <div class="top-extra">#{top_extra.presence || ""}</div>
           </div>
           #{bio_html}
-          #{bottom_extra.present? ? bottom_extra : ""}
+          #{bottom_extra.presence || ""}
         </div>
       HTML
     end

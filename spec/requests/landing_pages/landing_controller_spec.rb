@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe LandingPages::LandingController do
-  fab!(:admin_user) { Fabricate(:admin) }
+  fab!(:admin_user, :admin)
 
   before do
     LandingPages::Page.create({ name: "Public", path: "public", body: "body" })
