@@ -1,7 +1,6 @@
-/* eslint-disable qunit/no-loose-assertions, simple-import-sort/imports */
-import { acceptance, exists } from "discourse/tests/helpers/qunit-helpers";
-import { test } from "qunit";
 import { click, visit } from "@ember/test-helpers";
+import { test } from "qunit";
+import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 
 acceptance("Main | Navigation", function (needs) {
   needs.user();
@@ -20,39 +19,39 @@ acceptance("Main | Navigation", function (needs) {
     await visit("/admin/plugins/discourse-landing-pages/main");
     await click("button.pages");
 
-    assert.ok(exists(".page-list-container"));
-    assert.notOk(exists(".page-global"));
-    assert.notOk(exists(".d-modal.update-pages-remote"));
-    assert.notOk(exists(".d-modal.import-pages"));
+    assert.dom(".page-list-container").exists();
+    assert.dom(".page-global").doesNotExist();
+    assert.dom(".d-modal.update-pages-remote").doesNotExist();
+    assert.dom(".d-modal.import-pages").doesNotExist();
   });
 
   test("Displays only the global section when selected", async function (assert) {
     await visit("/admin/plugins/discourse-landing-pages/main");
     await click("button.global");
 
-    assert.notOk(exists(".page-list-container"));
-    assert.ok(exists(".page-global"));
-    assert.notOk(exists(".d-modal.update-pages-remote"));
-    assert.notOk(exists(".d-modal.import-pages"));
+    assert.dom(".page-list-container").doesNotExist();
+    assert.dom(".page-global").exists();
+    assert.dom(".d-modal.update-pages-remote").doesNotExist();
+    assert.dom(".d-modal.import-pages").doesNotExist();
   });
 
   test("Displays only the update remote modal over the default section", async function (assert) {
     await visit("/admin/plugins/discourse-landing-pages/main");
     await click("button.remote");
 
-    assert.ok(exists(".page-list-container"));
-    assert.notOk(exists(".page-global"));
-    assert.ok(exists(".d-modal.update-pages-remote"));
-    assert.notOk(exists(".d-modal.import-pages"));
+    assert.dom(".page-list-container").exists();
+    assert.dom(".page-global").doesNotExist();
+    assert.dom(".d-modal.update-pages-remote").exists();
+    assert.dom(".d-modal.import-pages").doesNotExist();
   });
 
   test("Displays only the import pages modal over the default section", async function (assert) {
     await visit("/admin/plugins/discourse-landing-pages/main");
     await click("button.import");
 
-    assert.ok(exists(".page-list-container"));
-    assert.notOk(exists(".page-global"));
-    assert.notOk(exists(".d-modal.update-pages-remote"));
-    assert.ok(exists(".d-modal.import-pages"));
+    assert.dom(".page-list-container").exists();
+    assert.dom(".page-global").doesNotExist();
+    assert.dom(".d-modal.update-pages-remote").doesNotExist();
+    assert.dom(".d-modal.import-pages").exists();
   });
 });
