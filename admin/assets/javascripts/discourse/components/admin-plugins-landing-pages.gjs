@@ -5,9 +5,14 @@ import { service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { extractError } from "discourse/lib/ajax-error";
 import Group from "discourse/models/group";
+import DButton from "discourse/ui-kit/d-button";
+import dIcon from "discourse/ui-kit/helpers/d-icon";
+import dLoadingSpinner from "discourse/ui-kit/helpers/d-loading-spinner";
 import { i18n } from "discourse-i18n";
-import ImportPages from "../components/modal/import-pages";
-import UpdatePagesRemote from "../components/modal/update-pages-remote";
+import GlobalAdmin from "./global-admin";
+import ImportPages from "./modal/import-pages";
+import UpdatePagesRemote from "./modal/update-pages-remote";
+import PageAdmin from "./page-admin";
 
 const statusIcons = {
   error: "exclamation-triangle",
@@ -265,4 +270,99 @@ export default class AdminPluginsLandingPages extends Component {
     this.showPages = false;
     this.showGlobal = true;
   }
+
+  <template>
+    <div class="page-controls">
+      <div class="buttons">
+        <DButton
+          @action={{this.toggleShowPages}}
+          @label="admin.landing_pages.page.label"
+          @title="admin.landing_pages.page.description"
+          @icon="file"
+          class="pages"
+        />
+
+        <DButton
+          @action={{this.toggleShowGlobal}}
+          @label="admin.landing_pages.global.label"
+          @title="admin.landing_pages.global.description"
+          @icon="globe"
+          class="global"
+        />
+      </div>
+
+      <div class="buttons">
+        {{#if this.pullingFromRemote}}
+          {{dLoadingSpinner size="small"}}
+        {{else if this.hasCommitsBehind}}
+          {{i18n
+            "admin.landing_pages.remote.repository.x_commits_behind"
+            count=this.commitsBehind
+          }}
+        {{/if}}
+
+        <DButton
+          @action={{this.pullFromRemote}}
+          @label="admin.landing_pages.remote.pull.label"
+          @title="admin.landing_pages.remote.pull.description"
+          @icon="arrow-down"
+          class="pull"
+          @disabled={{this.pullDisabled}}
+        />
+
+        <DButton
+          @action={{this.updateRemote}}
+          @title="admin.landing_pages.remote.repository.description"
+          @label="admin.landing_pages.remote.repository.label"
+          @icon="book"
+          class="remote"
+        />
+
+        <DButton
+          @action={{this.importPages}}
+          @label="admin.landing_pages.import.button"
+          @title="admin.landing_pages.import.description"
+          @icon="download"
+          class="import"
+        />
+      </div>
+    </div>
+
+    <div class="page-message {{this.messages.status}}">
+      {{#if this.hasMessages}}
+        <div class="messages">
+          {{#each this.messages.items as |item|}}
+            <div class="message-block">
+              {{dIcon item.icon}}
+              <span>{{item.text}}</span>
+            </div>
+          {{/each}}
+        </div>
+      {{/if}}
+
+      <div class="message-block">
+        {{dIcon "circle-question"}}
+
+        <a
+          href={{this.documentationUrl}}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{i18n "admin.landing_pages.documentation"}}
+        </a>
+      </div>
+    </div>
+
+    {{#if this.showGlobal}}
+      <GlobalAdmin @global={{this.global}} />
+    {{else if this.showPages}}
+      <PageAdmin
+        @pages={{this.pages}}
+        @themes={{this.themes}}
+        @groups={{this.groups}}
+        @menus={{this.menus}}
+        @updatePages={{this.updatePages}}
+      />
+    {{/if}}
+  </template>
 }
